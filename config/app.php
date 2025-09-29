@@ -40,7 +40,8 @@ return [
     */
 
     'debug' => (bool) env('APP_DEBUG', false),
-
+    'api_url' => env('API_URL', 'http://localhost:8000/api'),
+    'api_key' => env('API_KEY', 'default_key'),
     /*
     |--------------------------------------------------------------------------
     | Application URL

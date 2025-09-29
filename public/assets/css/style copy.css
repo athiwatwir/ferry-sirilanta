@@ -1,9 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@font-face {
+    font-family: 'proxima_softbold';
+    src: url('../font/font-ProximaSoft-Bold/fontsfree-net-proximasoft-bold-webfont.woff2') format('woff2'),
+        url('../fonts/font-ProximaSoft-Bold/fontsfree-net-proximasoft-bold-webfont.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'proximanovasoftw03-regularRg';
+    src: url('../font/font-ProximaSoft/fontsfree-net-proxima-nova-soft-w03-regular-webfont.woff2') format('woff2'),
+        url('../font/font-ProximaSoft/fontsfree-net-proxima-nova-soft-w03-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
 
 html,
 body {
-    font-family: 'Montserrat', 'Kanit', sans-serif;
-    font-weight: 400;
+    font-family: 'proximanovasoftw03-regularRg', 'Kanit', sans-serif;
+    font-weight: 300;
 }
 
 h1,
@@ -11,10 +27,9 @@ h2,
 h3,
 h4,
 h5 {
-    font-family: 'Montserrat', 'Kanit', sans-serif;
+    font-family: 'proxima_softbold', 'Kanit', sans-serif;
     font-weight: 600;
 }
-
 
 .text-main {
     color: #0b79bc;
@@ -22,7 +37,7 @@ h5 {
 
 .btn-main {
     background-color: #f16225 !important;
-    font-family: 'Montserrat', 'Kanit', sans-serif;
+    font-family: 'proxima_softbold', 'Kanit', sans-serif;
     font-weight: 600;
     color: #ffffff;
 }
@@ -34,7 +49,7 @@ h5 {
 }
 
 .font-proxima {
-    font-family: 'Montserrat', 'Kanit', sans-serif;
+    font-family: 'proxima_softbold', 'Kanit', sans-serif;
 }
 
 .font-proxima-400 {
