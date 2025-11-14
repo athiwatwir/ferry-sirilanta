@@ -24,23 +24,23 @@ class Trending extends Component
         $trendings = [
             [
                 'title' => 'Koh Lipe',
-                'cover_img' => asset('assets/img/trending/koh-lipe-14-1024x497.webp')
+                'cover_img' => asset('img/trending/koh-lipe-14-1024x497.webp')
             ],
             [
                 'title' => 'Koh Phi Phi',
-                'cover_img' => asset('assets/img/trending/dreamstime_s_135187578.jpg')
+                'cover_img' => asset('img/trending/dreamstime_s_135187578.jpg')
             ],
             [
                 'title' => 'Phuket',
-                'cover_img' => asset('assets/img/trending/best-things-to-do-in-phuket-old-town-main-image-hd-op.jpg')
+                'cover_img' => asset('img/trending/best-things-to-do-in-phuket-old-town-main-image-hd-op.jpg')
             ],
             [
                 'title' => 'Krabi',
-                'cover_img' => asset('assets/img/trending/Krabi-Thailand-1.jpg')
+                'cover_img' => asset('img/trending/Krabi-Thailand-1.jpg')
             ],
             [
                 'title' => 'LANGKAWI, Malaysia',
-                'cover_img' => asset('assets/img/trending/1120-0751_langkawi-malaysia-attractions.jpg')
+                'cover_img' => asset('img/trending/1120-0751_langkawi-malaysia-attractions.jpg')
             ],
         ];
 

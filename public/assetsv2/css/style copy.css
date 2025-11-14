@@ -1,0 +1,334 @@
+@font-face {
+    font-family: 'proxima_softbold';
+    src: url('../font/font-ProximaSoft-Bold/fontsfree-net-proximasoft-bold-webfont.woff2') format('woff2'),
+        url('../fonts/font-ProximaSoft-Bold/fontsfree-net-proximasoft-bold-webfont.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'proximanovasoftw03-regularRg';
+    src: url('../font/font-ProximaSoft/fontsfree-net-proxima-nova-soft-w03-regular-webfont.woff2') format('woff2'),
+        url('../font/font-ProximaSoft/fontsfree-net-proxima-nova-soft-w03-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+html,
+body {
+    font-family: 'proximanovasoftw03-regularRg', 'Kanit', sans-serif;
+    font-weight: 300;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: 'proxima_softbold', 'Kanit', sans-serif;
+    font-weight: 600;
+}
+
+.text-main {
+    color: #0b79bc;
+}
+
+.btn-main {
+    background-color: #f16225 !important;
+    font-family: 'proxima_softbold', 'Kanit', sans-serif;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.bg-menu {
+    background-image: linear-gradient(to right, #0c79b6, #253b7a);
+    color: white;
+    transition: background 0.3s ease;
+}
+
+.font-proxima {
+    font-family: 'proxima_softbold', 'Kanit', sans-serif;
+}
+
+.font-proxima-400 {
+    font-family: 'proximanovasoftw03-regularRg', 'Kanit', sans-serif;
+    font-weight: 400;
+}
+
+.font-proxima-600 {
+    font-family: 'proximanovasoftw03-regularRg', 'Kanit', sans-serif;
+    font-weight: 600;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+}
+
+
+.nav-tabs .nav-link.active {
+    background-color: transparent;
+    border: none;
+    color: #f16225 !important;
+    font-weight: bold;
+}
+
+.nav-link {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 20px;
+
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link.show {
+    color: #f16225 !important;
+
+}
+
+.navbar-scrolled {
+    background-color: #0b79bc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+/* CSS */
+:root {
+    --hero-height: 70vh;
+}
+
+/* fixed background layer (อยู่เบื้องหลังทั้งหมด) */
+.hero-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--hero-height);
+    /* แสดงเฉพาะช่วง hero สูงเท่านี้ */
+    background-image: url('../img/home-cover-04.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 0;
+    /* อยู่หลังเนื้อหา */
+    pointer-events: none;
+}
+
+/* ถ้าต้องการให้ background ขยายเต็ม viewport ตลอดเวลา ให้ใช้ height:100vh; */
+.hero {
+    height: var(--hero-height);
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    /* ให้เนื้อหา hero อยู่เหนือ .hero-bg */
+    color: white;
+    /* ถ้าต้องการ อ่านง่าย ใส่ overlay บน .hero แทน .hero-bg */
+}
+
+main {
+    position: relative;
+
+    /* เนื้อหาหลักเลื่อนมาทับภาพ */
+    background-color: #ffffff;
+}
+
+/* ตัวอย่าง overlay มืด */
+.hero-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25));
+}
+
+
+
+.search-form {
+
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+
+    max-width: 600px;
+    margin: auto;
+}
+
+.dropdown {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+}
+
+.dropdown label {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #555;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.dropdown input {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 0.25rem;
+    z-index: 1000;
+    display: none;
+}
+
+.dropdown-list div {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+
+.dropdown-list div:hover {
+    background: #ffec99;
+}
+
+
+
+
+.carousel img {
+    width: 70px;
+    max-height: 70px;
+    border-radius: 50%;
+    margin-right: 1rem;
+    overflow: hidden;
+}
+
+.carousel-inner {
+    padding: 1em;
+}
+
+@media screen and (min-width: 576px) {
+    .carousel-inner {
+        display: flex;
+        width: 90%;
+        margin-inline: auto;
+        padding: 1em 0;
+        overflow: hidden;
+    }
+
+    .carousel-item {
+        display: block;
+        margin-right: 0;
+        flex: 0 0 calc(100% / 2);
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .carousel-item {
+        display: block;
+        margin-right: 0;
+        flex: 0 0 calc(100% / 3);
+    }
+}
+
+.carousel .card {
+    margin: 0 0.5em;
+    border: 0;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 3rem;
+    height: 3rem;
+    background-color: grey;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+.bg-cover {
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    /* กำหนดความสูงของ card */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+.dropdown-passenger {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu-passenger {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    width: 300px;
+    z-index: 1000;
+}
+
+.passenger-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.counter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.counter button {
+    background: #ffef99;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.counter span {
+    min-width: 20px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.btn-done {
+    background: black;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}

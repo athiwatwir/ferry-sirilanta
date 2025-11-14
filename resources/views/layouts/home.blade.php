@@ -1,14 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Flight Search</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('assets/css/loading.css') }}">
+<!doctype html>
 
+<html lang="en" class="layout-navbar-fixed layout-wide" dir="ltr" data-skin="default" data-assets-path="../../assets/" data-template="front-pages" data-bs-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <title></title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../assets/img/favicon/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&ampdisplay=swap" rel="stylesheet" />
+
+
+    <link href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('css/loading.css') }}">
+
+    <!-- Core CSS -->
+    <!-- build:css assets/vendor/css/theme.css  -->
+
+    <link href="{{ asset('assets/vendor/libs/node-waves/node-waves.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/vendor/css/core.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/demo.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/vendor/css/pages/front-page.css') }}" rel="stylesheet" />
+
+    <!-- Vendors CSS -->
+
+    <!-- endbuild -->
+
+    <link href="{{ asset('assets/vendor/libs/nouislider/nouislider.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/vendor/libs/swiper/swiper.css') }}" rel="stylesheet" />
+
+    <!-- Page CSS -->
+
+    <link href="{{ asset('assets/vendor/css/pages/front-page-landing.css') }}" rel="stylesheet" />
+
+    <!-- Helpers -->
+    <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+
+
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="{{ asset('assets/js/front-config.js') }}"></script>
     @yield('style')
     @stack('styles')
     <script>
@@ -16,150 +56,166 @@
         window.API_KEY = "{{ config('app.api_key') }}";
 
     </script>
+
 </head>
+
 <body>
-    {{-- Loading Component --}}
     @include('layouts.section.loading')
+    <script src="{{ asset('assets/vendor/js/dropdown-hover.js') }}"></script>
+    <script src="{{ asset('assets/vendor/js/mega-dropdown.js') }}"></script>
 
-    <!-- HTML -->
-    <div class="hero-bg" aria-hidden="true"></div>
-    <nav class="navbar navbar-expand-lg">
+    <!-- Navbar: Start -->
+    <nav class="layout-navbar shadow-none py-0">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" width="150" />
+            <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-8">
+                <!-- Menu logo wrapper: Start -->
+                <div class="navbar-brand app-brand demo d-flex py-0 me-4 me-xl-8 ms-0">
+                    <!-- Mobile menu toggle: Start-->
+                    <button class="navbar-toggler border-0 px-0 me-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="icon-base ti tabler-menu-2 icon-lg align-middle text-heading fw-medium"></i>
+                    </button>
+                    <!-- Mobile menu toggle: End-->
+                    <a href="/" class="app-brand-link">
+                        <img src="{{ asset('img/logo.webp') }}" alt="" style="width: 120px;">
+                    </a>
+                </div>
+                <!-- Menu logo wrapper: End -->
+                <!-- Menu wrapper: Start -->
+                <div class="collapse navbar-collapse landing-nav-menu" id="navbarSupportedContent">
+                    <button class="navbar-toggler border-0 text-heading position-absolute end-0 top-0 scaleX-n1-rtl p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="icon-base ti tabler-x icon-lg"></i>
+                    </button>
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link fw-medium" aria-current="page" href="landing-page.html#landingHero">Home</a>
+                        </li>
 
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Flights</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Tours</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="landing-menu-overlay d-lg-none"></div>
+                <!-- Menu wrapper: End -->
+                <!-- Toolbar: Start -->
+                <ul class="navbar-nav flex-row align-items-center ms-auto">
 
+                    <!-- navbar button: Start -->
+                    <li>
+                        <a href="" class="btn btn-primary" target="_blank"><span class="tf-icons icon-base ti tabler-login scaleX-n1-rtl me-md-1"></span><span class="d-none d-md-block">Your Booking</span></a>
+                    </li>
+                    <!-- navbar button: End -->
                 </ul>
+                <!-- Toolbar: End -->
             </div>
         </div>
     </nav>
-    <header class="hero">
-        <div class="hero__content">
-            <div class="card" style="width: 36rem;">
+    <!-- Navbar: End -->
 
-                <div class="card-body">
-                    <h2 class="card-title text-main">Plan Ahead & Book With Confidence</h2>
+    <!-- Sections:Start -->
 
+    <div data-bs-spy="scroll" class="scrollspy-example">
+        <!-- Hero: Start -->
+        <section id="hero-animation">
+            <div id="landingHero" class="section-py landing-hero position-relative">
+                <img src="../../assets/img/front-pages/backgrounds/hero-bg.png" alt="hero background" class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1" />
+                <div class="container">
+                    <div class="hero-text-box text-center position-relative">
+                        <h1 class="text-primary hero-title display-6 fw-extrabold">
+                            Plan Ahead & Book With Confidence
+                        </h1>
 
-                    <x-booking.form />
+                        <div class="card">
+                            <div class="card-body">
+                                <x-booking.form />
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </div>
-    </header>
 
-    <main class="">
-        <div class="container py-4">
-            <div class="row">
-                <div class="col-12">
-                    <h2 class="text-main">Trending Destinations</h2>
-                </div>
-                <div class="col-12">
+        </section>
+        <!-- Hero: End -->
 
-                    <x-home.trending />
-                </div>
-            </div>
-
-
-
-
-
-        </div>
-
-
-
-        <footer class="bg-dark py-5" style="--bs-bg-opacity: .8;">
+        <!-- Useful features: Start -->
+        <section id="landingFeatures" class="section-py landing-features">
             <div class="container">
-                <a class="navbar-brand" href="/">
-                    <img src="{{ asset('assets/img/logo-w.png') }}" alt="Logo" width="120" />
 
-                </a>
+            </div>
+        </section>
+        <!-- Useful features: End -->
 
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <p class="mt-2">© Copyright 2025</p>
+
+    </div>
+
+    <!-- / Sections:End -->
+
+    <!-- Footer: Start -->
+    <footer class="landing-footer bg-body footer-text">
+        <div class="footer-top position-relative overflow-hidden z-1">
+            <img src="../../assets/img/front-pages/backgrounds/footer-bg.png" alt="footer bg" class="footer-bg banner-bg-img z-n1" />
+            <div class="container">
+                <div class="row gx-0 gy-6 g-lg-10">
+                    <div class="col-lg-5">
+                        <a href="/" class="app-brand-link mb-6">
+                            <img src="{{ asset('img/logo-w.png') }}" alt="" style="width: 160px;">
+                        </a>
+
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="footer-bottom py-3 py-md-5">
+            <div class="container d-flex flex-wrap justify-content-between flex-md-row flex-column text-center text-md-start">
+                <div class="mb-2 mb-md-0">
+                    <span class="footer-bottom-text">©
+                        <script>
+                            document.write(new Date().getFullYear());
 
-        </footer>
-    </main>
+                        </script>
+                    </span>
+                    <a href="https://pixinvent.com" target="_blank" class="fw-medium text-white">,</a>
 
+                </div>
+                <div>
 
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer: End -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/node-waves/node-waves.js') }}"></script>
 
-    <script src="{{ asset('assets/js/api.js') }}"></script>
-    <script src="{{ asset('assets/js/loading.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/@algolia/autocomplete-js.js') }}"></script>
 
-    <script>
-        $(window).on("scroll", function() {
-            if ($(this).scrollTop() > 50) {
-                $("nav.navbar").addClass("navbar-scrolled");
-            } else {
-                $("nav.navbar").removeClass("navbar-scrolled");
-            }
-        });
+    <script src="{{ asset('assets/vendor/libs/pickr/pickr.js') }}"></script>
 
+    <!-- endbuild -->
 
-        const multipleItemCarousel = document.querySelector("#testimonialCarousel");
+    <!-- Vendors JS -->
+    <script src="{{ asset('assets/vendor/libs/nouislider/nouislider.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/swiper/swiper.js') }}"></script>
 
-        if (window.matchMedia("(min-width:576px)").matches) {
-            const carouselWidth = $(".carousel-inner")[0].scrollWidth;
-            const cardWidth = $(".carousel-item").outerWidth(true);
-            let scrollPosition = 0;
+    <!-- Main JS -->
 
-            // ปุ่ม Next
-            $(".carousel-control-next").on("click", function() {
-                if (scrollPosition < carouselWidth - cardWidth * 3) {
-                    scrollPosition += cardWidth;
-                } else {
-                    scrollPosition = 0; // กลับไปเริ่มใหม่
-                }
-                $(".carousel-inner").animate({
-                    scrollLeft: scrollPosition
-                }, 800);
-            });
+    <script src="{{ asset('assets/js/front-main.js') }}"></script>
 
-            // ปุ่ม Prev
-            $(".carousel-control-prev").on("click", function() {
-                if (scrollPosition > 0) {
-                    scrollPosition -= cardWidth;
-                } else {
-                    scrollPosition = carouselWidth - cardWidth * 3; // ไปท้ายสุด
-                }
-                $(".carousel-inner").animate({
-                    scrollLeft: scrollPosition
-                }, 800);
-            });
+    <!-- Page JS -->
+    <script src="{{ asset('assets/js/front-page-landing.js') }}"></script>
 
-            // Auto slide ทุก 3 วินาที
-            setInterval(function() {
-                if (scrollPosition < carouselWidth - cardWidth * 3) {
-                    scrollPosition += cardWidth;
-                } else {
-                    scrollPosition = 0; // กลับไปเริ่มใหม่
-                }
-                $(".carousel-inner").animate({
-                    scrollLeft: scrollPosition
-                }, 800);
-            }, 3000);
+    <script src="{{ asset('js/api.js') }}"></script>
+    <script src="{{ asset('js/loading.js') }}"></script>
 
-        } else {
-            // mobile ใช้ bootstrap carousel ปกติ
-            $(multipleItemCarousel).addClass("slide");
-        }
-
-    </script>
     @yield('script')
 </body>
 </html>

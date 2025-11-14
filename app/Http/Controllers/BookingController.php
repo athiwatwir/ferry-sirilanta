@@ -106,8 +106,8 @@ class BookingController extends Controller
 
     public function flight()
     {
-        $depart_station = request()->depart_station;
-        $dest_station = request()->dest_station;
+        $depart_station = request()->depart_station_id;
+        $dest_station = request()->dest_station_id;
         $depart_date = request()->depart_date;
         $trip_type = request()->trip_type;
 
