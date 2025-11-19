@@ -1,33 +1,36 @@
 <link href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" rel="stylesheet" />
-<form class="search-form" action="{{ route('booking.flight') }}">
+<form class="" action="{{ route('booking.flight') }}">
     <div class="btn-group mb-3" role="group">
-        <button type="button" class="btn btn-lg btn-main px-4 font-proxima-600" data-action="trip_type" data-value="O">One Way</button>
-        <button type="button" class="btn btn-lg btn-light px-4 font-proxima-600" data-action="trip_type" data-value="R">Return</button>
-        <button type="button" class="btn btn-lg btn-light px-4 font-proxima-600" data-action="trip_type" data-value="M">Multi-City</button>
         <input type="hidden" name="trip_type" id="trip_type" value="O">
         <input type="hidden" name="dest_station_id" id="dest_station_id">
         <input type="hidden" name="depart_station_id" id="depart_station_id">
     </div>
-
+    <div class="row mb-3">
+        <div class="col">
+            <button type="button" class="btn btn-lg btn-main px-4 font-proxima-600 w-100" data-action="trip_type" data-value="O">One Way</button>
+        </div>
+        <div class="col-6" style="display: none;">
+            <button type="button" class="btn btn-lg btn-light px-4 font-proxima-600 w-100" data-action="trip_type" data-value="R">Return</button>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12 mb-3">
             <button type="button" class="btn btn-xl btn-outline-secondary w-100 btn-select-depart-station" data-type="departure" data-bs-toggle="modal" data-bs-target="#onboardHorizontalImageModal">
-                <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plane-departure">
+                <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M14.639 10.258l4.83 -1.294a2 2 0 1 1 1.035 3.863l-14.489 3.883l-4.45 -5.02l2.897 -.776l2.45 1.414l2.897 -.776l-3.743 -6.244l2.898 -.777l5.675 5.727z" />
-                    <path d="M3 21h18" />
-                </svg>
+                    <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73z" />
+                    <path d="M6 13l1.5 -5" />
+                    <path d="M6 8h8l2 3" /></svg>
                 <span>Choose Your Departure</span>
             </button>
         </div>
 
         <div class="col-12 mb-3">
             <button disabled type="button" class="btn btn-xl btn-outline-secondary w-100 btn-select-dest-station" data-type="destination" data-bs-toggle="modal" data-bs-target="#onboardHorizontalImageModal">
-                <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plane-arrival">
+                <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M15.157 11.81l4.83 1.295a2 2 0 1 1 -1.036 3.863l-14.489 -3.882l-1.345 -6.572l2.898 .776l1.414 2.45l2.898 .776l-.12 -7.279l2.898 .777l2.052 7.797z" />
-                    <path d="M3 21h18" />
-                </svg>
+                    <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                    <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" /></svg>
                 <span>Choose Your Destination</span>
             </button>
         </div>
@@ -47,14 +50,14 @@
         <div class="col-12 col-lg-6">
             <div class="dropdown-passenger">
                 <button class="btn btn-lg btn-light w-100" type="button" id="passenger-toggle">
-                    👤 <span id="passenger-summary">1 Adult</span>
+                    👤 <span id="passenger-summary">1 Passenger</span>
                 </button>
 
                 <div class="dropdown-menu-passenger" id="passenger-menu">
                     <div class="passenger-row">
                         <div>
-                            <strong>Adult</strong><br>
-                            <small>(Above 12 years)</small>
+                            <strong>Passenger</strong><br>
+
                         </div>
                         <div class="counter">
                             <button class="btn-minus" type="button" data-type="adult">−</button>
@@ -64,7 +67,7 @@
                         </div>
                     </div>
 
-                    <div class="passenger-row">
+                    <div class="passenger-row" style="display: none;">
                         <div>
                             <strong>Child</strong><br>
                             <small>(2 to 11 years)</small>
@@ -77,7 +80,7 @@
                         </div>
                     </div>
 
-                    <div class="passenger-row">
+                    <div class="passenger-row" style="display: none;">
                         <div>
                             <strong>Infant</strong><br>
                             <small>(1 to 23 months)</small>
@@ -97,7 +100,7 @@
             </div>
         </div>
         <div class="col-12 col-lg-6">
-            <button class="btn btn-primary btn-lg w-100">Book Now</button>
+            <button class="btn btn-primary btn-lg w-100">SEARCH</button>
         </div>
     </div>
 </form>
@@ -266,7 +269,7 @@
                 sectionCol.className = 'col-12 col-md-4 mb-2';
                 sectionCol.innerHTML = `
                 <button class="btn btn-primary pt-2 pt-lg-5 btn-lg w-100 btn-section" data-section="${key}">
-                    ${section.name}
+                    ${section.name}<br/>${section.name_th}
                 </button>
             `;
                 elements.boxSection.appendChild(sectionCol);
@@ -284,13 +287,12 @@
                 const stationList = stations[key].stations;
                 stationList.forEach(st => {
                     const stCol = document.createElement('div');
-                    stCol.className = 'col-12 col-md-6 mb-2';
+                    stCol.className = 'col-12 col-md-4 mb-2';
                     stCol.innerHTML = `
                     <button class="btn btn-primary btn-lg w-100 text-start p-2 p-lg-4 btn-station"
                             data-id="${st.id}"
                             data-name="${st.name}">
-                        <strong>${st.name}</strong><br>
-                        <small class="text-muted">${st.piername || ''}</small>
+                        ${st.name}<br/>${st.name_th}
                     </button>
                 `;
                     elements.boxStation2.appendChild(stCol);
@@ -392,10 +394,10 @@
 
         // ==================== Trip Type Handler ====================
         function setupTripTypeHandlers() {
-            document.querySelectorAll(".btn-group [data-action='trip_type']").forEach(btn => {
+            document.querySelectorAll("[data-action='trip_type']").forEach(btn => {
                 btn.addEventListener('click', function() {
                     // Update button styles
-                    document.querySelectorAll(".btn-group [data-action='trip_type']").forEach(b => {
+                    document.querySelectorAll("[data-action='trip_type']").forEach(b => {
                         b.classList.remove('btn-main');
                         b.classList.add('btn-light');
                     });
@@ -425,7 +427,7 @@
             const summary = [];
             const counts = state.passengerCounts;
 
-            if (counts.adult > 0) summary.push(`${counts.adult} Adult`);
+            if (counts.adult > 0) summary.push(`${counts.adult} Passenger`);
             if (counts.child > 0) summary.push(`${counts.child} Child`);
             if (counts.infant > 0) summary.push(`${counts.infant} Infant`);
 

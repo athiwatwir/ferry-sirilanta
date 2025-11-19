@@ -115,33 +115,40 @@
         <!-- Hero: Start -->
         <section id="hero-animation">
             <div id="landingHero" class="section-py landing-hero position-relative">
-                <img src="../../assets/img/front-pages/backgrounds/hero-bg.png" alt="hero background" class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1" />
+                <img src="{{ asset('img/home-cover-02.webp') }}" alt="hero background" class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1" />
                 <div class="container">
-                    <div class="hero-text-box text-center position-relative">
-                        <h1 class="text-primary hero-title display-6 fw-extrabold">
+                    <div class="text-center position-relative">
+                        <h1 class="text-primary hero-title display-6 fw-extrabold" style="display: none;">
                             Plan Ahead & Book With Confidence
                         </h1>
 
-                        <div class="card">
-                            <div class="card-body">
-                                <x-booking.form />
+                        <div class="row">
+                            <div class="col-12 col-lg-8 mx-auto">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <x-booking.form />
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
-
                 </div>
-            </div>
-
-        </section>
-        <!-- Hero: End -->
-
-        <!-- Useful features: Start -->
-        <section id="landingFeatures" class="section-py landing-features">
-            <div class="container">
 
             </div>
-        </section>
-        <!-- Useful features: End -->
+    </div>
+
+    </section>
+    <!-- Hero: End -->
+
+    <!-- Useful features: Start -->
+    <section id="landingFeatures" class="section-py landing-features">
+        <div class="container">
+
+        </div>
+    </section>
+    <!-- Useful features: End -->
 
 
     </div>

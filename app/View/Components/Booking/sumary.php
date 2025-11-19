@@ -5,12 +5,14 @@ namespace App\View\Components\Booking;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use App\Services\StationService;
 
 class sumary extends Component
 {
     /**
      * Create a new component instance.
      */
+
     public function __construct()
     {
         //
@@ -21,10 +23,15 @@ class sumary extends Component
      */
     public function render(): View|Closure|string
     {
-        $booking = session('booking', []);
+        $sessionData = session('booking', []);
+        $departStation = app(StationService::class)->getStation($sessionData['depart_station_id']);
+        //dd($departStation);
+        $destStation = app(StationService::class)->getStation($sessionData['dest_station_id']);
 
         return view('components.booking.sumary', [
-            'booking' => $booking
+            'sessionData' => $sessionData,
+            'departStation' => $departStation,
+            'destStation' => $destStation
         ]);
     }
 }

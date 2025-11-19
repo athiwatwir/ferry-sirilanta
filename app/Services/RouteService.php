@@ -12,10 +12,10 @@ class RouteService
         //
     }
 
-    public function getRoutes($from, $to)
+    public function getRoutes($from, $to, $departdate)
     {
 
-        $routes = app(ApiService::class)->get('/route', ['depart_station' => $from, 'dest_station' => $to]);
+        $routes = app(ApiService::class)->get('/route', ['depart_station' => $from, 'dest_station' => $to, 'departdate' => $departdate]);
         //dd($routes);
         return ($routes['data']);
     }

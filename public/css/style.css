@@ -11,8 +11,8 @@ h2,
 h3,
 h4,
 h5 {
-    font-family: 'Montserrat', 'Kanit', sans-serif;
-    font-weight: 600;
+    font-family: 'Montserrat', 'Kanit', sans-serif !important;
+    font-weight: 700 !important;
 }
 
 .pointer {
@@ -27,7 +27,7 @@ h5 {
     background-color: #f16225 !important;
     font-family: 'Montserrat', 'Kanit', sans-serif;
     font-weight: 600;
-    color: #ffffff;
+    color: #ffffff !important;
 }
 
 .bg-menu {

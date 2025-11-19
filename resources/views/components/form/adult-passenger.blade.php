@@ -1,6 +1,6 @@
 @props(['count'=>0])
 
-<div class="row py-3 card mb-3">
+<div class="row py-3 mb-3">
     <div class="col-12">
         <h6 class="text-main">Passenger {{ $count+1 }} @if ($count==0)
             (Lead passenger)
@@ -44,7 +44,7 @@
             <div class="col-6 mb-3">
                 <label>Telephone number</label>
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-5">
                         <select class="form-select mb-3" aria-label="Default select example" name="customers[{{ $count }}][mobile_code]">
                             <option selected>TH +66</option>
                         </select>
@@ -59,7 +59,7 @@
             <div class="col-6 mb-3">
                 <label>Thai telephone number (if any)</label>
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-5">
                         <select class="form-select mb-3" aria-label="Default select example">
                             <option selected>TH +66</option>
                         </select>
