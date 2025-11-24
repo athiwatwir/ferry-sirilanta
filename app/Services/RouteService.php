@@ -19,4 +19,12 @@ class RouteService
         //dd($routes);
         return ($routes['data']);
     }
+
+    public function getRoute($subRouteId)
+    {
+
+        $route = app(ApiService::class)->get('/route/' . $subRouteId, []);
+        //dd($routes);
+        return ($route['data']);
+    }
 }

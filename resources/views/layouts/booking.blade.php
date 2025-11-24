@@ -65,9 +65,9 @@
     <script src="{{ asset('assets/vendor/js/mega-dropdown.js') }}"></script>
 
     <!-- Navbar: Start -->
-    <nav class="layout-navbar shadow-none py-0">
+    <nav class="layout-navbar shadow-none py-0 ">
         <div class="container">
-            <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-8">
+            <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-8 bg-primary">
                 <!-- Menu logo wrapper: Start -->
                 <div class="navbar-brand app-brand demo d-flex py-0 me-4 me-xl-8 ms-0">
                     <!-- Mobile menu toggle: Start-->
@@ -76,7 +76,7 @@
                     </button>
                     <!-- Mobile menu toggle: End-->
                     <a href="/" class="app-brand-link">
-                        <img src="{{ asset('img/logo.webp') }}" alt="" style="width: 120px;">
+                        <img src="{{ asset('img/logo-w.png') }}" alt="" style="width: 120px;">
                     </a>
                 </div>
                 <!-- Menu logo wrapper: End -->
@@ -86,9 +86,6 @@
                         <i class="icon-base ti tabler-x icon-lg"></i>
                     </button>
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link fw-medium" aria-current="page" href="landing-page.html#landingHero">Home</a>
-                        </li>
 
                     </ul>
                 </div>
@@ -114,9 +111,13 @@
     <div data-bs-spy="scroll" class="scrollspy-example">
 
         <!-- Useful features: Start -->
-        <section id="landingFeatures" class="section-py landing-features">
+        <section id="landingFeatures" class="section-py">
             <div class="container">
-                @yield('content')
+                <div class="row">
+                    <div class="col-12 px-4">
+                        @yield('content')
+                    </div>
+                </div>
             </div>
         </section>
         <!-- Useful features: End -->

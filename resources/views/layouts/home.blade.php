@@ -143,9 +143,9 @@
     <!-- Hero: End -->
 
     <!-- Useful features: Start -->
-    <section id="landingFeatures" class="section-py landing-features">
+    <section id="landingFeatures" class="py-3">
         <div class="container">
-
+            @yield('content')
         </div>
     </section>
     <!-- Useful features: End -->

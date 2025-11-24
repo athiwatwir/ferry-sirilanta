@@ -40,6 +40,10 @@ class BookingController extends Controller
         //return redirect()->route('booking.payment', ['id' => '5180dcca-65d9-4b80-b6a7-e1654ff97bf8']);
         //dd($request->all());
 
+        $subRoute = app(RouteService::class)->getRoute($bookData['outbound_sub_route_id']);
+
+        $totalamt = $subRoute['prices']['regular'] * $bookData['adult'];
+
         //customers
         $customers = [];
         foreach ($request->customers as $customer) {
@@ -58,7 +62,7 @@ class BookingController extends Controller
             $routes[] = [
                 'id' => $bookData['outbound_sub_route_id'],
                 'traveldate' => $bookData['depart_date'],
-                'price' => 1250
+                'price' => $totalamt
             ];
         } else {
             $routes[] = [

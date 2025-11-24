@@ -1,7 +1,11 @@
 @props(['routes'=>[],'destStation'=>[],'departStation'=>[],'dateLists'=>[],'type'=>'A'])
 <div class="row">
     <div class="col-12">
-        <h3 class="mb-0">{{ $departStation['name'] }} to {{ $destStation['name'] }}</h3>
+        <h3 class="mb-0"><svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73z" />
+                <path d="M6 13l1.5 -5" />
+                <path d="M6 8h8l2 3" /></svg>{{ $departStation['name'] }} to {{ $destStation['name'] }}</h3>
     </div>
     <div class="col-12 card mb-3">
         <div class="date-selector py-4">
@@ -42,11 +46,11 @@ active
         <table class="table">
             <thead>
                 <tr>
-                    <th class="text-center">Departure Time</th>
-                    <th class="text-center">Arrival Time</th>
+                    <th class="text-center"><i class="icon-base ti tabler-clock-hour-7"></i> Departure Time</th>
+                    <th class="text-center"><i class="icon-base ti tabler-clock-hour-7"></i> Arrival Time</th>
                     <th class="text-center">Gross Fare</th>
                     <th class="text-center">Discount Coupon</th>
-                    <th class="text-center">Net Fare</th>
+                    <th class="text-center"><i class="icon-base ti tabler-circle-check"></i>Net Fare</th>
                     <th></th>
                 </tr>
             </thead>

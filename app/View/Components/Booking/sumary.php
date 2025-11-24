@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Booking;
 
+use App\Services\RouteService;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -28,10 +29,13 @@ class sumary extends Component
         //dd($departStation);
         $destStation = app(StationService::class)->getStation($sessionData['dest_station_id']);
 
+        $subRoute = app(RouteService::class)->getRoute($sessionData['outbound_sub_route_id']);
+
         return view('components.booking.sumary', [
             'sessionData' => $sessionData,
             'departStation' => $departStation,
-            'destStation' => $destStation
+            'destStation' => $destStation,
+            'subRoute' => $subRoute
         ]);
     }
 }
