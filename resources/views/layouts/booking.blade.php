@@ -57,6 +57,14 @@
 
     </script>
 
+    <style>
+        .landing-navbar {
+            background-color: #0b79bc !important;
+            border-radius: 0 !important;
+        }
+
+    </style>
+
 </head>
 
 <body>
@@ -65,45 +73,49 @@
     <script src="{{ asset('assets/vendor/js/mega-dropdown.js') }}"></script>
 
     <!-- Navbar: Start -->
-    <nav class="layout-navbar shadow-none py-0 ">
-        <div class="container">
-            <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-8 bg-primary">
-                <!-- Menu logo wrapper: Start -->
-                <div class="navbar-brand app-brand demo d-flex py-0 me-4 me-xl-8 ms-0">
-                    <!-- Mobile menu toggle: Start-->
-                    <button class="navbar-toggler border-0 px-0 me-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="icon-base ti tabler-menu-2 icon-lg align-middle text-heading fw-medium"></i>
-                    </button>
-                    <!-- Mobile menu toggle: End-->
-                    <a href="/" class="app-brand-link">
-                        <img src="{{ asset('img/logo-w.png') }}" alt="" style="width: 120px;">
-                    </a>
-                </div>
-                <!-- Menu logo wrapper: End -->
-                <!-- Menu wrapper: Start -->
-                <div class="collapse navbar-collapse landing-nav-menu" id="navbarSupportedContent">
-                    <button class="navbar-toggler border-0 text-heading position-absolute end-0 top-0 scaleX-n1-rtl p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="icon-base ti tabler-x icon-lg"></i>
-                    </button>
-                    <ul class="navbar-nav me-auto">
+    <nav class="layout-navbar shadow-none py-0">
 
-                    </ul>
-                </div>
-                <div class="landing-menu-overlay d-lg-none"></div>
-                <!-- Menu wrapper: End -->
-                <!-- Toolbar: Start -->
-                <ul class="navbar-nav flex-row align-items-center ms-auto">
-
-                    <!-- navbar button: Start -->
-                    <li>
-                        <a href="" class="btn btn-primary" target="_blank"><span class="tf-icons icon-base ti tabler-login scaleX-n1-rtl me-md-1"></span><span class="d-none d-md-block">Your Booking</span></a>
-                    </li>
-                    <!-- navbar button: End -->
-                </ul>
-                <!-- Toolbar: End -->
+        <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-8">
+            <!-- Menu logo wrapper: Start -->
+            <div class="navbar-brand app-brand demo d-flex py-0 me-4 me-xl-8 ms-0">
+                <!-- Mobile menu toggle: Start-->
+                <button class="navbar-toggler border-0 px-0 me-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="icon-base ti tabler-menu-2 icon-lg align-middle text-heading fw-medium"></i>
+                </button>
+                <!-- Mobile menu toggle: End-->
+                <a href="/" class="app-brand-link">
+                    <img src="{{ asset('img/logo-v2.png') }}" alt="" style="width: 200px;">
+                </a>
             </div>
+            <!-- Menu logo wrapper: End -->
+            <!-- Menu wrapper: Start -->
+            <div class="collapse navbar-collapse landing-nav-menu" id="navbarSupportedContent">
+                <button class="navbar-toggler border-0 text-heading position-absolute end-0 top-0 scaleX-n1-rtl p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="icon-base ti tabler-x icon-lg"></i>
+                </button>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" aria-current="page" href="landing-page.html#landingHero">Home</a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="landing-menu-overlay d-lg-none"></div>
+            <!-- Menu wrapper: End -->
+            <!-- Toolbar: Start -->
+            <ul class="navbar-nav flex-row align-items-center ms-auto">
+
+                <!-- navbar button: Start -->
+                <li>
+                    <a href="" class="btn btn-primary" target="_blank"><span class="tf-icons icon-base ti tabler-search scaleX-n1-rtl me-md-1"></span><span class="d-none d-md-block">Your Booking</span></a>
+                </li>
+                <!-- navbar button: End -->
+            </ul>
+            <!-- Toolbar: End -->
         </div>
+
     </nav>
+
     <!-- Navbar: End -->
 
     <!-- Sections:Start -->
@@ -114,7 +126,7 @@
         <section id="landingFeatures" class="section-py">
             <div class="container">
                 <div class="row">
-                    <div class="col-12 px-4">
+                    <div class="col-12 px-4 mt-10 mt-lg-1">
                         @yield('content')
                     </div>
                 </div>
@@ -129,28 +141,7 @@
 
     <!-- Footer: Start -->
     <footer class="landing-footer bg-body footer-text">
-        <div class="footer-top position-relative overflow-hidden z-1">
-            <img src="../../assets/img/front-pages/backgrounds/footer-bg.png" alt="footer bg" class="footer-bg banner-bg-img z-n1" />
-            <div class="container">
-                <div class="row gx-0 gy-6 g-lg-10">
-                    <div class="col-lg-5">
-                        <a href="/" class="app-brand-link mb-6">
-                            <img src="{{ asset('img/logo-w.png') }}" alt="" style="width: 160px;">
-                        </a>
 
-                    </div>
-                    <div class="col-lg-2 col-md-4 col-sm-6">
-
-                    </div>
-                    <div class="col-lg-2 col-md-4 col-sm-6">
-
-                    </div>
-                    <div class="col-lg-3 col-md-4">
-
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="footer-bottom py-3 py-md-5">
             <div class="container d-flex flex-wrap justify-content-between flex-md-row flex-column text-center text-md-start">
                 <div class="mb-2 mb-md-0">
@@ -179,18 +170,11 @@
 
     <script src="{{ asset('assets/vendor/libs/pickr/pickr.js') }}"></script>
 
-    <!-- endbuild -->
-
     <!-- Vendors JS -->
     <script src="{{ asset('assets/vendor/libs/nouislider/nouislider.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/swiper/swiper.js') }}"></script>
 
     <!-- Main JS -->
-
-    <script src="{{ asset('assets/js/front-main.js') }}"></script>
-
-    <!-- Page JS -->
-    <script src="{{ asset('assets/js/front-page-landing.js') }}"></script>
 
     <script src="{{ asset('js/api.js') }}"></script>
     <script src="{{ asset('js/loading.js') }}"></script>

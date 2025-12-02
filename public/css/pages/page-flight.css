@@ -1,0 +1,264 @@
+.date-selector-wrapper {
+    position: relative;
+    padding: 0 50px;
+}
+
+.arrow-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: 2px solid #ddd;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.arrow-btn:hover:not(:disabled) {
+    background: #f8f9fa;
+    border-color: #adb5bd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.arrow-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.arrow-btn-left {
+    left: 0;
+}
+
+.arrow-btn-right {
+    right: 0;
+}
+
+.arrow-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+#dateSelector {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 0.5rem;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 4px 0;
+}
+
+#dateSelector::-webkit-scrollbar {
+    display: none;
+}
+
+#dateSelector .col {
+    flex: 0 0 auto !important;
+    width: 110px;
+}
+
+.date-card {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+    height: 100%;
+}
+
+.date-card:hover {
+    border-color: #adb5bd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.date-card.active {
+    background: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+.date-card h6 {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Mobile: ซ่อนลูกศร */
+@media (max-width: 768px) {
+    .arrow-btn {
+        display: none !important;
+    }
+
+    .date-selector-wrapper {
+        padding: 0;
+    }
+}
+
+/* Desktop: แสดงลูกศร */
+@media (min-width: 769px) {
+    #dateSelector {
+        overflow-x: hidden;
+    }
+}
+
+
+
+.header-section {
+    background: white;
+    padding: 30px 0;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.date-selector {}
+
+.date-card {
+    text-align: center;
+    padding: 15px 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+}
+
+.date-card:hover {
+    background-color: #f8f9fa;
+}
+
+.date-card.active {
+    background-color: #fff9e6;
+    border-color: #ffd700;
+}
+
+.date-card .date {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.date-card .price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.krisflyer-banner {
+    background: linear-gradient(135deg, #e8f4f8 0%, #f0f8ff 100%);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-left: 5px solid #0066cc;
+}
+
+.flight-card {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+}
+
+.flight-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.flight-route {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.airport-code {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.flight-time {
+    font-size: 28px;
+    font-weight: bold;
+    color: #000;
+}
+
+.flight-line {
+    flex: 1;
+    height: 2px;
+    background: #ddd;
+    margin: 0 20px;
+    position: relative;
+}
+
+.flight-line::after {
+    content: '✈';
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    color: #666;
+}
+
+.price-box {
+    background: #fffde7;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+.price-box .class {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.price-box .amount {
+    font-size: 32px;
+    font-weight: bold;
+    color: #000;
+}
+
+.badge-cheapest {
+    background: #ffd700;
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.seats-left {
+    color: #d32f2f;
+    font-size: 13px;
+}
+
+.btn-select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    background: white;
+    border: 2px solid #ddd;
+    color: #333;
+}
+
+.btn-select:hover {
+    background: #f8f9fa;
+    border-color: #999;
+}
+
+.scootplus-box {
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 20px;
+}

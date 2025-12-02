@@ -5486,7 +5486,7 @@ fieldset:disabled .btn {
     --bs-card-subtitle-color: color-mix(in sRGB, var(--bs-base-color) 55%, var(--bs-card-bg));
     --bs-card-border-width: 0;
     --bs-card-border-color: var(--bs-border-color);
-    --bs-card-border-radius: 0.375rem;
+    --bs-card-border-radius: 1.3rem;
     --bs-card-box-shadow: var(--bs-box-shadow);
     --bs-card-inner-border-radius: 0.375rem;
     --bs-card-cap-padding-y: 1.5rem;

@@ -146,9 +146,8 @@ class BookingController extends Controller
         $trip_type = request()->trip_type;
         $adult = request()->adult ?? 1;
 
-        $nowDate = Carbon::now();
         $_departDate = Carbon::parse($depart_date)->format('d/m/Y');
-        //dd($depart_date);
+        $departDateText = Carbon::parse($depart_date)->format('D d M Y');
 
         $aRoutes = app(RouteService::class)->getRoutes($depart_station, $dest_station, $depart_date);
         $aDate = $this->generateDateList($depart_date);
@@ -178,7 +177,8 @@ class BookingController extends Controller
             'depart_date' => $depart_date,
             'return_date' => $return_date,
             '_departDate' => $_departDate,
-            'adult' => $adult
+            'adult' => $adult,
+            'departDateText' => $departDateText
         ]);
     }
 
@@ -191,10 +191,6 @@ class BookingController extends Controller
         $booking['outbound_sub_route_id'] = $outbound_sub_route_id;
         $booking['return_sub_route_id'] = $return_sub_route_id;
         session(['booking' => $booking]);
-
-
-
-        //dd($booking);
 
         return view('pages.booking.passenger', [
             'sessionData' => session('booking'),
@@ -227,7 +223,7 @@ class BookingController extends Controller
 
         // from คือจุดเริ่มต้นแล้ว → ให้สร้าง 7 วันถัดไปเท่านั้น
         $dates = [];
-        for ($i = 0; $i < 7; $i++) {
+        for ($i = 0; $i < 14; $i++) {
             $cDate = $from->copy()->addDays($i);
             $dates[] = [
                 'date' => $cDate->format('Y-m-d'),

@@ -65,48 +65,7 @@
     <script src="{{ asset('assets/vendor/js/mega-dropdown.js') }}"></script>
 
     <!-- Navbar: Start -->
-    <nav class="layout-navbar shadow-none py-0">
-        <div class="container">
-            <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-8">
-                <!-- Menu logo wrapper: Start -->
-                <div class="navbar-brand app-brand demo d-flex py-0 me-4 me-xl-8 ms-0">
-                    <!-- Mobile menu toggle: Start-->
-                    <button class="navbar-toggler border-0 px-0 me-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="icon-base ti tabler-menu-2 icon-lg align-middle text-heading fw-medium"></i>
-                    </button>
-                    <!-- Mobile menu toggle: End-->
-                    <a href="/" class="app-brand-link">
-                        <img src="{{ asset('img/logo.webp') }}" alt="" style="width: 120px;">
-                    </a>
-                </div>
-                <!-- Menu logo wrapper: End -->
-                <!-- Menu wrapper: Start -->
-                <div class="collapse navbar-collapse landing-nav-menu" id="navbarSupportedContent">
-                    <button class="navbar-toggler border-0 text-heading position-absolute end-0 top-0 scaleX-n1-rtl p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="icon-base ti tabler-x icon-lg"></i>
-                    </button>
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link fw-medium" aria-current="page" href="landing-page.html#landingHero">Home</a>
-                        </li>
-
-                    </ul>
-                </div>
-                <div class="landing-menu-overlay d-lg-none"></div>
-                <!-- Menu wrapper: End -->
-                <!-- Toolbar: Start -->
-                <ul class="navbar-nav flex-row align-items-center ms-auto">
-
-                    <!-- navbar button: Start -->
-                    <li>
-                        <a href="" class="btn btn-primary" target="_blank"><span class="tf-icons icon-base ti tabler-login scaleX-n1-rtl me-md-1"></span><span class="d-none d-md-block">Your Booking</span></a>
-                    </li>
-                    <!-- navbar button: End -->
-                </ul>
-                <!-- Toolbar: End -->
-            </div>
-        </div>
-    </nav>
+    @include('layouts.section.nav')
     <!-- Navbar: End -->
 
     <!-- Sections:Start -->
@@ -115,18 +74,18 @@
         <!-- Hero: Start -->
         <section id="hero-animation">
             <div id="landingHero" class="section-py landing-hero position-relative">
-                <img src="{{ asset('img/home-cover-02.webp') }}" alt="hero background" class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1" />
+                <img src="{{ asset('img/home-cover-03.webp') }}" alt="hero background" class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1" />
                 <div class="container">
                     <div class="text-center position-relative">
-                        <h1 class="text-primary hero-title display-6 fw-extrabold" style="display: none;">
-                            Plan Ahead & Book With Confidence
-                        </h1>
+
 
                         <div class="row">
-                            <div class="col-12 col-lg-8 mx-auto">
+                            <div class="col-12 col-lg-6">
                                 <div class="card">
                                     <div class="card-body">
-
+                                        <h2 class="display-6 ">
+                                            Plan Ahead & Book With Your island escape
+                                        </h2>
                                         <x-booking.form />
                                     </div>
                                 </div>
@@ -157,28 +116,7 @@
 
     <!-- Footer: Start -->
     <footer class="landing-footer bg-body footer-text">
-        <div class="footer-top position-relative overflow-hidden z-1">
-            <img src="../../assets/img/front-pages/backgrounds/footer-bg.png" alt="footer bg" class="footer-bg banner-bg-img z-n1" />
-            <div class="container">
-                <div class="row gx-0 gy-6 g-lg-10">
-                    <div class="col-lg-5">
-                        <a href="/" class="app-brand-link mb-6">
-                            <img src="{{ asset('img/logo-w.png') }}" alt="" style="width: 160px;">
-                        </a>
 
-                    </div>
-                    <div class="col-lg-2 col-md-4 col-sm-6">
-
-                    </div>
-                    <div class="col-lg-2 col-md-4 col-sm-6">
-
-                    </div>
-                    <div class="col-lg-3 col-md-4">
-
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="footer-bottom py-3 py-md-5">
             <div class="container d-flex flex-wrap justify-content-between flex-md-row flex-column text-center text-md-start">
                 <div class="mb-2 mb-md-0">

@@ -112,8 +112,8 @@
             </div>
             <div class="modal-body p-0">
                 <div class="onboarding-content mb-0">
-                    <h3 id="modal-title-type">Select "Section"</h3>
-                    <div class="row" id="box-step">
+                    <h3 id="modal-title-type">Departure From</h3>
+                    <div class="row">
                         <div class="col-12 col-lg-6 mx-auto">
                             <div class="row">
                                 <div class="col-3">
@@ -185,20 +185,6 @@
         margin: 8px 0;
     }
 
-    .btn-main-section {
-        background-color: #2ca7e6;
-    }
-
-    .btn-main-section:hover {
-        background-color: #f06225;
-    }
-
-    .btn-main-section.active {
-        background-color: #f06225;
-        color: #fff;
-        border-color: #f06225;
-    }
-
 </style>
 
 @section('script')
@@ -206,11 +192,13 @@
 <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
 <script>
     function toggleBg() {
+
         const avatars = document.querySelectorAll('.avatar .avatar-initial');
         const midCol = document.querySelector('.col.text-start');
 
         if (avatars.length < 2 || !midCol) return;
 
+        console.log(avatars);
         const left = avatars[0];
         const right = avatars[1];
 
@@ -221,11 +209,15 @@
         right.classList.toggle('bg-primary');
         right.classList.toggle('bg-secondary');
 
+
+
         // ปรับตำแหน่งคอลัมน์กลางตามสี
         if (left.classList.contains('bg-primary')) {
+            // หากฝั่งซ้ายเป็น primary → ชิดซ้าย
             midCol.classList.remove('text-end');
             midCol.classList.add('text-start');
         } else {
+            // หากฝั่งขวาเป็น primary → ชิดขวา
             midCol.classList.remove('text-start');
             midCol.classList.add('text-end');
         }
@@ -239,9 +231,11 @@
             , static: true
             , minDate: "today"
             , onChange: function(selectedDates, dateStr, instance) {
+                // เมื่อเลือกวันเดินทางแล้ว ตั้ง minDate ของ return date
                 if (selectedDates.length > 0) {
                     returnPicker.set('minDate', selectedDates[0]);
 
+                    // ถ้าวัน return เล็กกว่าวัน departure ให้เคลียร์ค่า
                     if (returnPicker.selectedDates.length > 0 &&
                         returnPicker.selectedDates[0] < selectedDates[0]) {
                         returnPicker.clear();
@@ -257,8 +251,10 @@
             , static: true
             , minDate: "today"
         });
-    });
 
+
+
+    });
     (function() {
         'use strict';
 
@@ -294,8 +290,8 @@
             , passengerMenu: document.getElementById('passenger-menu')
             , passengerSummary: document.getElementById('passenger-summary')
             , submitButton: document.querySelector('.btn-primary.btn-lg.w-100')
-            , departDatePicker: document.getElementById('depart_date')
-            , returnDatePicker: document.getElementById('return_date')
+            , departDatePicker: document.getElementById('depart_date') // เพิ่ม
+            , returnDatePicker: document.getElementById('return_date') // เพิ่ม
         };
 
         // ==================== API Calls ====================
@@ -313,13 +309,12 @@
 
         function loadDestStations(departStationId) {
             apiGet("station/destination", {
-                    group: 'N'
+                    group: 'Y'
                     , depart_station: departStationId
                 }
                 , (res) => {
                     state.destStations = res.data;
-                    // สำหรับ destination ให้แสดง station ทั้งหมดเลย
-                    renderAllStations(state.destStations);
+                    renderSections(state.destStations);
                 }
                 , (err) => console.error("Error loading destination stations:", err)
             );
@@ -327,7 +322,6 @@
 
         // ==================== Rendering Functions ====================
         function renderSections(stations) {
-            $('#box-step').show();
             elements.boxSection.innerHTML = "";
             elements.boxStation2.innerHTML = "";
 
@@ -336,7 +330,7 @@
                 const sectionCol = document.createElement('div');
                 sectionCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                 sectionCol.innerHTML = `
-                <button class="btn btn-main-section p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center" data-section="${key}">
+                <button class="btn btn-primary p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center" data-section="${key}">
     <div class="section-image w-100">
         <img src="${section.icon}" class="w-100">
     </div>
@@ -347,33 +341,6 @@
             });
 
             attachSectionListeners();
-        }
-
-        // ฟังก์ชันใหม่: แสดง station ทั้งหมดโดยไม่ต้องเลือก section
-        function renderAllStations(stations) {
-            $('#box-step').hide();
-            elements.boxSection.innerHTML = "";
-            elements.boxStation2.innerHTML = "";
-
-            stations.forEach(st => {
-                const stCol = document.createElement('div');
-                stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
-                stCol.innerHTML = `
-                    <button class="btn btn-main-section py-3 p-2 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
-                            data-id="${st.id}"
-                            data-name="${st.name}">
-                       <div class="section-image w-100">
-        <img src="https://168789chang.com/images/icon-station/4.png" class="w-100">
-    </div></button><small>${st.name}</small>
-                `;
-                elements.boxSection.appendChild(stCol);
-            });
-
-            // แสดง section และซ่อน boxStation
-            elements.boxSection.classList.remove('d-none');
-            elements.boxStation.classList.add('d-none');
-
-            attachStationListeners();
         }
 
         function renderStations(stations, sectionKey) {
@@ -387,7 +354,7 @@
                     const stCol = document.createElement('div');
                     stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                     stCol.innerHTML = `
-                    <button class="btn btn-main-section py-3 p-2 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
+                    <button class="btn btn-primary py-3 p-2 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
                             data-id="${st.id}"
                             data-name="${st.name}">
                        <div class="section-image w-100">
@@ -407,6 +374,7 @@
             const hasDest = !!state.destStationId;
             const hasDepartDate = !!elements.departDatePicker.value;
 
+            // Check return date only if it's required (trip type R or M)
             const tripType = elements.tripTypeInput.value;
             const needsReturnDate = tripType === 'R' || tripType === 'M';
             const hasReturnDate = needsReturnDate ? !!elements.returnDatePicker.value : true;
@@ -422,6 +390,7 @@
             }
         }
 
+
         // ==================== Event Listeners ====================
         function attachSectionListeners() {
             document.querySelectorAll('.btn-section').forEach(btn => {
@@ -433,14 +402,16 @@
                     this.classList.add('active');
 
                     // Render stations for selected section
-                    const currentStations = state.departStations;
+                    const currentStations = state.selectType === 'departure' ?
+                        state.departStations :
+                        state.destStations;
+
                     renderStations(currentStations, sectionKey);
 
                     // Toggle visibility
                     elements.boxStation.classList.remove('d-none');
                     elements.boxSection.classList.add('d-none');
                     toggleBg();
-                    elements.modalTitle.textContent = 'Select "Station"';
                 });
             });
         }
@@ -466,11 +437,6 @@
                 elements.departStationInput.value = stationId;
                 elements.departStationBtn.querySelector('span').textContent = stationName;
 
-                // เคลียร์ destination เมื่อเปลี่ยน departure
-                state.destStationId = null;
-                elements.destStationInput.value = '';
-                elements.destStationBtn.querySelector('span').textContent = 'Choose Your Destination';
-
                 // Load destinations and enable destination button
                 loadDestStations(stationId);
                 elements.destStationBtn.disabled = false;
@@ -480,6 +446,7 @@
                 elements.destStationBtn.querySelector('span').textContent = stationName;
             }
 
+            // Validate form - เพิ่มบรรทัดนี้
             validateForm();
 
             // Reset view and close modal
@@ -497,6 +464,7 @@
         function setupTripTypeHandlers() {
             document.querySelectorAll("[data-action='trip_type']").forEach(btn => {
                 btn.addEventListener('click', function() {
+                    // Update button styles
                     document.querySelectorAll("[data-action='trip_type']").forEach(b => {
                         b.classList.remove('btn-main');
                         b.classList.add('btn-light');
@@ -504,9 +472,11 @@
                     this.classList.remove('btn-light');
                     this.classList.add('btn-main');
 
+                    // Update trip type
                     const value = this.dataset.value;
                     elements.tripTypeInput.value = value;
 
+                    // Toggle return date visibility
                     if (value === 'O') {
                         elements.returnDatePicker.classList.add('d-none');
                         elements.returnDatePicker.required = false;
@@ -533,10 +503,12 @@
         }
 
         function setupPassengerHandlers() {
+            // Toggle passenger menu
             elements.passengerToggle.addEventListener('click', () => {
                 elements.passengerMenu.classList.toggle('d-block');
             });
 
+            // Plus buttons
             document.querySelectorAll('.btn-plus').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const type = btn.dataset.type;
@@ -555,6 +527,7 @@
                 });
             });
 
+            // Minus buttons
             document.querySelectorAll('.btn-minus').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const type = btn.dataset.type;
@@ -570,10 +543,12 @@
                 });
             });
 
+            // Done button
             document.getElementById('btn-done').addEventListener('click', () => {
                 elements.passengerMenu.classList.remove('d-block');
             });
 
+            // Close on outside click
             document.addEventListener('click', (event) => {
                 if (!elements.passengerToggle.contains(event.target) &&
                     !elements.passengerMenu.contains(event.target)) {
@@ -589,16 +564,9 @@
                 state.selectType = button.dataset.type;
 
                 const titleText = state.selectType === 'departure' ?
-                    'Select "Section"' :
-                    'Select "Station"';
+                    'Departure From' :
+                    'To Destination';
                 elements.modalTitle.textContent = titleText;
-
-                // โหลดข้อมูลใหม่ทุกครั้งที่เปิด modal
-                if (state.selectType === 'departure') {
-                    loadDepartStations();
-                } else if (state.selectType === 'destination' && state.departStationId) {
-                    loadDestStations(state.departStationId);
-                }
             });
 
             elements.backButton.addEventListener('click', resetModalView);
@@ -616,6 +584,7 @@
             validateForm();
         }
 
+        // Start the application
         $(document).ready(init);
 
     })();

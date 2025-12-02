@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use App\Services\StationService;
 
-class sumary extends Component
+class Sumary extends Component
 {
     /**
      * Create a new component instance.
@@ -25,6 +25,8 @@ class sumary extends Component
     public function render(): View|Closure|string
     {
         $sessionData = session('booking', []);
+
+        //dd($sessionData);
         $departStation = app(StationService::class)->getStation($sessionData['depart_station_id']);
         //dd($departStation);
         $destStation = app(StationService::class)->getStation($sessionData['dest_station_id']);
