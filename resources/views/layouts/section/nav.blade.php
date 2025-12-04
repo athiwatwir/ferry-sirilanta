@@ -9,7 +9,7 @@
             </button>
             <!-- Mobile menu toggle: End-->
             <a href="/" class="app-brand-link">
-                <img src="{{ asset('img/logo-v2.png') }}" alt="" style="width: 200px;">
+                <img src="{{ asset('img/logo-v3.png') }}" alt="" style="width: 300px;">
             </a>
         </div>
         <!-- Menu logo wrapper: End -->

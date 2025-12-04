@@ -35,7 +35,7 @@ $sliders = [
 ],
 ];
 @endphp
-<div class="row mt-4">
+<div class="row mt-4" style="display: none;">
     <div class="col">
         <section id="landingReviews" class="bg-body landing-reviews pb-0 mt-4">
             <!-- What people say slider: Start -->
@@ -77,7 +77,7 @@ $sliders = [
         </section>
     </div>
 </div>
-<div class="row">
+<div class="row" style="display: none;">
     <div class="col-12 col-lg-8 mx-auto mt-4">
         <div class="row justify-content-center align-items-center">
             <div class="col-2 col-lg-2 d-flex justify-content-center">
