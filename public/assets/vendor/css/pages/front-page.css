@@ -82,7 +82,7 @@ nav.layout-navbar .navbar.landing-navbar {
     padding-block: 0.614rem;
     transform: unset;
     transition: all 0.2s ease-in-out;
-    border-radius: 0.375rem;
+
 }
 
 nav.layout-navbar .navbar.landing-navbar .navbar-nav .nav-link {
@@ -202,7 +202,7 @@ nav.layout-navbar.navbar-active::before {
 }
 
 nav.layout-navbar.navbar-active .landing-navbar {
-    background-color: #0b79bb;
+    background-color: #01609A;
     box-shadow: var(--bs-box-shadow-sm);
 }
 

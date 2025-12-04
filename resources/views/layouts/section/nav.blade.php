@@ -28,7 +28,7 @@
         <div class="landing-menu-overlay d-lg-none"></div>
         <!-- Menu wrapper: End -->
         <!-- Toolbar: Start -->
-        <ul class="navbar-nav flex-row align-items-center ms-auto">
+        <ul class="navbar-nav flex-row align-items-center ms-auto d-none d-md-block">
 
             <!-- navbar button: Start -->
             <li>

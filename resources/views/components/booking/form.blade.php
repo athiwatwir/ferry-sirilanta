@@ -446,7 +446,7 @@
                     const stCol = document.createElement('div');
                     stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                     stCol.innerHTML = `
-                    <button class="btn btn-primary py-3 p-2 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
+                    <button class="btn btn-primary py-7 p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
                             data-id="${st.id}"
                             data-name="${st.name}">
                        <h5 class="mb-0 py-3 text-white">${st.nickname}</h5></button><small>${st.name}</small>
@@ -472,7 +472,7 @@
                         const stCol = document.createElement('div');
                         stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                         stCol.innerHTML = `
-                    <button class="btn btn-primary py-3 p-2 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
+                    <button class="btn btn-primary py-7 p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
                             data-id="${st.id}"
                             data-name="${st.name}">
                 <h5 class="mb-0 py-3 text-white">${st.nickname}</h5></button><small>${st.name}</small>
