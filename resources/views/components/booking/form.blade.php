@@ -1,11 +1,11 @@
 <link href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" rel="stylesheet" />
 <style>
     .trip-type-container {
-
         background: #e8e8e8;
         border-radius: 50px;
         padding: 6px;
-        display: inline-flex;
+        display: flex;
+        width: 100%;
         gap: 0;
         margin-bottom: 1rem;
         box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -15,7 +15,7 @@
         position: relative;
         background: transparent;
         border: none;
-        padding: 14px 40px;
+        padding: 10px 40px;
         border-radius: 50px;
         font-weight: 700;
         color: #666;
@@ -23,6 +23,7 @@
         text-transform: uppercase;
         font-size: 0.9rem;
         letter-spacing: 0.5px;
+        flex: 1;
     }
 
     @media (max-width: 768px) {
@@ -55,6 +56,11 @@
         padding: 1rem;
         font-size: 1.1rem;
     }
+
+    .multi-island-link {
+        text-align: right;
+    }
+
 </style>
 <form class="" action="{{ route('booking.flight') }}">
     <div class="btn-group mb-3" role="group">
@@ -72,22 +78,21 @@
                     <span>Return</span>
                 </button>
 
-                <button type="button" class="trip-type-btn" data-value="M" data-action="trip_type">
+                <button type="button" class="trip-type-btn" data-value="M" data-action="trip_type" style="display: none;">
                     <span>Multi Island</span>
                 </button>
+            </div>
+            <div class="multi-island-link">
+                <a href="">Multi Island</a>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-12 mb-3">
-            <button type="button" class="btn btn-xl btn-outline-secondary w-100 btn-select-depart-station"
-                data-type="departure" data-bs-toggle="modal" data-bs-target="#onboardHorizontalImageModal">
-                <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
+            <button type="button" class="btn btn-xl btn-outline-secondary w-100 btn-select-depart-station" data-type="departure" data-bs-toggle="modal" data-bs-target="#onboardHorizontalImageModal">
+                <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path
-                        d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73z" />
+                    <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73z" />
                     <path d="M6 13l1.5 -5" />
                     <path d="M6 8h8l2 3" />
                 </svg>
@@ -96,11 +101,8 @@
         </div>
 
         <div class="col-12 mb-3">
-            <button disabled type="button" class="btn btn-xl btn-outline-secondary w-100 btn-select-dest-station"
-                data-type="destination" data-bs-toggle="modal" data-bs-target="#onboardHorizontalImageModal">
-                <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin">
+            <button disabled type="button" class="btn btn-xl btn-outline-secondary w-100 btn-select-dest-station" data-type="destination" data-bs-toggle="modal" data-bs-target="#onboardHorizontalImageModal">
+                <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
                     <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
@@ -112,13 +114,11 @@
 
     <div class="row">
         <div class="col-12 col-lg-6 mb-3">
-            <input type="text" class="form-control form-control-lg" name="depart_date" placeholder="Depart Date"
-                id="depart_date" />
+            <input type="text" class="form-control form-control-lg" name="depart_date" placeholder="Depart Date" id="depart_date" />
 
         </div>
         <div class="col-12 col-lg-6 mb-3">
-            <input type="text" class="form-control form-control-lg d-none" name="return_date"
-                placeholder="Return Date" id="return_date" />
+            <input type="text" class="form-control form-control-lg d-none" name="return_date" placeholder="Return Date" id="return_date" />
         </div>
         <div class="col-12 col-lg-6 mb-3">
             <div class="dropdown-passenger">
@@ -180,8 +180,7 @@
 </form>
 
 <!-- Modal -->
-<div class="modal-onboarding modal fade animate__animated" id="onboardHorizontalImageModal" tabindex="-1"
-    aria-hidden="true" data-bs-backdrop="static">
+<div class="modal-onboarding modal fade animate__animated" id="onboardHorizontalImageModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content text-center">
             <div class="modal-header border-0">
@@ -199,13 +198,9 @@
                                     </div>
                                 </div>
                                 <div class="col text-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path
-                                            d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73z" />
+                                        <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73z" />
                                         <path d="M6 13l1.5 -5" />
                                         <path d="M6 8h8l2 3" />
                                     </svg>
@@ -230,10 +225,7 @@
                         </div>
                         <div class="col-12 text-start mb-2">
                             <button id="bt-back-to-station" type="button" class="btn btn-sm btn-warning">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-chevrons-left">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevrons-left">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path d="M11 7l-5 5l5 5" />
                                     <path d="M17 7l-5 5l5 5" />
@@ -283,146 +275,147 @@
         color: #fff;
         border-color: #f06225;
     }
+
 </style>
 
 @section('script')
 
-    <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
-    <script>
-        document.querySelectorAll('.trip-type-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.trip-type-btn').forEach(b => {
-                    b.classList.remove('active');
-                });
-                this.classList.add('active');
+<script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+<script>
+    document.querySelectorAll('.trip-type-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.trip-type-btn').forEach(b => {
+                b.classList.remove('active');
             });
+            this.classList.add('active');
         });
+    });
 
-        function toggleBg() {
-            const avatars = document.querySelectorAll('.avatar .avatar-initial');
-            const midCol = document.querySelector('.col.text-start');
+    function toggleBg() {
+        const avatars = document.querySelectorAll('.avatar .avatar-initial');
+        const midCol = document.querySelector('.col.text-start');
 
-            if (avatars.length < 2 || !midCol) return;
+        if (avatars.length < 2 || !midCol) return;
 
-            const left = avatars[0];
-            const right = avatars[1];
+        const left = avatars[0];
+        const right = avatars[1];
 
-            // สลับสี
-            left.classList.toggle('bg-primary');
-            left.classList.toggle('bg-secondary');
+        // สลับสี
+        left.classList.toggle('bg-primary');
+        left.classList.toggle('bg-secondary');
 
-            right.classList.toggle('bg-primary');
-            right.classList.toggle('bg-secondary');
+        right.classList.toggle('bg-primary');
+        right.classList.toggle('bg-secondary');
 
-            // ปรับตำแหน่งคอลัมน์กลางตามสี
-            if (left.classList.contains('bg-primary')) {
-                midCol.classList.remove('text-end');
-                midCol.classList.add('text-start');
-            } else {
-                midCol.classList.remove('text-start');
-                midCol.classList.add('text-end');
-            }
+        // ปรับตำแหน่งคอลัมน์กลางตามสี
+        if (left.classList.contains('bg-primary')) {
+            midCol.classList.remove('text-end');
+            midCol.classList.add('text-start');
+        } else {
+            midCol.classList.remove('text-start');
+            midCol.classList.add('text-end');
         }
+    }
 
-        $(document).ready(function() {
-            // Departure date picker
-            var flatpickrDate = document.querySelector("#depart_date");
-            var departurePicker = flatpickr(flatpickrDate, {
-                monthSelectorType: "static",
-                static: true,
-                minDate: "today",
-                onChange: function(selectedDates, dateStr, instance) {
-                    if (selectedDates.length > 0) {
-                        returnPicker.set('minDate', selectedDates[0]);
+    $(document).ready(function() {
+        // Departure date picker
+        var flatpickrDate = document.querySelector("#depart_date");
+        var departurePicker = flatpickr(flatpickrDate, {
+            monthSelectorType: "static"
+            , static: true
+            , minDate: "today"
+            , onChange: function(selectedDates, dateStr, instance) {
+                if (selectedDates.length > 0) {
+                    returnPicker.set('minDate', selectedDates[0]);
 
-                        if (returnPicker.selectedDates.length > 0 &&
-                            returnPicker.selectedDates[0] < selectedDates[0]) {
-                            returnPicker.clear();
-                        }
+                    if (returnPicker.selectedDates.length > 0 &&
+                        returnPicker.selectedDates[0] < selectedDates[0]) {
+                        returnPicker.clear();
                     }
                 }
-            });
-
-            // Return date picker
-            var returnDate = document.querySelector("#return_date");
-            var returnPicker = flatpickr(returnDate, {
-                monthSelectorType: "static",
-                static: true,
-                minDate: "today"
-            });
+            }
         });
 
-        (function() {
-            'use strict';
+        // Return date picker
+        var returnDate = document.querySelector("#return_date");
+        var returnPicker = flatpickr(returnDate, {
+            monthSelectorType: "static"
+            , static: true
+            , minDate: "today"
+        });
+    });
 
-            // ==================== State Management ====================
-            const state = {
-                departStations: {},
-                destStations: {},
-                selectType: null,
-                destStationId: null,
-                departStationId: null,
-                passengerCounts: {
-                    adult: 1,
-                    child: 0,
-                    infant: 0
-                }
-            };
+    (function() {
+        'use strict';
 
-            // ==================== DOM Elements Cache ====================
-            const elements = {
-                modal: document.getElementById('onboardHorizontalImageModal'),
-                modalTitle: document.getElementById('modal-title-type'),
-                boxSection: document.getElementById('box-section'),
-                boxStation: document.getElementById('box-station'),
-                boxStation2: document.getElementById('box-station-2'),
-                backButton: document.getElementById('bt-back-to-station'),
-                tripTypeInput: document.getElementById('trip_type'),
-                returnDatePicker: document.getElementById('return_date_picker'),
-                destStationInput: document.getElementById('dest_station_id'),
-                departStationInput: document.getElementById('depart_station_id'),
-                departStationBtn: document.querySelector('.btn-select-depart-station'),
-                destStationBtn: document.querySelector('.btn-select-dest-station'),
-                passengerToggle: document.getElementById('passenger-toggle'),
-                passengerMenu: document.getElementById('passenger-menu'),
-                passengerSummary: document.getElementById('passenger-summary'),
-                submitButton: document.querySelector('.btn-primary.btn-lg.w-100'),
-                departDatePicker: document.getElementById('depart_date'),
-                returnDatePicker: document.getElementById('return_date')
-            };
-
-            // ==================== API Calls ====================
-            function loadDepartStations() {
-                apiGet("station/departure", {
-                    group: 'Y'
-                }, (res) => {
-                    state.departStations = res.data;
-                    renderSections(state.departStations);
-                }, (err) => console.error("Error loading departure stations:", err));
+        // ==================== State Management ====================
+        const state = {
+            departStations: {}
+            , destStations: {}
+            , selectType: null
+            , destStationId: null
+            , departStationId: null
+            , passengerCounts: {
+                adult: 1
+                , child: 0
+                , infant: 0
             }
+        };
 
-            function loadDestStations(departStationId) {
-                apiGet("station/destination", {
-                    group: 'N',
-                    depart_station: departStationId
-                }, (res) => {
-                    state.destStations = res.data;
-                    // สำหรับ destination ให้แสดง station ทั้งหมดเลย
-                    renderAllStations(state.destStations);
-                }, (err) => console.error("Error loading destination stations:", err));
-            }
+        // ==================== DOM Elements Cache ====================
+        const elements = {
+            modal: document.getElementById('onboardHorizontalImageModal')
+            , modalTitle: document.getElementById('modal-title-type')
+            , boxSection: document.getElementById('box-section')
+            , boxStation: document.getElementById('box-station')
+            , boxStation2: document.getElementById('box-station-2')
+            , backButton: document.getElementById('bt-back-to-station')
+            , tripTypeInput: document.getElementById('trip_type')
+            , returnDatePicker: document.getElementById('return_date_picker')
+            , destStationInput: document.getElementById('dest_station_id')
+            , departStationInput: document.getElementById('depart_station_id')
+            , departStationBtn: document.querySelector('.btn-select-depart-station')
+            , destStationBtn: document.querySelector('.btn-select-dest-station')
+            , passengerToggle: document.getElementById('passenger-toggle')
+            , passengerMenu: document.getElementById('passenger-menu')
+            , passengerSummary: document.getElementById('passenger-summary')
+            , submitButton: document.querySelector('.btn-primary.btn-lg.w-100')
+            , departDatePicker: document.getElementById('depart_date')
+            , returnDatePicker: document.getElementById('return_date')
+        };
 
-            // ==================== Rendering Functions ====================
-            function renderSections(stations) {
-                $('#box-step').show();
-                elements.boxSection.innerHTML = "";
-                elements.boxStation2.innerHTML = "";
+        // ==================== API Calls ====================
+        function loadDepartStations() {
+            apiGet("station/departure", {
+                group: 'Y'
+            }, (res) => {
+                state.departStations = res.data;
+                renderSections(state.departStations);
+            }, (err) => console.error("Error loading departure stations:", err));
+        }
 
-                Object.keys(stations).forEach(key => {
-                    const section = stations[key].sections;
-                    const sectionCol = document.createElement('div');
-                    sectionCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
-                    sectionCol.innerHTML = `
+        function loadDestStations(departStationId) {
+            apiGet("station/destination", {
+                group: 'N'
+                , depart_station: departStationId
+            }, (res) => {
+                state.destStations = res.data;
+                // สำหรับ destination ให้แสดง station ทั้งหมดเลย
+                renderAllStations(state.destStations);
+            }, (err) => console.error("Error loading destination stations:", err));
+        }
+
+        // ==================== Rendering Functions ====================
+        function renderSections(stations) {
+            $('#box-step').show();
+            elements.boxSection.innerHTML = "";
+            elements.boxStation2.innerHTML = "";
+
+            Object.keys(stations).forEach(key => {
+                const section = stations[key].sections;
+                const sectionCol = document.createElement('div');
+                sectionCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
+                sectionCol.innerHTML = `
                 <button class="btn btn-primary p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center" data-section="${key}">
     <div class="section-image w-100">
         <img src="${section.icon}" class="w-100">
@@ -430,287 +423,288 @@
 
 </button> <small> ${section.name}</small>
             `;
-                    elements.boxSection.appendChild(sectionCol);
-                });
+                elements.boxSection.appendChild(sectionCol);
+            });
 
-                attachSectionListeners();
-            }
+            attachSectionListeners();
+        }
 
-            // ฟังก์ชันใหม่: แสดง station ทั้งหมดโดยไม่ต้องเลือก section
-            function renderAllStations(stations) {
-                $('#box-step').hide();
-                elements.boxSection.innerHTML = "";
-                elements.boxStation2.innerHTML = "";
+        // ฟังก์ชันใหม่: แสดง station ทั้งหมดโดยไม่ต้องเลือก section
+        function renderAllStations(stations) {
+            $('#box-step').hide();
+            elements.boxSection.innerHTML = "";
+            elements.boxStation2.innerHTML = "";
 
-                stations.forEach(st => {
+            stations.forEach(st => {
+                const stCol = document.createElement('div');
+                stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
+                stCol.innerHTML = `
+                    <button class="btn btn-primary py-7 p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
+                            data-id="${st.id}"
+                            data-name="${st.name}">
+                       <h5 class="mb-0 py-3 text-white">${st.nickname}</h5></button><small>${st.name}</small>
+                `;
+                elements.boxSection.appendChild(stCol);
+            });
+
+            // แสดง section และซ่อน boxStation
+            elements.boxSection.classList.remove('d-none');
+            elements.boxStation.classList.add('d-none');
+
+            attachStationListeners();
+        }
+
+        function renderStations(stations, sectionKey) {
+            elements.boxStation2.innerHTML = "";
+
+            Object.keys(stations).forEach(key => {
+                if (sectionKey && key !== sectionKey) return;
+
+                const stationList = stations[key].stations;
+                stationList.forEach(st => {
                     const stCol = document.createElement('div');
                     stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                     stCol.innerHTML = `
                     <button class="btn btn-primary py-7 p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
                             data-id="${st.id}"
                             data-name="${st.name}">
-                       <h5 class="mb-0 py-3 text-white">${st.nickname}</h5></button><small>${st.name}</small>
-                `;
-                    elements.boxSection.appendChild(stCol);
-                });
-
-                // แสดง section และซ่อน boxStation
-                elements.boxSection.classList.remove('d-none');
-                elements.boxStation.classList.add('d-none');
-
-                attachStationListeners();
-            }
-
-            function renderStations(stations, sectionKey) {
-                elements.boxStation2.innerHTML = "";
-
-                Object.keys(stations).forEach(key => {
-                    if (sectionKey && key !== sectionKey) return;
-
-                    const stationList = stations[key].stations;
-                    stationList.forEach(st => {
-                        const stCol = document.createElement('div');
-                        stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
-                        stCol.innerHTML = `
-                    <button class="btn btn-primary py-7 p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
-                            data-id="${st.id}"
-                            data-name="${st.name}">
                 <h5 class="mb-0 py-3 text-white">${st.nickname}</h5></button><small>${st.name}</small>
                 `;
-                        elements.boxStation2.appendChild(stCol);
+                    elements.boxStation2.appendChild(stCol);
+                });
+            });
+
+            attachStationListeners();
+        }
+
+        // ==================== Validation Functions ====================
+        function validateForm() {
+            const hasDepart = !!state.departStationId;
+            const hasDest = !!state.destStationId;
+            const hasDepartDate = !!elements.departDatePicker.value;
+
+            const tripType = elements.tripTypeInput.value;
+            const needsReturnDate = tripType === 'R' || tripType === 'M';
+            const hasReturnDate = needsReturnDate ? !!elements.returnDatePicker.value : true;
+
+            const isValid = hasDepart && hasDest && hasDepartDate && hasReturnDate;
+
+            elements.submitButton.disabled = !isValid;
+
+            if (!isValid) {
+                elements.submitButton.classList.add('disabled');
+            } else {
+                elements.submitButton.classList.remove('disabled');
+            }
+        }
+
+        // ==================== Event Listeners ====================
+        function attachSectionListeners() {
+            document.querySelectorAll('.btn-section').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const sectionKey = this.dataset.section;
+
+                    // Highlight selected section
+                    document.querySelectorAll('.btn-section').forEach(b => b.classList.remove(
+                        'active'));
+                    this.classList.add('active');
+
+                    // Render stations for selected section
+                    const currentStations = state.departStations;
+                    renderStations(currentStations, sectionKey);
+
+                    // Toggle visibility
+                    elements.boxStation.classList.remove('d-none');
+                    elements.boxSection.classList.add('d-none');
+                    toggleBg();
+                    elements.modalTitle.textContent = 'Select "Station"';
+                });
+            });
+        }
+
+        function attachStationListeners() {
+            document.querySelectorAll('.btn-station').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const stationId = this.dataset.id;
+                    const stationName = this.dataset.name;
+
+                    // Highlight selected station
+                    document.querySelectorAll('.btn-station').forEach(b => b.classList.remove(
+                        'active'));
+                    this.classList.add('active');
+
+                    handleStationSelection(stationId, stationName);
+                });
+            });
+        }
+
+        function handleStationSelection(stationId, stationName) {
+            if (state.selectType === 'departure') {
+                state.departStationId = stationId;
+                elements.departStationInput.value = stationId;
+                elements.departStationBtn.querySelector('span').textContent = stationName;
+                elements.departStationBtn.classList.add('btn-outline-warning');
+                elements.departStationBtn.classList.remove('btn-outline-secondary');
+
+                // เคลียร์ destination เมื่อเปลี่ยน departure
+                state.destStationId = null;
+                elements.destStationInput.value = '';
+                elements.destStationBtn.querySelector('span').textContent = 'Choose Your Destination';
+                elements.destStationBtn.classList.remove('btn-outline-warning');
+                elements.destStationBtn.classList.add('btn-outline-secondary');
+
+                // Load destinations and enable destination button
+                loadDestStations(stationId);
+                elements.destStationBtn.disabled = false;
+            } else if (state.selectType === 'destination') {
+                state.destStationId = stationId;
+                elements.destStationInput.value = stationId;
+                elements.destStationBtn.querySelector('span').textContent = stationName;
+                elements.destStationBtn.classList.add('btn-outline-warning');
+                elements.destStationBtn.classList.remove('btn-outline-secondary');
+            }
+
+            validateForm();
+
+            // Reset view and close modal
+            resetModalView();
+            $(elements.modal).modal('hide');
+        }
+
+        function resetModalView() {
+            elements.boxStation.classList.add('d-none');
+            elements.boxSection.classList.remove('d-none');
+            toggleBg();
+        }
+
+        // ==================== Trip Type Handler ====================
+        function setupTripTypeHandlers() {
+            document.querySelectorAll("[data-action='trip_type']").forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll("[data-action='trip_type']").forEach(b => {
+                        b.classList.remove('btn-main');
+                        b.classList.add('btn-light');
                     });
+                    this.classList.remove('btn-light');
+                    this.classList.add('btn-main');
+
+                    const value = this.dataset.value;
+                    elements.tripTypeInput.value = value;
+
+                    if (value === 'O') {
+                        elements.returnDatePicker.classList.add('d-none');
+                        elements.returnDatePicker.required = false;
+                    } else {
+                        elements.returnDatePicker.classList.remove('d-none');
+                        elements.returnDatePicker.required = true;
+                    }
+
+                    validateForm();
                 });
+            });
+        }
 
-                attachStationListeners();
-            }
+        // ==================== Passenger Counter ====================
+        function updatePassengerSummary() {
+            const summary = [];
+            const counts = state.passengerCounts;
 
-            // ==================== Validation Functions ====================
-            function validateForm() {
-                const hasDepart = !!state.departStationId;
-                const hasDest = !!state.destStationId;
-                const hasDepartDate = !!elements.departDatePicker.value;
+            if (counts.adult > 0) summary.push(`${counts.adult} Passenger`);
+            if (counts.child > 0) summary.push(`${counts.child} Child`);
+            if (counts.infant > 0) summary.push(`${counts.infant} Infant`);
 
-                const tripType = elements.tripTypeInput.value;
-                const needsReturnDate = tripType === 'R' || tripType === 'M';
-                const hasReturnDate = needsReturnDate ? !!elements.returnDatePicker.value : true;
+            elements.passengerSummary.textContent = summary.join(", ");
+        }
 
-                const isValid = hasDepart && hasDest && hasDepartDate && hasReturnDate;
+        function setupPassengerHandlers() {
+            elements.passengerToggle.addEventListener('click', () => {
+                elements.passengerMenu.classList.toggle('d-block');
+            });
 
-                elements.submitButton.disabled = !isValid;
+            document.querySelectorAll('.btn-plus').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const type = btn.dataset.type;
+                    const totalPassengers = state.passengerCounts.adult +
+                        state.passengerCounts.child +
+                        state.passengerCounts.infant;
 
-                if (!isValid) {
-                    elements.submitButton.classList.add('disabled');
-                } else {
-                    elements.submitButton.classList.remove('disabled');
-                }
-            }
-
-            // ==================== Event Listeners ====================
-            function attachSectionListeners() {
-                document.querySelectorAll('.btn-section').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const sectionKey = this.dataset.section;
-
-                        // Highlight selected section
-                        document.querySelectorAll('.btn-section').forEach(b => b.classList.remove(
-                            'active'));
-                        this.classList.add('active');
-
-                        // Render stations for selected section
-                        const currentStations = state.departStations;
-                        renderStations(currentStations, sectionKey);
-
-                        // Toggle visibility
-                        elements.boxStation.classList.remove('d-none');
-                        elements.boxSection.classList.add('d-none');
-                        toggleBg();
-                        elements.modalTitle.textContent = 'Select "Station"';
-                    });
+                    if (totalPassengers < 9) {
+                        state.passengerCounts[type]++;
+                        document.getElementById(`${type}-count`).textContent = state
+                            .passengerCounts[type];
+                        document.getElementById(type).value = state.passengerCounts[type];
+                        updatePassengerSummary();
+                    } else {
+                        alert("Maximum 9 passengers allowed.");
+                    }
                 });
-            }
+            });
 
-            function attachStationListeners() {
-                document.querySelectorAll('.btn-station').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const stationId = this.dataset.id;
-                        const stationName = this.dataset.name;
+            document.querySelectorAll('.btn-minus').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const type = btn.dataset.type;
+                    const canDecrement = state.passengerCounts[type] > 0 &&
+                        !(type === 'adult' && state.passengerCounts.adult === 1);
 
-                        // Highlight selected station
-                        document.querySelectorAll('.btn-station').forEach(b => b.classList.remove(
-                            'active'));
-                        this.classList.add('active');
-
-                        handleStationSelection(stationId, stationName);
-                    });
+                    if (canDecrement) {
+                        state.passengerCounts[type]--;
+                        document.getElementById(`${type}-count`).textContent = state
+                            .passengerCounts[type];
+                        document.getElementById(type).value = state.passengerCounts[type];
+                        updatePassengerSummary();
+                    }
                 });
-            }
+            });
 
-            function handleStationSelection(stationId, stationName) {
-                if (state.selectType === 'departure') {
-                    state.departStationId = stationId;
-                    elements.departStationInput.value = stationId;
-                    elements.departStationBtn.querySelector('span').textContent = stationName;
-                    elements.departStationBtn.classList.add('btn-outline-warning');
-                    elements.departStationBtn.classList.remove('btn-outline-secondary');
+            document.getElementById('btn-done').addEventListener('click', () => {
+                elements.passengerMenu.classList.remove('d-block');
+            });
 
-                    // เคลียร์ destination เมื่อเปลี่ยน departure
-                    state.destStationId = null;
-                    elements.destStationInput.value = '';
-                    elements.destStationBtn.querySelector('span').textContent = 'Choose Your Destination';
-                    elements.destStationBtn.classList.remove('btn-outline-warning');
-                    elements.destStationBtn.classList.add('btn-outline-secondary');
-
-                    // Load destinations and enable destination button
-                    loadDestStations(stationId);
-                    elements.destStationBtn.disabled = false;
-                } else if (state.selectType === 'destination') {
-                    state.destStationId = stationId;
-                    elements.destStationInput.value = stationId;
-                    elements.destStationBtn.querySelector('span').textContent = stationName;
-                    elements.destStationBtn.classList.add('btn-outline-warning');
-                    elements.destStationBtn.classList.remove('btn-outline-secondary');
-                }
-
-                validateForm();
-
-                // Reset view and close modal
-                resetModalView();
-                $(elements.modal).modal('hide');
-            }
-
-            function resetModalView() {
-                elements.boxStation.classList.add('d-none');
-                elements.boxSection.classList.remove('d-none');
-                toggleBg();
-            }
-
-            // ==================== Trip Type Handler ====================
-            function setupTripTypeHandlers() {
-                document.querySelectorAll("[data-action='trip_type']").forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        document.querySelectorAll("[data-action='trip_type']").forEach(b => {
-                            b.classList.remove('btn-main');
-                            b.classList.add('btn-light');
-                        });
-                        this.classList.remove('btn-light');
-                        this.classList.add('btn-main');
-
-                        const value = this.dataset.value;
-                        elements.tripTypeInput.value = value;
-
-                        if (value === 'O') {
-                            elements.returnDatePicker.classList.add('d-none');
-                            elements.returnDatePicker.required = false;
-                        } else {
-                            elements.returnDatePicker.classList.remove('d-none');
-                            elements.returnDatePicker.required = true;
-                        }
-
-                        validateForm();
-                    });
-                });
-            }
-
-            // ==================== Passenger Counter ====================
-            function updatePassengerSummary() {
-                const summary = [];
-                const counts = state.passengerCounts;
-
-                if (counts.adult > 0) summary.push(`${counts.adult} Passenger`);
-                if (counts.child > 0) summary.push(`${counts.child} Child`);
-                if (counts.infant > 0) summary.push(`${counts.infant} Infant`);
-
-                elements.passengerSummary.textContent = summary.join(", ");
-            }
-
-            function setupPassengerHandlers() {
-                elements.passengerToggle.addEventListener('click', () => {
-                    elements.passengerMenu.classList.toggle('d-block');
-                });
-
-                document.querySelectorAll('.btn-plus').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const type = btn.dataset.type;
-                        const totalPassengers = state.passengerCounts.adult +
-                            state.passengerCounts.child +
-                            state.passengerCounts.infant;
-
-                        if (totalPassengers < 9) {
-                            state.passengerCounts[type]++;
-                            document.getElementById(`${type}-count`).textContent = state
-                                .passengerCounts[type];
-                            document.getElementById(type).value = state.passengerCounts[type];
-                            updatePassengerSummary();
-                        } else {
-                            alert("Maximum 9 passengers allowed.");
-                        }
-                    });
-                });
-
-                document.querySelectorAll('.btn-minus').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const type = btn.dataset.type;
-                        const canDecrement = state.passengerCounts[type] > 0 &&
-                            !(type === 'adult' && state.passengerCounts.adult === 1);
-
-                        if (canDecrement) {
-                            state.passengerCounts[type]--;
-                            document.getElementById(`${type}-count`).textContent = state
-                                .passengerCounts[type];
-                            document.getElementById(type).value = state.passengerCounts[type];
-                            updatePassengerSummary();
-                        }
-                    });
-                });
-
-                document.getElementById('btn-done').addEventListener('click', () => {
+            document.addEventListener('click', (event) => {
+                if (!elements.passengerToggle.contains(event.target) &&
+                    !elements.passengerMenu.contains(event.target)) {
                     elements.passengerMenu.classList.remove('d-block');
-                });
+                }
+            });
+        }
 
-                document.addEventListener('click', (event) => {
-                    if (!elements.passengerToggle.contains(event.target) &&
-                        !elements.passengerMenu.contains(event.target)) {
-                        elements.passengerMenu.classList.remove('d-block');
-                    }
-                });
-            }
+        // ==================== Modal Handlers ====================
+        function setupModalHandlers() {
+            $(elements.modal).on('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                state.selectType = button.dataset.type;
 
-            // ==================== Modal Handlers ====================
-            function setupModalHandlers() {
-                $(elements.modal).on('show.bs.modal', function(event) {
-                    const button = event.relatedTarget;
-                    state.selectType = button.dataset.type;
+                const titleText = state.selectType === 'departure' ?
+                    'Select "Section"' :
+                    'Select "Station"';
+                elements.modalTitle.textContent = titleText;
 
-                    const titleText = state.selectType === 'departure' ?
-                        'Select "Section"' :
-                        'Select "Station"';
-                    elements.modalTitle.textContent = titleText;
+                // โหลดข้อมูลใหม่ทุกครั้งที่เปิด modal
+                if (state.selectType === 'departure') {
+                    loadDepartStations();
+                } else if (state.selectType === 'destination' && state.departStationId) {
+                    loadDestStations(state.departStationId);
+                }
+            });
 
-                    // โหลดข้อมูลใหม่ทุกครั้งที่เปิด modal
-                    if (state.selectType === 'departure') {
-                        loadDepartStations();
-                    } else if (state.selectType === 'destination' && state.departStationId) {
-                        loadDestStations(state.departStationId);
-                    }
-                });
+            elements.backButton.addEventListener('click', resetModalView);
+        }
 
-                elements.backButton.addEventListener('click', resetModalView);
-            }
+        // ==================== Initialization ====================
+        function init() {
+            setupTripTypeHandlers();
+            setupPassengerHandlers();
+            setupModalHandlers();
+            loadDepartStations();
+            updatePassengerSummary();
+            elements.departDatePicker.addEventListener('change', validateForm);
+            elements.returnDatePicker.addEventListener('change', validateForm);
+            validateForm();
+        }
 
-            // ==================== Initialization ====================
-            function init() {
-                setupTripTypeHandlers();
-                setupPassengerHandlers();
-                setupModalHandlers();
-                loadDepartStations();
-                updatePassengerSummary();
-                elements.departDatePicker.addEventListener('change', validateForm);
-                elements.returnDatePicker.addEventListener('change', validateForm);
-                validateForm();
-            }
+        $(document).ready(init);
 
-            $(document).ready(init);
+    })();
 
-        })();
-    </script>
+</script>
 @stop
