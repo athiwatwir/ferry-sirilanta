@@ -21,16 +21,16 @@
         <div class="mt-5">
             <div class="d-flex justify-content-between align-items-center">
                 <p class="mb-0">Fare</p>
-                <h6 class="mb-0"><strong id="label-fare-pice">0.00</strong> THB</h6>
+                <h6 class="mb-0">THB <strong id="label-fare-pice">0.00</strong> </h6>
             </div>
             <div class="d-flex justify-content-between align-items-center mt-2">
                 <p class="mb-0">Passenger</p>
                 <h6 class="mb-0">{{ $adult }}</h6>
             </div>
             <hr>
-            <div class="d-flex justify-content-between align-items-center mt-4 pb-1">
+            <div class="d-flex justify-content-between align-items-center mt-4 pb-1" style="display: none;">
                 <h5 class="mb-0">Total</h5>
-                <h5 class="mb-0"><strong id="label-total-pice">0.00</strong> THB</h5>
+                <h5 class="mb-0">THB <strong id="label-total-pice">0.00</strong> </h5>
             </div>
             <div class="d-grid mt-5 mb-3">
                 <form method="POST" action="{{ route('booking.passenger') }}" id="frm-next">
@@ -44,7 +44,7 @@
                     <input type="hidden" name="outbound_sub_route_id" id="outbound_sub_route_id">
                     <input type="hidden" name="return_sub_route_id" id="return_sub_route_id">
 
-                    <button id="bt-next" type="submit" class="btn btn-lg btn-success waves-effect waves-light w-100" disabled>
+                    <button id="bt-next" type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100" disabled>
                         <span class="me-2">Next</span>
                         <i class="icon-base ti tabler-arrow-right scaleX-n1-rtl"></i>
                     </button>

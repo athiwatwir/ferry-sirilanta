@@ -59,12 +59,20 @@ $departDateTextShort = \Carbon\Carbon::parse($departDate)->format('D d M');
         <div class="col-4 col-lg-2 text-end border-end text-danger">
             <span class="d-inline-flex align-items-center">
                 Now Discounted
-                <img src="{{ asset('img/coupon-icon.png') }}" alt="" class="ms-1" style="width: auto; height: 22px;">
-            </span>
 
-            <h5 class="text-danger mt-1">
-                THB {{ number_format($route['prices']['regular_discount']) }}
-            </h5>
+            </span>
+            <div class="row">
+                <div class="col">
+                    <img src="{{ asset('img/3d-hand-holding-coupon.png') }}" alt="" class="w-100">
+                </div>
+                <div class="col">
+                    <h5 class="text-danger mb-0">
+                        THB {{ number_format($route['prices']['regular_discount']) }}
+                    </h5>
+                </div>
+            </div>
+
+
         </div>
 
         <div class="col-4 col-lg-2 text-end text-primary">

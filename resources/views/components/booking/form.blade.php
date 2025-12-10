@@ -4,26 +4,36 @@
         background: #e8e8e8;
         border-radius: 50px;
         padding: 6px;
-        display: flex;
-        width: 100%;
+        display: inline-flex;
+        /* เปลี่ยนจาก flex เป็น inline-flex */
+        width: auto;
+        /* เปลี่ยนจาก 100% เป็น auto */
         gap: 0;
-        margin-bottom: 1rem;
+        margin-bottom: 0.2rem;
         box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* เพิ่ม wrapper สำหรับจัดให้อยู่กึ่งกลาง */
+    .trip-type-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
     }
 
     .trip-type-btn {
         position: relative;
         background: transparent;
         border: none;
-        padding: 10px 40px;
+        padding: 8px 40px;
         border-radius: 50px;
         font-weight: 700;
         color: #666;
         transition: all 0.3s ease;
-        text-transform: uppercase;
         font-size: 0.9rem;
         letter-spacing: 0.5px;
         flex: 1;
+        white-space: nowrap;
+        /* เพิ่มบรรทัดนี้ */
     }
 
     @media (max-width: 768px) {
@@ -35,12 +45,14 @@
             padding: 10px 16px;
             font-size: 0.75rem;
             letter-spacing: 0.3px;
+            white-space: nowrap;
+            /* เพิ่มบรรทัดนี้ด้วย */
         }
     }
 
     .trip-type-btn.active {
-        background: #F16424;
-        color: #000;
+        background: #f06222;
+        color: #ffffff;
         box-shadow: 0 4px 12px rgb(240, 99, 43, 0.4);
     }
 
@@ -58,10 +70,90 @@
     }
 
     .multi-island-link {
-        text-align: right;
+        text-align: center;
     }
 
 </style>
+
+<style>
+    .selection-underline {
+        padding: 0.5rem 0;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        position: relative;
+        border-bottom: 3px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+    .selection-underline::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #F16424, #ff8c5a);
+        transition: width 0.4s ease;
+    }
+
+    .selection-underline:hover::after {
+        width: 100%;
+    }
+
+    .selection-underline-content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .selection-underline-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .selection-underline:hover .selection-underline-icon {
+        transform: translateX(8px);
+    }
+
+    .selection-underline-text {
+        flex: 1;
+    }
+
+    .selection-underline-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #2c3e50;
+        margin: 0;
+        transition: color 0.3s ease;
+    }
+
+    .selection-underline:hover .selection-underline-title {
+        color: #F16424;
+    }
+
+    .selection-underline-subtitle {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin: 0;
+    }
+
+    .selection-underline-arrow {
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .selection-underline:hover .selection-underline-arrow {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+</style>
+
 <form class="" action="{{ route('booking.flight') }}">
     <div class="btn-group mb-3" role="group">
         <input type="hidden" name="trip_type" id="trip_type" value="O">
@@ -70,60 +162,86 @@
     </div>
     <div class="row mb-3">
         <div class="col">
-            <div class="trip-type-container">
-                <button type="button" class="trip-type-btn active" data-value="O" data-action="trip_type">
-                    <span>One-Way</span>
-                </button>
-                <button type="button" class="trip-type-btn" data-value="R" data-action="trip_type">
-                    <span>Return</span>
-                </button>
-
-                <button type="button" class="trip-type-btn" data-value="M" data-action="trip_type" style="display: none;">
-                    <span>Multi Island</span>
-                </button>
+            <div class="trip-type-wrapper">
+                <div class="trip-type-container">
+                    <button type="button" class="trip-type-btn active" data-value="O" data-action="trip_type">
+                        <span>One-way</span>
+                    </button>
+                    <button type="button" class="trip-type-btn" data-value="R" data-action="trip_type">
+                        <span>Return</span>
+                    </button>
+                    <button type="button" class="trip-type-btn" data-value="M" data-action="trip_type" style="display: none;">
+                        <span>Multi Island</span>
+                    </button>
+                </div>
             </div>
             <div class="multi-island-link">
-                <a href="">Multi Island</a>
+                <a href="/" class="btn btn-secondary" style="border-radius: 50px;">Multi Island</a>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12 mb-3">
-            <button type="button" class="btn btn-xl btn-outline-secondary w-100 btn-select-depart-station" data-type="departure" data-bs-toggle="modal" data-bs-target="#onboardHorizontalImageModal">
-                <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73z" />
-                    <path d="M6 13l1.5 -5" />
-                    <path d="M6 8h8l2 3" />
-                </svg>
-                <span>Choose Your Departure</span>
-            </button>
-        </div>
+    <hr>
 
-        <div class="col-12 mb-3">
-            <button disabled type="button" class="btn btn-xl btn-outline-secondary w-100 btn-select-dest-station" data-type="destination" data-bs-toggle="modal" data-bs-target="#onboardHorizontalImageModal">
-                <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                    <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
-                </svg>
-                <span>Choose Your Destination</span>
-            </button>
+    <div class="row">
+        <div class="col-12">
+            <div class="selection-underline" data-type="departure" data-bs-toggle="modal" data-bs-target="#onboardHorizontalImageModal">
+                <div class="selection-underline-content">
+                    <div class="selection-underline-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F16424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73z" />
+                            <path d="M6 13l1.5 -5" />
+                            <path d="M6 8h8l2 3" />
+                        </svg>
+                    </div>
+                    <div class="selection-underline-text">
+                        <div class="selection-underline-title">Choose Your Departure</div>
+                        <div class="selection-underline-subtitle">Select your starting point</div>
+                    </div>
+                    <div class="selection-underline-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F16424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="selection-underline" data-type="destination" data-bs-toggle="modal" data-bs-target="#onboardHorizontalImageModal">
+                <div class="selection-underline-content">
+                    <div class="selection-underline-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F16424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                            <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
+                        </svg>
+                    </div>
+                    <div class="selection-underline-text">
+                        <div class="selection-underline-title">Choose Your Destination</div>
+                        <div class="selection-underline-subtitle">Where do you want to go?</div>
+                    </div>
+                    <div class="selection-underline-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F16424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+
     <div class="row">
-        <div class="col-12 col-lg-6 mb-3">
+        <div class="col-12 mb-3">
             <input type="text" class="form-control form-control-lg" name="depart_date" placeholder="Depart Date" id="depart_date" />
 
         </div>
-        <div class="col-12 col-lg-6 mb-3">
+        <div class="col-12 mb-3">
             <input type="text" class="form-control form-control-lg d-none" name="return_date" placeholder="Return Date" id="return_date" />
         </div>
-        <div class="col-12 col-lg-6 mb-3">
+        <div class="col-12 col-lg-6 mb-3" style="display: none;">
             <div class="dropdown-passenger">
                 <button class="btn btn-lg btn-light w-100" type="button" id="passenger-toggle">
-                    👤 <span id="passenger-summary">1 Passenger</span>
+                    👤 <span id="_passenger-summary">1 Passenger</span>
                 </button>
 
                 <div class="dropdown-menu-passenger" id="passenger-menu">
@@ -134,9 +252,9 @@
                         </div>
                         <div class="counter">
                             <button class="btn-minus" type="button" data-type="adult">−</button>
-                            <span id="adult-count">1</span>
+                            <span id="_adult-count">1</span>
                             <button class="btn-plus" type="button" data-type="adult">+</button>
-                            <input type="hidden" name="adult" id="adult" value="1">
+                            <input type="hidden" name="_adult" id="_adult" value="1">
                         </div>
                     </div>
 
@@ -172,8 +290,33 @@
                 </div>
             </div>
         </div>
+        <div class="col-12 col-lg-6 mb-3">
+            <div class="passenger-row">
+                <div>
+                    <strong>👤 <span id="passenger-summary">1 Passenger</span></strong>
+
+                </div>
+                <div class="counter">
+                    <button class="btn-minus" type="button" data-type="adult">−</button>
+                    <span id="adult-count">1</span>
+                    <button class="btn-plus" type="button" data-type="adult">+</button>
+                    <input type="hidden" name="adult" id="adult" value="1">
+                </div>
+            </div>
+
+        </div>
         <div class="col-12 col-lg-6">
-            <button class="btn btn-primary btn-lg w-100">Let's Go!</button>
+            <div class="row align-items-center">
+                <div class="col-4">
+                    <img src="{{ asset('img/3d-hand-holding-coupon.png') }}" alt="" class="w-100">
+                </div>
+                <div class="col-8">
+                    <button type="submit" class="btn btn-dark btn-lg w-100">Let's Go!</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <small>For groups more than 12pax, request <a href="https://tigerlineferry.com" target="_blank">TigerlineFerry.com</a></small>
         </div>
     </div>
 
@@ -188,8 +331,8 @@
             </div>
             <div class="modal-body p-0">
                 <div class="onboarding-content mb-0">
-                    <h3 id="modal-title-type">Select "Section"</h3>
-                    <div class="row" id="box-step">
+                    <h3 id="modal-title-type" class="mb-1">Select "Section"</h3>
+                    <div class="row mb-3" id="box-step">
                         <div class="col-12 col-lg-6 mx-auto">
                             <div class="row">
                                 <div class="col-3">
@@ -215,9 +358,9 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
+
                     <div class="row" id="box-section"></div>
-                    <hr>
+
                     <div class="row d-none" id="box-station">
 
                         <div class="col-12">
@@ -234,10 +377,10 @@
                             </button>
                         </div>
                     </div>
-                    <hr>
+
                 </div>
             </div>
-            <div class="modal-footer border-0">
+            <div class="modal-footer border-0" style="display: none;">
                 <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -318,6 +461,14 @@
     }
 
     $(document).ready(function() {
+        // Return date picker - ต้องสร้างก่อนเพื่อให้ departurePicker สามารถอ้างอิงได้
+        var returnDate = document.querySelector("#return_date");
+        var returnPicker = flatpickr(returnDate, {
+            monthSelectorType: "static"
+            , static: true
+            , minDate: "today"
+        });
+
         // Departure date picker
         var flatpickrDate = document.querySelector("#depart_date");
         var departurePicker = flatpickr(flatpickrDate, {
@@ -325,7 +476,7 @@
             , static: true
             , minDate: "today"
             , onChange: function(selectedDates, dateStr, instance) {
-                if (selectedDates.length > 0) {
+                if (selectedDates.length > 0 && returnPicker) {
                     returnPicker.set('minDate', selectedDates[0]);
 
                     if (returnPicker.selectedDates.length > 0 &&
@@ -334,14 +485,6 @@
                     }
                 }
             }
-        });
-
-        // Return date picker
-        var returnDate = document.querySelector("#return_date");
-        var returnPicker = flatpickr(returnDate, {
-            monthSelectorType: "static"
-            , static: true
-            , minDate: "today"
         });
     });
 
@@ -371,7 +514,6 @@
             , boxStation2: document.getElementById('box-station-2')
             , backButton: document.getElementById('bt-back-to-station')
             , tripTypeInput: document.getElementById('trip_type')
-            , returnDatePicker: document.getElementById('return_date_picker')
             , destStationInput: document.getElementById('dest_station_id')
             , departStationInput: document.getElementById('depart_station_id')
             , departStationBtn: document.querySelector('.btn-select-depart-station')
@@ -379,7 +521,7 @@
             , passengerToggle: document.getElementById('passenger-toggle')
             , passengerMenu: document.getElementById('passenger-menu')
             , passengerSummary: document.getElementById('passenger-summary')
-            , submitButton: document.querySelector('.btn-primary.btn-lg.w-100')
+            , submitButton: document.querySelector('.btn-dark.btn-lg.w-100')
             , departDatePicker: document.getElementById('depart_date')
             , returnDatePicker: document.getElementById('return_date')
         };
@@ -429,6 +571,13 @@
             attachSectionListeners();
         }
 
+        // ตัด nickname ให้ไม่เกิน 25 ตัวอักษร (เติม ... ถ้ายาวเกิน)
+        function formatNickname(name) {
+            const maxLen = 25;
+            if (!name) return "";
+            return name.length > maxLen ? name.slice(0, maxLen) + "..." : name;
+        }
+
         // ฟังก์ชันใหม่: แสดง station ทั้งหมดโดยไม่ต้องเลือก section
         function renderAllStations(stations) {
             $('#box-step').hide();
@@ -439,10 +588,10 @@
                 const stCol = document.createElement('div');
                 stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                 stCol.innerHTML = `
-                    <button class="btn btn-primary py-7 p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
+                    <button class="btn btn-primary py-3 py-lg-7 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
                             data-id="${st.id}"
                             data-name="${st.name}">
-                       <h5 class="mb-0 py-3 text-white">${st.nickname}</h5></button><small>${st.name}</small>
+                       <span class="mb-0 py-1 px-1 text-white fs-1 fw-bold station-nickname">${formatNickname(st.nickname)}</span></button><small class="station-name">${st.name}</small>
                 `;
                 elements.boxSection.appendChild(stCol);
             });
@@ -465,10 +614,10 @@
                     const stCol = document.createElement('div');
                     stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                     stCol.innerHTML = `
-                    <button class="btn btn-primary py-7 p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
+                    <button class="btn btn-primary py-3 py-lg-7 p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
                             data-id="${st.id}"
                             data-name="${st.name}">
-                <h5 class="mb-0 py-3 text-white">${st.nickname}</h5></button><small>${st.name}</small>
+                <span class="mb-0 py-1 px-1 text-white fs-1 fw-bold station-nickname">${formatNickname(st.nickname)}</span></button><small class="station-name">${st.name}</small>
                 `;
                     elements.boxStation2.appendChild(stCol);
                 });
@@ -542,31 +691,37 @@
             if (state.selectType === 'departure') {
                 state.departStationId = stationId;
                 elements.departStationInput.value = stationId;
-                elements.departStationBtn.querySelector('span').textContent = stationName;
-                elements.departStationBtn.classList.add('btn-outline-warning');
-                elements.departStationBtn.classList.remove('btn-outline-secondary');
 
-                // เคลียร์ destination เมื่อเปลี่ยน departure
+                // อัพเดทชื่อใน selection-underline
+                const departureElement = document.querySelector('.selection-underline[data-type="departure"]');
+                const departureTitle = departureElement.querySelector('.selection-underline-title');
+                const departureSubtitle = departureElement.querySelector('.selection-underline-subtitle');
+                departureTitle.textContent = stationName;
+                departureSubtitle.textContent = 'Selected departure point';
+
+                // เคลียร์ destination
                 state.destStationId = null;
                 elements.destStationInput.value = '';
-                elements.destStationBtn.querySelector('span').textContent = 'Choose Your Destination';
-                elements.destStationBtn.classList.remove('btn-outline-warning');
-                elements.destStationBtn.classList.add('btn-outline-secondary');
+                const destinationElement = document.querySelector('.selection-underline[data-type="destination"]');
+                const destinationTitle = destinationElement.querySelector('.selection-underline-title');
+                const destinationSubtitle = destinationElement.querySelector('.selection-underline-subtitle');
+                destinationTitle.textContent = 'Choose Your Destination';
+                destinationSubtitle.textContent = 'Where do you want to go?';
 
-                // Load destinations and enable destination button
                 loadDestStations(stationId);
-                elements.destStationBtn.disabled = false;
             } else if (state.selectType === 'destination') {
                 state.destStationId = stationId;
                 elements.destStationInput.value = stationId;
-                elements.destStationBtn.querySelector('span').textContent = stationName;
-                elements.destStationBtn.classList.add('btn-outline-warning');
-                elements.destStationBtn.classList.remove('btn-outline-secondary');
+
+                // อัพเดทชื่อใน selection-underline
+                const destinationElement = document.querySelector('.selection-underline[data-type="destination"]');
+                const destinationTitle = destinationElement.querySelector('.selection-underline-title');
+                const destinationSubtitle = destinationElement.querySelector('.selection-underline-subtitle');
+                destinationTitle.textContent = stationName;
+                destinationSubtitle.textContent = 'Selected destination';
             }
 
             validateForm();
-
-            // Reset view and close modal
             resetModalView();
             $(elements.modal).modal('hide');
         }
@@ -591,12 +746,33 @@
                     const value = this.dataset.value;
                     elements.tripTypeInput.value = value;
 
+                    console.log('Trip type changed to:', value);
+                    console.log('returnDatePicker element:', elements.returnDatePicker);
+
                     if (value === 'O') {
-                        elements.returnDatePicker.classList.add('d-none');
-                        elements.returnDatePicker.required = false;
+                        if (elements.returnDatePicker) {
+                            elements.returnDatePicker.classList.add('d-none');
+                            elements.returnDatePicker.required = false;
+                            // ซ่อน parent div ด้วย
+                            const returnDateParent = elements.returnDatePicker.closest('.col-12');
+                            if (returnDateParent) {
+                                returnDateParent.classList.add('d-none');
+                            }
+                        }
                     } else {
-                        elements.returnDatePicker.classList.remove('d-none');
-                        elements.returnDatePicker.required = true;
+                        if (elements.returnDatePicker) {
+                            // แสดง parent div ก่อน
+                            const returnDateParent = elements.returnDatePicker.closest('.col-12');
+                            if (returnDateParent) {
+                                returnDateParent.classList.remove('d-none');
+                            }
+                            // แล้วค่อยแสดง input
+                            elements.returnDatePicker.classList.remove('d-none');
+                            elements.returnDatePicker.required = true;
+                            console.log('Return date picker should be visible now');
+                        } else {
+                            console.error('returnDatePicker element not found!');
+                        }
                     }
 
                     validateForm();
@@ -628,14 +804,14 @@
                         state.passengerCounts.child +
                         state.passengerCounts.infant;
 
-                    if (totalPassengers < 9) {
+                    if (totalPassengers < 12) {
                         state.passengerCounts[type]++;
                         document.getElementById(`${type}-count`).textContent = state
                             .passengerCounts[type];
                         document.getElementById(type).value = state.passengerCounts[type];
                         updatePassengerSummary();
                     } else {
-                        alert("Maximum 9 passengers allowed.");
+                        alert("Maximum 12 passengers allowed.");
                     }
                 });
             });

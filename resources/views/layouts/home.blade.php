@@ -159,7 +159,7 @@
         <!-- Hero: Start -->
         <section id="hero-animation">
             <div id="landingHero" class="section-py landing-hero position-relative">
-                <div class="bg-slideshow">
+                <div class="bg-slideshow d-none d-sm-block">
                     <div class="bg-slide active" style="background-image: url('{{ asset('img/slide/DJI_0112.webp') }}');">
                     </div>
                     <div class="bg-slide" style="background-image: url('{{ asset('img/slide/DJI_0113.webp') }}');">
@@ -173,12 +173,12 @@
                 <div class="container hero-content">
                     <div class="text-center position-relative">
                         <div class="row">
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-lg-5">
                                 <div class="card">
                                     <div class="card-body text-start">
-                                        <h3 class="" style="line-height: 25px;">
+                                        <h1 class="mb-0">
                                             Plan Ahead & Book <br>Your island escape
-                                        </h3>
+                                        </h1>
                                         <x-booking.form />
                                     </div>
                                 </div>
@@ -207,31 +207,10 @@
     <!-- Useful features: End -->
 
 
-    </div>
-
     <!-- / Sections:End -->
 
     <!-- Footer: Start -->
-    <footer class="landing-footer bg-body footer-text">
-
-        <div class="footer-bottom py-3 py-md-5">
-            <div class="container d-flex flex-wrap justify-content-between flex-md-row flex-column text-center text-md-start">
-                <div class="mb-2 mb-md-0">
-                    <span class="footer-bottom-text">©
-                        <script>
-                            document.write(new Date().getFullYear());
-
-                        </script>
-                    </span>
-                    <a href="https://pixinvent.com" target="_blank" class="fw-medium text-white">,</a>
-
-                </div>
-                <div>
-
-                </div>
-            </div>
-        </div>
-    </footer>
+    @include('layouts.section.footer')
     <!-- Footer: End -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>

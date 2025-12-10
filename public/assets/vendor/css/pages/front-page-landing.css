@@ -22,7 +22,7 @@
 
 /* Hero */
 .landing-hero {
-    --bs-hero-bg: linear-gradient(138.18deg, #fcd8c8 0%, #d8f4fc 94.44%);
+    --bs-hero-bg: linear-gradient(138.18deg, #006194 0%, #006194 94.44%);
 
     background: var(--bs-hero-bg);
 
