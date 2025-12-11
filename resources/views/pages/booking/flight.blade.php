@@ -20,15 +20,15 @@
     <div class="col-12 col-lg-6 offset-lg-6 card">
         <div class="mt-5">
             <div class="d-flex justify-content-between align-items-center">
-                <p class="mb-0">Fare</p>
+                <p class="mb-0">ฺBuy Now Save Now Fares</p>
                 <h6 class="mb-0">THB <strong id="label-fare-pice">0.00</strong> </h6>
             </div>
             <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="mb-0">Passenger</p>
+                <p class="mb-0">Number of Passengers</p>
                 <h6 class="mb-0">{{ $adult }}</h6>
             </div>
             <hr>
-            <div class="d-flex justify-content-between align-items-center mt-4 pb-1" style="display: none;">
+            <div class="justify-content-between align-items-center mt-4 pb-1" style="display: none;">
                 <h5 class="mb-0">Total</h5>
                 <h5 class="mb-0">THB <strong id="label-total-pice">0.00</strong> </h5>
             </div>

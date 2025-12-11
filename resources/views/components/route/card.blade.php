@@ -62,10 +62,10 @@ $departDateTextShort = \Carbon\Carbon::parse($departDate)->format('D d M');
 
             </span>
             <div class="row">
-                <div class="col">
+                <div class="col-7">
                     <img src="{{ asset('img/3d-hand-holding-coupon.png') }}" alt="" class="w-100">
                 </div>
-                <div class="col">
+                <div class="col-5">
                     <h5 class="text-danger mb-0">
                         THB {{ number_format($route['prices']['regular_discount']) }}
                     </h5>

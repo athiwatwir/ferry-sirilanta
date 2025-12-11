@@ -401,7 +401,21 @@ main {
 
 .station-nickname {}
 
+.flatpickr-hidden {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
 
+.flatpickr-align-right {
+    left: auto !important;
+    right: 8px !important;
+}
 
 @media (max-width: 576px) {
 

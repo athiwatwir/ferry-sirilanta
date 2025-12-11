@@ -12,14 +12,14 @@
                 <path d="M6 13l1.5 -5" />
                 <path d="M6 8h8l2 3" /></svg>{{ $departStation['name'] }} to {{ $destStation['name'] }}</h3>
     </div>
-    <div class="col-11 col-lg-10">
+    <div class="col-9 col-lg-10">
         <h3 class="d-flex align-items-center gap-2 mb-0">
             <span>Depart {{ $departDateText }}</span>
 
         </h3>
     </div>
-    <div class="col-1 col-lg-2 text-end">
-        <a href="javascript:void(0);" data-action="depart-date" data-target="" class="d-inline-flex align-items-center text-secondary">
+    <div class="col-3 col-lg-2 text-end">
+        <a href="javascript:void(0);" id="depart-date-trigger" class="d-inline-flex align-items-center text-secondary">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
@@ -28,6 +28,7 @@
                 <path d="M4 11l16 0" />
                 <path d="M8 15h2v2h-2z" /></svg> <small>Change</small>
         </a>
+        <input type="text" id="depart-date-input" class="flatpickr-hidden" aria-hidden="true" />
     </div>
 
 </div>
@@ -45,20 +46,46 @@
 <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
 <script>
     $(document).ready(function() {
-        // Departure date picker
-        var flatpickrDate = document.querySelector('[data-action="depart-date"]');
-        var departurePicker = flatpickr(flatpickrDate, {
+        // Departure date picker (hidden input to avoid showing textbox on mobile)
+        var flatpickrInput = document.querySelector('#depart-date-input');
+        var trigger = document.querySelector('#depart-date-trigger');
+
+        // ถ้า element ไม่เจอให้หยุดเพื่อกัน error บนบางหน้า
+        if (!flatpickrInput || !trigger) {
+            return;
+        }
+
+        var departurePicker = flatpickr(flatpickrInput, {
             monthSelectorType: "static"
-            , static: true
             , minDate: "today"
-            , onChange: function(selectedDates, dateStr, instance) {
+            , clickOpens: false
+            , disableMobile: true
+            , positionElement: trigger
+            , appendTo: document.body
+            , onOpen: function(selectedDates, dateStr, instance) {
+                if (instance && instance.calendarContainer) {
+                    instance.calendarContainer.classList.add('flatpickr-align-right');
+                }
+            }
+            , onChange: function(selectedDates, dateStr) {
                 if (selectedDates.length > 0) {
-                    console.log(selectedDates);
-                    console.log(dateStr);
                     $('#frm_depart_date').val(dateStr);
                     $('#frm').submit();
                 }
             }
+        });
+
+        function openPicker(e) {
+            if (e) e.preventDefault();
+            departurePicker.open();
+        }
+
+        trigger.addEventListener('click', openPicker);
+        trigger.addEventListener('touchstart', openPicker, {
+            passive: false
+        });
+        trigger.addEventListener('touchend', openPicker, {
+            passive: false
         });
 
     });

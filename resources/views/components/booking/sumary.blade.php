@@ -27,7 +27,7 @@
                 <h6 class="mb-0">{{ $sessionData['adult'] }}</h6>
             </div>
             <hr>
-            <div class="d-flex justify-content-between align-items-center mt-4 pb-1">
+            <div class="justify-content-between align-items-center mt-4 pb-1" style="display: none;">
                 <h5 class="mb-0">Total</h5>
                 <h5 class="mb-0"><strong id="label-total-pice">{{ number_format($subRoute['prices']['regular']*$sessionData['adult'],2) }}</strong> THB</h5>
             </div>
