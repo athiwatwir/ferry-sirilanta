@@ -9,7 +9,7 @@
         width: auto;
         /* เปลี่ยนจาก 100% เป็น auto */
         gap: 0;
-        margin-bottom: 0.2rem;
+
         box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
@@ -162,21 +162,18 @@
     </div>
     <div class="row mb-3">
         <div class="col">
-            <div class="trip-type-wrapper">
-                <div class="trip-type-container">
+            <div class="d-flex align-items-center gap-2 flex-wrap trip-type-wrapper">
+                <div class="trip-type-container d-flex align-items-center gap-2">
                     <button type="button" class="trip-type-btn active" data-value="O" data-action="trip_type">
                         <span>One-way</span>
                     </button>
                     <button type="button" class="trip-type-btn" data-value="R" data-action="trip_type">
                         <span>Return</span>
                     </button>
-                    <button type="button" class="trip-type-btn" data-value="M" data-action="trip_type" style="display: none;">
-                        <span>Multi Island</span>
-                    </button>
                 </div>
-            </div>
-            <div class="multi-island-link">
-                <a href="/" class="btn btn-secondary" style="border-radius: 50px;">Multi Island</a>
+                <div class="multi-island-link">
+                    <a href="/" class="btn btn-secondary btn-ios">Multi Island</a>
+                </div>
             </div>
         </div>
     </div>
@@ -388,6 +385,8 @@
 </div>
 
 <style>
+    .btn-section {}
+
     .btn-section.active {
         color: #fff;
         background-color: #f06225;
@@ -558,7 +557,7 @@
                 const sectionCol = document.createElement('div');
                 sectionCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                 sectionCol.innerHTML = `
-                <button class="btn btn-primary p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center" data-section="${key}">
+                <button class="btn btn-primary p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-ios" data-section="${key}">
     <div class="section-image w-100">
         <img src="${section.icon}" class="w-100">
     </div>
@@ -588,7 +587,7 @@
                 const stCol = document.createElement('div');
                 stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                 stCol.innerHTML = `
-                    <button class="btn btn-primary py-3 py-lg-7 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
+                    <button class="btn btn-primary py-4 py-lg-7 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station btn-ios"
                             data-id="${st.id}"
                             data-name="${st.name}">
                        <span class="mb-0 py-1 px-1 text-white fs-1 fw-bold station-nickname">${formatNickname(st.nickname)}</span></button><small class="station-name">${st.name}</small>
@@ -614,7 +613,7 @@
                     const stCol = document.createElement('div');
                     stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                     stCol.innerHTML = `
-                    <button class="btn btn-primary py-3 py-lg-7 p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station"
+                    <button class="btn btn-primary py-4 py-lg-7 p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station btn-ios"
                             data-id="${st.id}"
                             data-name="${st.name}">
                 <span class="mb-0 py-1 px-1 text-white fs-1 fw-bold station-nickname">${formatNickname(st.nickname)}</span></button><small class="station-name">${st.name}</small>

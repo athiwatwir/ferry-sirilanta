@@ -417,7 +417,22 @@ main {
     right: 8px !important;
 }
 
+/* Rounded button style (iOS-like) */
+.btn-ios {
+    border-radius: 23px !important;
+
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
 @media (max-width: 576px) {
+
+    .btn-ios {
+        border-radius: 14px !important;
+
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
 
     /* Override Bootstrap fs-* on mobile */
     .btn-station .station-nickname,

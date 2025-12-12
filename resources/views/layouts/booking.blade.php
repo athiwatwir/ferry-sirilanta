@@ -63,6 +63,20 @@
             border-radius: 0 !important;
         }
 
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .landing-footer {
+            margin-top: auto;
+        }
+
     </style>
 
 </head>
