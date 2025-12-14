@@ -204,7 +204,7 @@ nav.layout-navbar.navbar-active::before {
 }
 
 nav.layout-navbar.navbar-active .landing-navbar {
-    background-color: #429dd1;
+    background-color: #ffffff;
     box-shadow: var(--bs-box-shadow-sm);
 }
 

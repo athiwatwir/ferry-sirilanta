@@ -15,6 +15,13 @@ h5 {
     font-weight: 700 !important;
 }
 
+a,
+span {
+    font-family: 'Dongle', 'Kanit', sans-serif;
+    font-size: 1.4rem !important;
+    line-height: 0.9 !important;
+}
+
 h1 {
     font-size: 3.5rem !important;
     line-height: 0.8 !important;

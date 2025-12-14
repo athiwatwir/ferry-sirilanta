@@ -1,6 +1,6 @@
 <style>
     .navbar-toggler {
-        background: #d5f4ff;
+
         border-radius: 12px;
         padding: 0.5rem 0.75rem !important;
         transition: all 0.3s ease;
@@ -23,6 +23,24 @@
 
     .navbar-toggler:hover i {
         transform: rotate(90deg);
+    }
+
+    /* Navbar active state */
+    .layout-navbar.navbar-active {
+        background-color: #ffffff !important;
+        transition: background-color 0.3s ease;
+    }
+
+    .layout-navbar.navbar-active .navbar-brand.app-brand .logo-default {
+        display: none;
+    }
+
+    .layout-navbar.navbar-active .navbar-brand.app-brand .logo-active {
+        display: block;
+    }
+
+    .navbar-brand.app-brand .logo-active {
+        display: none;
     }
 
 </style>
@@ -51,7 +69,8 @@
         <!-- Menu logo wrapper: Start -->
         <div class="navbar-brand app-brand demo d-flex py-0 me-4 me-xl-8 ms-0">
             <a href="/" class="app-brand-link">
-                <img src="{{ asset('img/logo-v3.png') }}" alt="" style="width: 250px;">
+                <img src="{{ asset('img/logo-v3.png') }}" alt="" class="logo-default" style="width: 250px;">
+                <img src="{{ asset('img/logo-v3-b.png') }}" alt="" class="logo-active" style="width: 250px;">
             </a>
         </div>
         <!-- Menu logo wrapper: End -->
@@ -69,7 +88,19 @@
             </button>
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="/" aria-current="page" href="landing-page.html#landingHero">Home</a>
+                    <a class="nav-link fw-medium" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-medium" aria-current="page" href="/">Station</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-medium" aria-current="page" href="/">Route Map</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-medium" aria-current="page" href="/">Time Table</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-medium" aria-current="page" href="https://www.tigerlineferry.com/" target="_blank">Tigerline Ferry</a>
                 </li>
 
             </ul>

@@ -172,7 +172,7 @@
                     </button>
                 </div>
                 <div class="multi-island-link">
-                    <a href="/" class="btn btn-secondary btn-ios">Multi Island</a>
+                    <a href="/" class="">Multi Island</a>
                 </div>
             </div>
         </div>
@@ -184,12 +184,10 @@
             <div class="selection-underline" data-type="departure" data-bs-toggle="modal" data-bs-target="#onboardHorizontalImageModal">
                 <div class="selection-underline-content">
                     <div class="selection-underline-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F16424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#F16424" class="icon icon-tabler icons-tabler-filled icon-tabler-location">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73z" />
-                            <path d="M6 13l1.5 -5" />
-                            <path d="M6 8h8l2 3" />
-                        </svg>
+                            <path d="M20.891 2.006l.106 -.006l.13 .008l.09 .016l.123 .035l.107 .046l.1 .057l.09 .067l.082 .075l.052 .059l.082 .116l.052 .096c.047 .1 .077 .206 .09 .316l.005 .106c0 .075 -.008 .149 -.024 .22l-.035 .123l-6.532 18.077a1.55 1.55 0 0 1 -1.409 .903a1.547 1.547 0 0 1 -1.329 -.747l-.065 -.127l-3.352 -6.702l-6.67 -3.336a1.55 1.55 0 0 1 -.898 -1.259l-.006 -.149c0 -.56 .301 -1.072 .841 -1.37l.14 -.07l18.017 -6.506l.106 -.03l.108 -.018z" /></svg>
                     </div>
                     <div class="selection-underline-text">
                         <div class="selection-underline-title">Choose Your Departure</div>
@@ -238,7 +236,7 @@
         <div class="col-12 col-lg-6 mb-3" style="display: none;">
             <div class="dropdown-passenger">
                 <button class="btn btn-lg btn-light w-100" type="button" id="passenger-toggle">
-                    👤 <span id="_passenger-summary">1 Passenger</span>
+                    👤 <span id="_passenger-summary">2 Passenger(s)</span>
                 </button>
 
                 <div class="dropdown-menu-passenger" id="passenger-menu">
@@ -249,9 +247,9 @@
                         </div>
                         <div class="counter">
                             <button class="btn-minus" type="button" data-type="adult">−</button>
-                            <span id="_adult-count">1</span>
+                            <span id="_adult-count">2</span>
                             <button class="btn-plus" type="button" data-type="adult">+</button>
-                            <input type="hidden" name="_adult" id="_adult" value="1">
+                            <input type="hidden" name="_adult" id="_adult" value="2">
                         </div>
                     </div>
 
@@ -290,14 +288,14 @@
         <div class="col-12 col-lg-6 mb-3">
             <div class="passenger-row">
                 <div>
-                    <strong>👤 <span id="passenger-summary">1 Passenger</span></strong>
+                    <strong>👤 <span id="passenger-summary">2 Passenger(s)</span></strong>
 
                 </div>
                 <div class="counter">
                     <button class="btn-minus" type="button" data-type="adult">−</button>
-                    <span id="adult-count">1</span>
+                    <span id="adult-count">2</span>
                     <button class="btn-plus" type="button" data-type="adult">+</button>
-                    <input type="hidden" name="adult" id="adult" value="1">
+                    <input type="hidden" name="adult" id="adult" value="2">
                 </div>
             </div>
 
@@ -498,7 +496,7 @@
             , destStationId: null
             , departStationId: null
             , passengerCounts: {
-                adult: 1
+                adult: 2
                 , child: 0
                 , infant: 0
             }
@@ -561,8 +559,8 @@
     <div class="section-image w-100">
         <img src="${section.icon}" class="w-100">
     </div>
-
-</button> <small> ${section.name}</small>
+${section.badge_text ? `<span class="position-absolute top-0 start-100 translate-middle badge badge-center bg-warning text-white">${section.badge_text}</span>` : ''}
+</button> ${section.name ? `<small>${section.name}</small>` : ''}
             `;
                 elements.boxSection.appendChild(sectionCol);
             });
@@ -587,7 +585,7 @@
                 const stCol = document.createElement('div');
                 stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                 stCol.innerHTML = `
-                    <button class="btn btn-primary py-4 py-lg-7 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station btn-ios"
+                    <button class="btn btn-primary py-4 py-lg-8 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station btn-ios"
                             data-id="${st.id}"
                             data-name="${st.name}">
                        <span class="mb-0 py-1 px-1 text-white fs-1 fw-bold station-nickname">${formatNickname(st.nickname)}</span></button><small class="station-name">${st.name}</small>
@@ -613,7 +611,7 @@
                     const stCol = document.createElement('div');
                     stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                     stCol.innerHTML = `
-                    <button class="btn btn-primary py-4 py-lg-7 p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station btn-ios"
+                    <button class="btn btn-primary py-4 py-lg-8 p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station btn-ios"
                             data-id="${st.id}"
                             data-name="${st.name}">
                 <span class="mb-0 py-1 px-1 text-white fs-1 fw-bold station-nickname">${formatNickname(st.nickname)}</span></button><small class="station-name">${st.name}</small>
@@ -783,8 +781,9 @@
         function updatePassengerSummary() {
             const summary = [];
             const counts = state.passengerCounts;
+            console.log(counts);
 
-            if (counts.adult > 0) summary.push(`${counts.adult} Passenger`);
+            if (counts.adult > 0) summary.push(`${counts.adult} Passenger(s)`);
             if (counts.child > 0) summary.push(`${counts.child} Child`);
             if (counts.infant > 0) summary.push(`${counts.infant} Infant`);
 

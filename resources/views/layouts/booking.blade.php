@@ -58,11 +58,6 @@
     </script>
 
     <style>
-        .landing-navbar {
-            background-color: #0b79bc !important;
-            border-radius: 0 !important;
-        }
-
         body {
             min-height: 100vh;
             display: flex;

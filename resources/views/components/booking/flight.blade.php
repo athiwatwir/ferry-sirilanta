@@ -14,7 +14,7 @@
     </div>
     <div class="col-9 col-lg-10">
         <h3 class="d-flex align-items-center gap-2 mb-0">
-            <span>Depart {{ $departDateText }}</span>
+            <span>Departure Date: {{ $departDateText }}</span>
 
         </h3>
     </div>

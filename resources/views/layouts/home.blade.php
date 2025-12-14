@@ -30,7 +30,7 @@
     <link href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/vendor/css/core.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/demo.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/vendor/css/pages/front-page.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/vendor/css/pages/front-page.css?v=1.0.0') }}" rel="stylesheet" />
 
     <!-- Vendors CSS -->
 
