@@ -20,7 +20,7 @@
 
 
     <link href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/style.css?v=1.0') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/loading.css') }}">
 
     <!-- Core CSS -->
