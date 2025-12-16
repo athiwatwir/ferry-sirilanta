@@ -1,8 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@300;400;700&display=swap');
+
+@font-face {
+    font-family: 'Canva Sans';
+    src: url('../fonts/canva-sans/CanvaSans-Regular.woff2') format('woff2'),
+        url('../fonts/canva-sans/CanvaSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
 
 html,
 body {
-    font-family: 'Dongle', 'Kanit', sans-serif;
+    font-family: 'Canva Sans', 'Kanit', sans-serif;
     font-weight: 400;
 }
 
@@ -11,92 +21,89 @@ h2,
 h3,
 h4,
 h5 {
-    font-family: 'Dongle', sans-serif !important;
+    font-family: 'Canva Sans', sans-serif !important;
     font-weight: 700 !important;
 }
 
 a,
 span {
-    font-family: 'Dongle', 'Kanit', sans-serif;
-    font-size: 1.4rem !important;
-    line-height: 0.9 !important;
+    font-family: 'Canva Sans', 'Kanit', sans-serif;
+
 }
 
 h1 {
-    font-size: 3.5rem !important;
-    line-height: 0.8 !important;
+    font-size: 2.45rem !important;
+    line-height: 1 !important;
 }
 
 h2 {
-    font-size: 2.8rem !important;
+    font-size: 1.96rem !important;
     /* ~80% ของ h1 */
-    line-height: 1.0 !important;
+    line-height: 0.8 !important;
     /* เพิ่มจาก h1 (0.8) ตามสัดส่วน */
 }
 
 h3 {
-    font-size: 2.1rem !important;
+    font-size: 1.47rem !important;
     /* ~60% ของ h1 */
-    line-height: 1.1 !important;
+    line-height: 0.7 !important;
     /* เพิ่มจาก h1 (0.8) ตามสัดส่วน */
 }
 
 h4 {
-    font-size: 1.75rem !important;
+    font-size: 1.225rem !important;
     /* ~50% ของ h1 */
-    line-height: 1.2 !important;
+    line-height: 0.6 !important;
     /* เพิ่มจาก h1 (0.8) ตามสัดส่วน */
 }
 
 h5 {
-    font-size: 1.4rem !important;
+    font-size: 0.98rem !important;
     /* ~40% ของ h1 */
-    line-height: 1.3 !important;
-    /* เพิ่มจาก h1 (0.8) ตามสัดส่วน */
+
 }
 
 @media (max-width: 576px) {
     h1 {
-        font-size: 3rem !important;
-        line-height: 0.8 !important;
+        font-size: 2.1rem !important;
+        line-height: 0.9 !important;
     }
 
     h2 {
-        font-size: 2.4rem !important;
+        font-size: 1.68rem !important;
         /* ~80% ของ h1 mobile */
-        line-height: 1.0 !important;
+        line-height: 0.7 !important;
         /* เพิ่มจาก h1 (0.8) ตามสัดส่วน */
     }
 
     h3 {
-        font-size: 1.8rem !important;
+        font-size: 1.26rem !important;
         /* ~60% ของ h1 mobile */
-        line-height: 1.1 !important;
+        line-height: 0.9 !important;
         /* เพิ่มจาก h1 (0.8) ตามสัดส่วน */
     }
 
     h4 {
-        font-size: 1.5rem !important;
+        font-size: 1.05rem !important;
         /* ~50% ของ h1 mobile */
-        line-height: 1.2 !important;
+        line-height: 0.75 !important;
         /* เพิ่มจาก h1 (0.8) ตามสัดส่วน */
     }
 
     h5 {
-        font-size: 1.2rem !important;
+        font-size: 0.84rem !important;
         /* ~40% ของ h1 mobile */
-        line-height: 1.3 !important;
-        /* เพิ่มจาก h1 (0.8) ตามสัดส่วน */
+
     }
 
     body {
-        font-size: 0.8rem !important;
-        line-height: 1.6 !important;
+        font-size: 0.56rem !important;
+        line-height: 1.12 !important;
     }
 
     small {
-        font-size: 11px !important;
-        line-height: 1.4 !important;
+        font-size: 7.7px !important;
+        line-height: 0.98 !important;
     }
 }
 
@@ -110,7 +117,7 @@ h5 {
 
 .btn-main {
     background-color: #f16225 !important;
-    font-family: 'Montserrat', 'Kanit', sans-serif;
+    font-family: 'Canva Sans',  sans-serif;
     font-weight: 600;
     color: #ffffff !important;
 }
@@ -121,19 +128,7 @@ h5 {
     transition: background 0.3s ease;
 }
 
-.font-proxima {
-    font-family: 'Montserrat', 'Kanit', sans-serif;
-}
 
-.font-proxima-400 {
-    font-family: 'proximanovasoftw03-regularRg', 'Kanit', sans-serif;
-    font-weight: 400;
-}
-
-.font-proxima-600 {
-    font-family: 'proximanovasoftw03-regularRg', 'Kanit', sans-serif;
-    font-weight: 600;
-}
 
 .navbar {
     position: fixed;
