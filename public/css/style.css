@@ -65,7 +65,7 @@ h5 {
 
 @media (max-width: 576px) {
     h1 {
-        font-size: 2.1rem !important;
+        font-size: 2rem !important;
         line-height: 0.9 !important;
     }
 
@@ -451,5 +451,20 @@ main {
         overflow: hidden;
         line-height: 1.15;
         word-break: break-word;
+    }
+
+    /* Hide layout-navbar on mobile */
+    .layout-navbar {
+        display: none !important;
+    }
+
+    /* Remove border-radius on mobile for specific card */
+    .card-no-radius-mobile {
+        border-radius: 0px !important;
+    }
+
+    /* Rotate logo on mobile */
+    .logo-rotate-mobile {
+        transform: rotate(7deg);
     }
 }

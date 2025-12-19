@@ -9,7 +9,7 @@
     }
 
     .footer-links a {
-        color: #6c757d;
+        color: #ffffff;
         text-decoration: none;
         font-size: 0.95rem;
         font-weight: 500;
@@ -43,12 +43,15 @@
             flex-direction: column;
             gap: 0.2rem;
             align-items: flex-start;
+            justify-content: flex-start;
+            text-align: left;
         }
 
         .footer-links a {
             width: 100%;
             padding: 0.1rem 0;
-            border-bottom: 1px solid #a0a0a0;
+            border-bottom: 1px solid #ffffff;
+            text-align: left;
         }
 
         .footer-links a:last-child {
@@ -57,6 +60,10 @@
 
         .footer-links a::after {
             display: none;
+        }
+
+        .container.text-center {
+            text-align: left !important;
         }
     }
 
@@ -68,7 +75,7 @@
 
 </style>
 
-<footer class="landing-footer bg-body footer-text">
+<footer class="footer-text text-white" style="background-color: #004ff0;">
     <div class="footer-bottom py-3 py-md-5">
 
         <div class="container d-flex flex-wrap justify-content-between flex-md-row flex-column text-center text-md-start">

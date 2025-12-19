@@ -16,7 +16,7 @@
     /* เพิ่ม wrapper สำหรับจัดให้อยู่กึ่งกลาง */
     .trip-type-wrapper {
         display: flex;
-        justify-content: center;
+
         margin-bottom: 1rem;
     }
 
@@ -71,6 +71,7 @@
 
     .multi-island-link {
         text-align: center;
+        font-size: 1rem;
     }
 
 </style>
@@ -152,6 +153,81 @@
         transform: translateX(0);
     }
 
+    /* Date input with underline style */
+    #depart_date,
+    #return_date {
+        border: none;
+        border-bottom: 3px solid #e9ecef;
+        border-radius: 0;
+        padding: 0.5rem 0;
+        background: transparent;
+        transition: all 0.3s ease;
+    }
+
+    #depart_date:focus,
+    #return_date:focus {
+        border-bottom: 3px solid #F16424;
+        box-shadow: none;
+        outline: none;
+    }
+
+    #depart_date:hover,
+    #return_date:hover {
+        border-bottom-color: #F16424;
+    }
+
+    /* Passenger dropdown style */
+    #passenger-selector {
+        position: relative;
+        z-index: 1;
+    }
+
+    #passenger-dropdown {
+        position: fixed;
+        background: #fff;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 9999;
+        min-width: 200px;
+    }
+
+    /* Ensure card doesn't clip dropdown */
+    .card,
+    .card-body {
+        overflow: visible !important;
+    }
+
+    .passenger-option {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .passenger-option:last-child {
+        border-bottom: none;
+    }
+
+    .passenger-option:hover {
+        background-color: #fff3e0;
+    }
+
+    .passenger-option.active {
+        background-color: #ffec99;
+        font-weight: 600;
+    }
+
+    #passenger-selector {
+        position: relative;
+    }
+
+    /* Let's Go button hover effect */
+    .btn-dark.btn-lg.w-100:hover {
+        color: #F16424 !important;
+    }
+
 </style>
 
 <form class="" action="{{ route('booking.flight') }}">
@@ -226,81 +302,54 @@
 
 
     <div class="row">
-        <div class="col-12 mb-3">
+        <div class="col-12 col-md-6 mb-3 d-none" id="depart_date_container">
             <input type="text" class="form-control form-control-lg" name="depart_date" placeholder="Depart Date" id="depart_date" />
 
         </div>
+        <div class="col-12 col-md-6 mb-3 d-none" id="return_date_container">
+            <input type="text" class="form-control form-control-lg" name="return_date" placeholder="Return Date" id="return_date" />
+        </div>
+    </div>
+    <div class="row">
         <div class="col-12 mb-3">
-            <input type="text" class="form-control form-control-lg d-none" name="return_date" placeholder="Return Date" id="return_date" />
-        </div>
-        <div class="col-12 col-lg-6 mb-3" style="display: none;">
-            <div class="dropdown-passenger">
-                <button class="btn btn-lg btn-light w-100" type="button" id="passenger-toggle">
-                    👤 <span id="_passenger-summary">2 Passenger(s)</span>
-                </button>
-
-                <div class="dropdown-menu-passenger" id="passenger-menu">
-                    <div class="passenger-row">
-                        <div>
-                            <strong>Passenger</strong><br>
-
-                        </div>
-                        <div class="counter">
-                            <button class="btn-minus" type="button" data-type="adult">−</button>
-                            <span id="_adult-count">2</span>
-                            <button class="btn-plus" type="button" data-type="adult">+</button>
-                            <input type="hidden" name="_adult" id="_adult" value="2">
-                        </div>
+            <div class="selection-underline" id="passenger-selector">
+                <div class="selection-underline-content">
+                    <div class="selection-underline-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F16424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                            <path d="M16 11h6m-3 -3v6" />
+                        </svg>
                     </div>
-
-                    <div class="passenger-row" style="display: none;">
-                        <div>
-                            <strong>Child</strong><br>
-                            <small>(2 to 11 years)</small>
-                        </div>
-                        <div class="counter">
-                            <button class="btn-minus" type="button" data-type="child">−</button>
-                            <span id="child-count">0</span>
-                            <button class="btn-plus" type="button" data-type="child">+</button>
-                            <input type="hidden" name="child" id="child" value="0">
-                        </div>
+                    <div class="selection-underline-text">
+                        <div class="selection-underline-title">Passenger</div>
+                        <div class="selection-underline-subtitle" id="passenger-summary">2 Passenger(s)</div>
                     </div>
-
-                    <div class="passenger-row" style="display: none;">
-                        <div>
-                            <strong>Infant</strong><br>
-                            <small>(1 to 23 months)</small>
-                        </div>
-                        <div class="counter">
-                            <button class="btn-minus" type="button" data-type="infant">−</button>
-                            <span id="infant-count">0</span>
-                            <button class="btn-plus" type="button" data-type="infant">+</button>
-                            <input type="hidden" name="infant" id="infant" value="0">
-                        </div>
-                    </div>
-
-                    <div style="text-align:right; margin-top:10px;">
-                        <button class="btn-done" type="button" id="btn-done">Done</button>
+                    <div class="selection-underline-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F16424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-12 col-lg-6 mb-3">
-            <div class="passenger-row">
-                <div>
-                    <strong>👤 <span id="passenger-summary">2 Passenger(s)</span></strong>
-
-                </div>
-                <div class="counter">
-                    <button class="btn-minus" type="button" data-type="adult">−</button>
-                    <span id="adult-count">2</span>
-                    <button class="btn-plus" type="button" data-type="adult">+</button>
-                    <input type="hidden" name="adult" id="adult" value="2">
-                </div>
+            <div class="dropdown-menu-passenger" id="passenger-dropdown" style="display: none;">
+                <div class="passenger-option" data-value="1">1</div>
+                <div class="passenger-option" data-value="2">2</div>
+                <div class="passenger-option" data-value="3">3</div>
+                <div class="passenger-option" data-value="4">4</div>
+                <div class="passenger-option" data-value="5">5</div>
+                <div class="passenger-option" data-value="6">6</div>
+                <div class="passenger-option" data-value="7">7</div>
+                <div class="passenger-option" data-value="8">8</div>
+                <div class="passenger-option" data-value="9">9</div>
+                <div class="passenger-option" data-value="10">10</div>
+                <div class="passenger-option" data-value="11">11</div>
+                <div class="passenger-option" data-value="12">12</div>
             </div>
-
+            <input type="hidden" name="adult" id="adult" value="2">
         </div>
-        <div class="col-12 col-lg-6">
+        <div class="col-12">
             <div class="row align-items-center">
                 <div class="col-4">
                     <img src="{{ asset('img/3d-hand-holding-coupon.png') }}" alt="" class="w-100">
@@ -464,6 +513,7 @@
             monthSelectorType: "static"
             , static: true
             , minDate: "today"
+            ,disableMobile: true
         });
 
         // Departure date picker
@@ -472,6 +522,7 @@
             monthSelectorType: "static"
             , static: true
             , minDate: "today"
+            ,disableMobile: true
             , onChange: function(selectedDates, dateStr, instance) {
                 if (selectedDates.length > 0 && returnPicker) {
                     returnPicker.set('minDate', selectedDates[0]);
@@ -623,6 +674,40 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
             attachStationListeners();
         }
 
+        // ==================== Toggle Date Inputs ====================
+        function toggleDateInputs() {
+            const hasDepart = !!state.departStationId;
+            const hasDest = !!state.destStationId;
+            const departDateContainer = document.getElementById('depart_date_container');
+            const returnDateContainer = document.getElementById('return_date_container');
+            const tripType = elements.tripTypeInput ? elements.tripTypeInput.value : 'O';
+            const needsReturnDate = tripType === 'R' || tripType === 'M';
+
+            if (hasDepart && hasDest) {
+                // แสดง depart date container
+                if (departDateContainer) {
+                    departDateContainer.classList.remove('d-none');
+                }
+
+                // แสดง return date container เฉพาะเมื่อเลือก round-trip
+                if (returnDateContainer) {
+                    if (needsReturnDate) {
+                        returnDateContainer.classList.remove('d-none');
+                    } else {
+                        returnDateContainer.classList.add('d-none');
+                    }
+                }
+            } else {
+                // ซ่อน date containers ทั้งหมด
+                if (departDateContainer) {
+                    departDateContainer.classList.add('d-none');
+                }
+                if (returnDateContainer) {
+                    returnDateContainer.classList.add('d-none');
+                }
+            }
+        }
+
         // ==================== Validation Functions ====================
         function validateForm() {
             const hasDepart = !!state.departStationId;
@@ -718,6 +803,7 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
                 destinationSubtitle.textContent = 'Selected destination';
             }
 
+            toggleDateInputs();
             validateForm();
             resetModalView();
             $(elements.modal).modal('hide');
@@ -744,31 +830,17 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
                     elements.tripTypeInput.value = value;
 
                     console.log('Trip type changed to:', value);
-                    console.log('returnDatePicker element:', elements.returnDatePicker);
+
+                    // อัพเดทการแสดง date inputs
+                    toggleDateInputs();
 
                     if (value === 'O') {
                         if (elements.returnDatePicker) {
-                            elements.returnDatePicker.classList.add('d-none');
                             elements.returnDatePicker.required = false;
-                            // ซ่อน parent div ด้วย
-                            const returnDateParent = elements.returnDatePicker.closest('.col-12');
-                            if (returnDateParent) {
-                                returnDateParent.classList.add('d-none');
-                            }
                         }
                     } else {
                         if (elements.returnDatePicker) {
-                            // แสดง parent div ก่อน
-                            const returnDateParent = elements.returnDatePicker.closest('.col-12');
-                            if (returnDateParent) {
-                                returnDateParent.classList.remove('d-none');
-                            }
-                            // แล้วค่อยแสดง input
-                            elements.returnDatePicker.classList.remove('d-none');
                             elements.returnDatePicker.required = true;
-                            console.log('Return date picker should be visible now');
-                        } else {
-                            console.error('returnDatePicker element not found!');
                         }
                     }
 
@@ -779,65 +851,83 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
 
         // ==================== Passenger Counter ====================
         function updatePassengerSummary() {
-            const summary = [];
-            const counts = state.passengerCounts;
-            console.log(counts);
-
-            if (counts.adult > 0) summary.push(`${counts.adult} Passenger(s)`);
-            if (counts.child > 0) summary.push(`${counts.child} Child`);
-            if (counts.infant > 0) summary.push(`${counts.infant} Infant`);
-
-            elements.passengerSummary.textContent = summary.join(", ");
+            const count = state.passengerCounts.adult;
+            const passengerSummary = document.getElementById('passenger-summary');
+            if (passengerSummary) {
+                passengerSummary.textContent = count === 1 ? '1 Passenger' : `${count} Passengers`;
+            }
         }
 
         function setupPassengerHandlers() {
-            elements.passengerToggle.addEventListener('click', () => {
-                elements.passengerMenu.classList.toggle('d-block');
+            const passengerSelector = document.getElementById('passenger-selector');
+            const passengerDropdown = document.getElementById('passenger-dropdown');
+
+            if (!passengerSelector || !passengerDropdown) return;
+
+            function updateDropdownPosition() {
+                const rect = passengerSelector.getBoundingClientRect();
+                passengerDropdown.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+                passengerDropdown.style.left = rect.left + 'px';
+                passengerDropdown.style.width = rect.width + 'px';
+            }
+
+            // Toggle dropdown when clicking on selector
+            passengerSelector.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isVisible = passengerDropdown.style.display === 'block';
+
+                if (!isVisible) {
+                    updateDropdownPosition();
+                    passengerDropdown.style.display = 'block';
+                } else {
+                    passengerDropdown.style.display = 'none';
+                }
             });
 
-            document.querySelectorAll('.btn-plus').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const type = btn.dataset.type;
-                    const totalPassengers = state.passengerCounts.adult +
-                        state.passengerCounts.child +
-                        state.passengerCounts.infant;
+            // Update position on scroll
+            window.addEventListener('scroll', function() {
+                if (passengerDropdown.style.display === 'block') {
+                    updateDropdownPosition();
+                }
+            });
 
-                    if (totalPassengers < 12) {
-                        state.passengerCounts[type]++;
-                        document.getElementById(`${type}-count`).textContent = state
-                            .passengerCounts[type];
-                        document.getElementById(type).value = state.passengerCounts[type];
-                        updatePassengerSummary();
-                    } else {
-                        alert("Maximum 12 passengers allowed.");
-                    }
+            // Update position on resize
+            window.addEventListener('resize', function() {
+                if (passengerDropdown.style.display === 'block') {
+                    updateDropdownPosition();
+                }
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!passengerSelector.contains(e.target) && !passengerDropdown.contains(e.target)) {
+                    passengerDropdown.style.display = 'none';
+                }
+            });
+
+            // Handle passenger option selection
+            document.querySelectorAll('.passenger-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const value = parseInt(this.dataset.value);
+                    state.passengerCounts.adult = value;
+                    document.getElementById('adult').value = value;
+
+                    // Update active state
+                    document.querySelectorAll('.passenger-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    this.classList.add('active');
+
+                    updatePassengerSummary();
+                    passengerDropdown.style.display = 'none';
                 });
             });
 
-            document.querySelectorAll('.btn-minus').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const type = btn.dataset.type;
-                    const canDecrement = state.passengerCounts[type] > 0 &&
-                        !(type === 'adult' && state.passengerCounts.adult === 1);
-
-                    if (canDecrement) {
-                        state.passengerCounts[type]--;
-                        document.getElementById(`${type}-count`).textContent = state
-                            .passengerCounts[type];
-                        document.getElementById(type).value = state.passengerCounts[type];
-                        updatePassengerSummary();
-                    }
-                });
-            });
-
-            document.getElementById('btn-done').addEventListener('click', () => {
-                elements.passengerMenu.classList.remove('d-block');
-            });
-
-            document.addEventListener('click', (event) => {
-                if (!elements.passengerToggle.contains(event.target) &&
-                    !elements.passengerMenu.contains(event.target)) {
-                    elements.passengerMenu.classList.remove('d-block');
+            // Set initial active state
+            const currentValue = state.passengerCounts.adult;
+            document.querySelectorAll('.passenger-option').forEach(option => {
+                if (parseInt(option.dataset.value) === currentValue) {
+                    option.classList.add('active');
                 }
             });
         }
@@ -873,6 +963,7 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
             updatePassengerSummary();
             elements.departDatePicker.addEventListener('change', validateForm);
             elements.returnDatePicker.addEventListener('change', validateForm);
+            toggleDateInputs(); // ตรวจสอบสถานะเริ่มต้น
             validateForm();
         }
 
@@ -882,3 +973,4 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
 
 </script>
 @stop
+

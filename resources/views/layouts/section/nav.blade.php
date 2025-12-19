@@ -25,23 +25,6 @@
         transform: rotate(90deg);
     }
 
-    /* Navbar active state */
-    .layout-navbar.navbar-active {
-        background-color: #ffffff !important;
-        transition: background-color 0.3s ease;
-    }
-
-    .layout-navbar.navbar-active .navbar-brand.app-brand .logo-default {
-        display: none;
-    }
-
-    .layout-navbar.navbar-active .navbar-brand.app-brand .logo-active {
-        display: block;
-    }
-
-    .navbar-brand.app-brand .logo-active {
-        display: none;
-    }
 
 </style>
 
@@ -70,7 +53,7 @@
         <div class="navbar-brand app-brand demo d-flex py-0 me-4 me-xl-8 ms-0">
             <a href="/" class="app-brand-link">
                 <img src="{{ asset('img/logo-v3.png') }}" alt="" class="logo-default" style="width: 250px;">
-                <img src="{{ asset('img/logo-v3-b.png') }}" alt="" class="logo-active" style="width: 250px;">
+
             </a>
         </div>
         <!-- Menu logo wrapper: End -->

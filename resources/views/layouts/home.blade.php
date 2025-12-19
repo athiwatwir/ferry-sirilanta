@@ -10,46 +10,7 @@
 
     <meta name="description" content="" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../../assets/img/favicon/favicon.ico" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&ampdisplay=swap" rel="stylesheet" />
-
-
-    <link href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/style.css?v=1.0') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('css/loading.css') }}">
-
-    <!-- Core CSS -->
-    <!-- build:css assets/vendor/css/theme.css  -->
-
-    <link href="{{ asset('assets/vendor/libs/node-waves/node-waves.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/vendor/css/core.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/demo.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/vendor/css/pages/front-page.css?v=1.0.0') }}" rel="stylesheet" />
-
-    <!-- Vendors CSS -->
-
-    <!-- endbuild -->
-
-    <link href="{{ asset('assets/vendor/libs/nouislider/nouislider.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/vendor/libs/swiper/swiper.css') }}" rel="stylesheet" />
-
-    <!-- Page CSS -->
-
-    <link href="{{ asset('assets/vendor/css/pages/front-page-landing.css') }}" rel="stylesheet" />
-
-    <!-- Helpers -->
-    <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-
-
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="{{ asset('assets/js/front-config.js') }}"></script>
+    @include('layouts.section.style')
     @yield('style')
     @stack('styles')
     <script>
@@ -61,37 +22,11 @@
     <style>
         #landingHero {
             position: relative;
-            min-height: 100vh;
+
             overflow: hidden;
             display: flex;
             align-items: center;
             padding: 60px 0;
-        }
-
-        /* Background Slideshow */
-        .bg-slideshow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
-        .bg-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-        }
-
-        .bg-slide.active {
-            opacity: 1;
         }
 
         /* Overlay สำหรับทำให้อ่านง่ายขึ้น */
@@ -101,43 +36,79 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: -1;
+            background: rgba(93, 93, 93, 0.3);
+
             pointer-events: none;
             /* ไม่บล็อกการคลิก */
         }
 
-        /* Content Layer */
-        /*
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-            */
-
-        .slide-indicators {
+        .bg-slideshow {
             position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 3;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .bg-slide {
+            position: absolute;
+            inset: 0;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+        }
+
+        .bg-slide.active {
+            opacity: 1;
+
+        }
+
+        .bg-slide.prev {
+
+        }
+
+        /* Wipe effect overlay */
+        .wipe-overlay {
+            position: absolute;
+            inset: 0;
+
             display: flex;
-            gap: 10px;
+            pointer-events: none;
         }
 
-        .slide-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .wipe-bar {
+    flex: 1;
+    background: rgba(40, 167, 213, 0.5); /* 0.0–1.0 ยิ่งน้อยยิ่งโปร่ง */
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+        .wipe-bar.animate {
+            animation: wipeDown 1s ease-in-out forwards;
         }
 
-        .slide-indicator.active {
-            background: white;
-            width: 30px;
-            border-radius: 6px;
+        @keyframes wipeDown {
+            0% {
+                transform: translateY(-100%);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100%);
+                opacity: 1;
+            }
+        }
+
+
+
+        @media (max-width: 576px) {
+            #landingHero {
+                padding: 10px 0 60px 0;
+
+            }
         }
 
     </style>
@@ -159,23 +130,19 @@
         <!-- Hero: Start -->
         <section id="hero-animation">
             <div id="landingHero" class="section-py landing-hero position-relative">
-                <div class="bg-slideshow d-none d-sm-block">
-                    <div class="bg-slide active" style="background-image: url('{{ asset('img/slide/DJI_0112.webp') }}');">
-                    </div>
-                    <div class="bg-slide" style="background-image: url('{{ asset('img/slide/DJI_0113.webp') }}');">
-                    </div>
-                    <div class="bg-slide" style="background-image: url('{{ asset('img/slide/DJI_0114.webp') }}');">
-                    </div>
-                    <div class="bg-slide" style="background-image: url('{{ asset('img/slide/DJI_0115.webp') }}');">
-                    </div>
+                <div class="bg-slideshow" id="slideshow">
+                    <!-- Slides will be added dynamically -->
                 </div>
                 <div class="bg-overlay"></div>
                 <div class="container hero-content">
                     <div class="text-center position-relative">
                         <div class="row">
                             <div class="col-12 col-lg-5">
-                                <div class="card">
+                                <div class="card card-no-radius-mobile mt-lg-4">
                                     <div class="card-body text-start">
+                                        <div class="mb-3 d-block d-md-none mb-6">
+                                            <img src="{{ asset('img/logo-v3.png') }}" alt="Logo" class="w-100 logo-rotate-mobile">
+                                        </div>
                                         <h1 class="mb-0">
                                             Plan Ahead & Book <br>Your island escape
                                         </h1>
@@ -187,11 +154,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="slide-indicators">
-                    <div class="slide-indicator active" data-slide="0"></div>
-                    <div class="slide-indicator" data-slide="1"></div>
-                    <div class="slide-indicator" data-slide="2"></div>
-                </div>
+
             </div>
     </div>
 
@@ -204,71 +167,84 @@
             @yield('content')
         </div>
     </section>
-    <!-- Useful features: End -->
 
-
-    <!-- / Sections:End -->
 
     <!-- Footer: Start -->
     @include('layouts.section.footer')
     <!-- Footer: End -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
-    <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/node-waves/node-waves.js') }}"></script>
-
-    <script src="{{ asset('assets/vendor/libs/@algolia/autocomplete-js.js') }}"></script>
-
-    <script src="{{ asset('assets/vendor/libs/pickr/pickr.js') }}"></script>
-
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-    <script src="{{ asset('assets/vendor/libs/nouislider/nouislider.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/swiper/swiper.js') }}"></script>
-
-    <!-- Main JS -->
-
-    <script src="{{ asset('assets/js/front-main.js') }}"></script>
-
-    <!-- Page JS -->
-    <script src="{{ asset('assets/js/front-page-landing.js') }}"></script>
-
-    <script src="{{ asset('js/api.js') }}"></script>
-    <script src="{{ asset('js/loading.js') }}"></script>
+    @include('layouts.section.script')
 
     <script>
-        // Background Slideshow
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.bg-slide');
-        const indicators = document.querySelectorAll('.slide-indicator');
-        const totalSlides = slides.length;
+        const images = [
+            "{{ asset('img/slide/DJI_0112.webp') }}",
+            "{{ asset('img/slide/DJI_0113.webp') }}",
+            "{{ asset('img/slide/DJI_0114.webp') }}",
+            "{{ asset('img/slide/DJI_0115.webp') }}"
+        ];
 
-        function showSlide(index) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            indicators.forEach(indicator => indicator.classList.remove('active'));
+        const slideshow = document.getElementById('slideshow');
+        const duration = 5000;
+        const numBars = 8;
+        let currentIndex = 0;
+        let slides = [];
 
-            slides[index].classList.add('active');
-            indicators[index].classList.add('active');
-        }
-
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            showSlide(currentSlide);
-        }
-
-        // Auto slide every 5 seconds
-        setInterval(nextSlide, 5000);
-
-        // Manual slide control
-        indicators.forEach((indicator, index) => {
-            indicator.addEventListener('click', () => {
-                currentSlide = index;
-                showSlide(currentSlide);
-            });
+        // สร้าง slides
+        images.forEach((img, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'bg-slide';
+            slide.style.backgroundImage = `url(${img})`;
+            if (index === 0) slide.classList.add('active');
+            slideshow.appendChild(slide);
+            slides.push(slide);
         });
 
-    </script>
+        function createWipeEffect() {
+            const wipe = document.createElement('div');
+            wipe.className = 'wipe-overlay';
+
+            for (let i = 0; i < numBars; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'wipe-bar';
+                bar.style.animationDelay = `${i * 0.05}s`;
+                wipe.appendChild(bar);
+            }
+
+            slideshow.appendChild(wipe);
+
+            // เริ่ม animation
+            requestAnimationFrame(() => {
+                wipe.querySelectorAll('.wipe-bar').forEach(bar => {
+                    bar.classList.add('animate');
+                });
+            });
+
+            // ลบ wipe effect หลังจบ animation
+            setTimeout(() => {
+                wipe.remove();
+            }, 1500);
+        }
+
+        function changeSlide() {
+            const nextIndex = (currentIndex + 1) % images.length;
+
+            // เริ่ม wipe effect
+            createWipeEffect();
+
+            // เปลี่ยน slide หลังจาก wipe ไปครึ่งทาง
+            setTimeout(() => {
+                slides[currentIndex].classList.remove('active');
+                slides[currentIndex].classList.add('prev');
+
+                slides[nextIndex].classList.remove('prev');
+                slides[nextIndex].classList.add('active');
+
+                currentIndex = nextIndex;
+            }, 500);
+        }
+
+        // เริ่มต้น slideshow
+        setInterval(changeSlide, duration);
+        </script>
 
 
     @yield('script')
