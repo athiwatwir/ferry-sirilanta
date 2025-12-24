@@ -176,6 +176,22 @@
         border-bottom-color: #F16424;
     }
 
+    /* Passenger dropdown style */
+    #passenger-selector {
+        position: relative;
+        z-index: 1;
+    }
+
+    #passenger-dropdown {
+        position: fixed;
+        background: #fff;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 9999;
+        min-width: 200px;
+    }
 
     /* Ensure card doesn't clip dropdown */
     .card,
@@ -183,6 +199,29 @@
         overflow: visible !important;
     }
 
+    .passenger-option {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .passenger-option:last-child {
+        border-bottom: none;
+    }
+
+    .passenger-option:hover {
+        background-color: #fff3e0;
+    }
+
+    .passenger-option.active {
+        background-color: #ffec99;
+        font-weight: 600;
+    }
+
+    #passenger-selector {
+        position: relative;
+    }
 
     /* Let's Go button hover effect */
     .btn-dark.btn-lg.w-100:hover {
@@ -272,72 +311,43 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-lg-6 mb-3" style="display: none;">
-            <div class="dropdown-passenger">
-                <button class="btn btn-lg btn-light w-100" type="button" id="passenger-toggle">
-                    👤 <span id="_passenger-summary">2 Passenger(s)</span>
-                </button>
-
-                <div class="dropdown-menu-passenger" id="passenger-menu">
-                    <div class="passenger-row">
-                        <div>
-                            <strong>Passenger</strong><br>
-
-                        </div>
-                        <div class="counter">
-                            <button class="btn-minus" type="button" data-type="adult">−</button>
-                            <span id="_adult-count">2</span>
-                            <button class="btn-plus" type="button" data-type="adult">+</button>
-                            <input type="hidden" name="_adult" id="_adult" value="2">
-                        </div>
-                    </div>
-
-                    <div class="passenger-row" style="display: none;">
-                        <div>
-                            <strong>Child</strong><br>
-                            <small>(2 to 11 years)</small>
-                        </div>
-                        <div class="counter">
-                            <button class="btn-minus" type="button" data-type="child">−</button>
-                            <span id="child-count">0</span>
-                            <button class="btn-plus" type="button" data-type="child">+</button>
-                            <input type="hidden" name="child" id="child" value="0">
-                        </div>
-                    </div>
-
-                    <div class="passenger-row" style="display: none;">
-                        <div>
-                            <strong>Infant</strong><br>
-                            <small>(1 to 23 months)</small>
-                        </div>
-                        <div class="counter">
-                            <button class="btn-minus" type="button" data-type="infant">−</button>
-                            <span id="infant-count">0</span>
-                            <button class="btn-plus" type="button" data-type="infant">+</button>
-                            <input type="hidden" name="infant" id="infant" value="0">
-                        </div>
-                    </div>
-
-                    <div style="text-align:right; margin-top:10px;">
-                        <button class="btn-done" type="button" id="btn-done">Done</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="col-12 mb-3">
-            <div class="passenger-row">
-                <div>
-                    <strong>👤 <span id="passenger-summary">2 Passenger(s)</span></strong>
-
-                </div>
-                <div class="counter">
-                    <button class="btn-minus" type="button" data-type="adult">−</button>
-                    <span id="adult-count">2</span>
-                    <button class="btn-plus" type="button" data-type="adult">+</button>
-                    <input type="hidden" name="adult" id="adult" value="2">
+            <div class="selection-underline" id="passenger-selector">
+                <div class="selection-underline-content">
+                    <div class="selection-underline-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F16424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                            <path d="M16 11h6m-3 -3v6" />
+                        </svg>
+                    </div>
+                    <div class="selection-underline-text">
+                        <div class="selection-underline-title">Passenger</div>
+                        <div class="selection-underline-subtitle" id="passenger-summary">2 Passenger(s)</div>
+                    </div>
+                    <div class="selection-underline-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F16424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>
+                    </div>
                 </div>
             </div>
-
+            <div class="dropdown-menu-passenger" id="passenger-dropdown" style="display: none;">
+                <div class="passenger-option" data-value="1">1</div>
+                <div class="passenger-option" data-value="2">2</div>
+                <div class="passenger-option" data-value="3">3</div>
+                <div class="passenger-option" data-value="4">4</div>
+                <div class="passenger-option" data-value="5">5</div>
+                <div class="passenger-option" data-value="6">6</div>
+                <div class="passenger-option" data-value="7">7</div>
+                <div class="passenger-option" data-value="8">8</div>
+                <div class="passenger-option" data-value="9">9</div>
+                <div class="passenger-option" data-value="10">10</div>
+                <div class="passenger-option" data-value="11">11</div>
+                <div class="passenger-option" data-value="12">12</div>
+            </div>
+            <input type="hidden" name="adult" id="adult" value="2">
         </div>
         <div class="col-12">
             <div class="row align-items-center">
@@ -455,75 +465,6 @@
         border-color: #f06225;
     }
 
-    .two-tone-button {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        aspect-ratio: 1;
-        border-radius: 22px;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: none;
-        text-decoration: none;
-        background: white;
-    }
-
-    .button-top {
-        background: #025e9d;
-        color: white;
-
-        font-weight: 700;
-        font-size: 40px;
-        letter-spacing: 1px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex: 1;
-        width: 100%;
-    }
-
-    .button-bottom {
-        background: white;
-        color: #000000;
-
-        font-size: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex: 1;
-        font-weight: 500;
-        text-align: center;
-        line-height: 1.3;
-        word-break: break-word;
-        hyphens: auto;
-    }
-
-    /* Auto-resize สำหรับข้อความยาว */
-    .button-bottom.long-text {
-        font-size: 13px;
-    }
-
-    .button-bottom.very-long-text {
-        font-size: 11px;
-    }
-
-    @media (max-width: 768px) {
-        .two-tone-button {
-            border-radius: 10px !important;
-        }
-
-        .button-top {
-            font-size: 20px !important;
-        }
-
-        .button-bottom {
-            font-size: 9px !important;
-            padding: 0 5px;
-        }
-    }
-
 </style>
 
 @section('script')
@@ -572,7 +513,7 @@
             monthSelectorType: "static"
             , static: true
             , minDate: "today"
-            , disableMobile: true
+            ,disableMobile: true
         });
 
         // Departure date picker
@@ -581,7 +522,7 @@
             monthSelectorType: "static"
             , static: true
             , minDate: "today"
-            , disableMobile: true
+            ,disableMobile: true
             , onChange: function(selectedDates, dateStr, instance) {
                 if (selectedDates.length > 0 && returnPicker) {
                     returnPicker.set('minDate', selectedDates[0]);
@@ -663,14 +604,14 @@
             Object.keys(stations).forEach(key => {
                 const section = stations[key].sections;
                 const sectionCol = document.createElement('div');
-                sectionCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3 text-dark';
+                sectionCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                 sectionCol.innerHTML = `
-                <button class="btn btn-primary p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-ios mb-1" data-section="${key}">
+                <button class="btn btn-primary p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-ios" data-section="${key}">
     <div class="section-image w-100">
         <img src="${section.icon}" class="w-100">
     </div>
 ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate-middle badge badge-center bg-warning text-white">${section.badge_text}</span>` : ''}
-</button> ${section.name ? `${section.name}` : ''}
+</button> ${section.name ? `<small>${section.name}</small>` : ''}
             `;
                 elements.boxSection.appendChild(sectionCol);
             });
@@ -719,12 +660,12 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
                 const stationList = stations[key].stations;
                 stationList.forEach(st => {
                     const stCol = document.createElement('div');
-                    stCol.className = 'col-3 col-md-3 mb-3 px-1 px-lg-3';
+                    stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                     stCol.innerHTML = `
-                    <button class="two-tone-button w-100 align-items-center btn-station btn-ios p-0"
+                    <button class="btn btn-primary py-4 py-lg-8 p-1 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station btn-ios"
                             data-id="${st.id}"
                             data-name="${st.name}">
-                <div class="button-top">${formatNickname(st.nickname)}</div><div class="button-bottom">${st.name}</div></button>
+                <span class="mb-0 py-1 px-1 text-white fs-1 fw-bold station-nickname">${formatNickname(st.nickname)}</span></button><small class="station-name">${st.name}</small>
                 `;
                     elements.boxStation2.appendChild(stCol);
                 });
@@ -917,56 +858,76 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
             }
         }
 
-
-
         function setupPassengerHandlers() {
-            elements.passengerToggle.addEventListener('click', () => {
-                elements.passengerMenu.classList.toggle('d-block');
+            const passengerSelector = document.getElementById('passenger-selector');
+            const passengerDropdown = document.getElementById('passenger-dropdown');
+
+            if (!passengerSelector || !passengerDropdown) return;
+
+            function updateDropdownPosition() {
+                const rect = passengerSelector.getBoundingClientRect();
+                passengerDropdown.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+                passengerDropdown.style.left = rect.left + 'px';
+                passengerDropdown.style.width = rect.width + 'px';
+            }
+
+            // Toggle dropdown when clicking on selector
+            passengerSelector.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isVisible = passengerDropdown.style.display === 'block';
+
+                if (!isVisible) {
+                    updateDropdownPosition();
+                    passengerDropdown.style.display = 'block';
+                } else {
+                    passengerDropdown.style.display = 'none';
+                }
             });
 
-            document.querySelectorAll('.btn-plus').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const type = btn.dataset.type;
-                    const totalPassengers = state.passengerCounts.adult +
-                        state.passengerCounts.child +
-                        state.passengerCounts.infant;
+            // Update position on scroll
+            window.addEventListener('scroll', function() {
+                if (passengerDropdown.style.display === 'block') {
+                    updateDropdownPosition();
+                }
+            });
 
-                    if (totalPassengers < 12) {
-                        state.passengerCounts[type]++;
-                        document.getElementById(`${type}-count`).textContent = state
-                            .passengerCounts[type];
-                        document.getElementById(type).value = state.passengerCounts[type];
-                        updatePassengerSummary();
-                    } else {
-                        alert("Maximum 12 passengers allowed.");
-                    }
+            // Update position on resize
+            window.addEventListener('resize', function() {
+                if (passengerDropdown.style.display === 'block') {
+                    updateDropdownPosition();
+                }
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!passengerSelector.contains(e.target) && !passengerDropdown.contains(e.target)) {
+                    passengerDropdown.style.display = 'none';
+                }
+            });
+
+            // Handle passenger option selection
+            document.querySelectorAll('.passenger-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const value = parseInt(this.dataset.value);
+                    state.passengerCounts.adult = value;
+                    document.getElementById('adult').value = value;
+
+                    // Update active state
+                    document.querySelectorAll('.passenger-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    this.classList.add('active');
+
+                    updatePassengerSummary();
+                    passengerDropdown.style.display = 'none';
                 });
             });
 
-            document.querySelectorAll('.btn-minus').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const type = btn.dataset.type;
-                    const canDecrement = state.passengerCounts[type] > 0 &&
-                        !(type === 'adult' && state.passengerCounts.adult === 1);
-
-                    if (canDecrement) {
-                        state.passengerCounts[type]--;
-                        document.getElementById(`${type}-count`).textContent = state
-                            .passengerCounts[type];
-                        document.getElementById(type).value = state.passengerCounts[type];
-                        updatePassengerSummary();
-                    }
-                });
-            });
-
-            document.getElementById('btn-done').addEventListener('click', () => {
-                elements.passengerMenu.classList.remove('d-block');
-            });
-
-            document.addEventListener('click', (event) => {
-                if (!elements.passengerToggle.contains(event.target) &&
-                    !elements.passengerMenu.contains(event.target)) {
-                    elements.passengerMenu.classList.remove('d-block');
+            // Set initial active state
+            const currentValue = state.passengerCounts.adult;
+            document.querySelectorAll('.passenger-option').forEach(option => {
+                if (parseInt(option.dataset.value) === currentValue) {
+                    option.classList.add('active');
                 }
             });
         }
@@ -998,7 +959,6 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
             setupTripTypeHandlers();
             setupPassengerHandlers();
             setupModalHandlers();
-
             loadDepartStations();
             updatePassengerSummary();
             elements.departDatePicker.addEventListener('change', validateForm);
@@ -1013,3 +973,4 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
 
 </script>
 @stop
+

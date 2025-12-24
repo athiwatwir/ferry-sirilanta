@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 @font-face {
     font-family: 'Canva Sans';
@@ -12,7 +13,7 @@
 
 html,
 body {
-    font-family: 'Canva Sans', 'Kanit', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 400;
 }
 
@@ -21,13 +22,13 @@ h2,
 h3,
 h4,
 h5 {
-    font-family: 'Canva Sans', sans-serif !important;
+    font-family: 'Montserrat', sans-serif !important;
     font-weight: 700 !important;
 }
 
 a,
 span {
-    font-family: 'Canva Sans', 'Kanit', sans-serif;
+    font-family: 'Montserrat', 'Kanit', sans-serif;
 
 }
 
@@ -65,8 +66,8 @@ h5 {
 
 @media (max-width: 576px) {
     h1 {
-        font-size: 2rem !important;
-        line-height: 0.9 !important;
+        font-size: 1.65rem !important;
+        line-height: 1.1 !important;
     }
 
     h2 {
@@ -97,8 +98,8 @@ h5 {
     }
 
     body {
-        font-size: 0.56rem !important;
-        line-height: 1.12 !important;
+        font-size: 0.7rem !important;
+
     }
 
     small {
@@ -117,7 +118,7 @@ h5 {
 
 .btn-main {
     background-color: #f16225 !important;
-    font-family: 'Canva Sans',  sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     color: #ffffff !important;
 }

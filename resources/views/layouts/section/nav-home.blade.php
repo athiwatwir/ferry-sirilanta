@@ -49,12 +49,7 @@
 
     <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-8">
         <!-- Menu logo wrapper: Start -->
-        <div class="navbar-brand app-brand demo d-flex py-0 me-4 me-xl-8 ms-0">
-            <a href="/" class="app-brand-link">
-                <img src="{{ asset('img/logo-v3.png') }}" alt="" class="logo-default" style="width: 250px;">
 
-            </a>
-        </div>
         <!-- Menu logo wrapper: End -->
 
         <!-- Mobile menu toggle: Start (ย้ายมาไว้หลัง logo) -->

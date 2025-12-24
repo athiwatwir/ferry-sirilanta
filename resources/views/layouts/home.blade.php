@@ -63,9 +63,7 @@
 
         }
 
-        .bg-slide.prev {
-
-        }
+        .bg-slide.prev {}
 
         /* Wipe effect overlay */
         .wipe-overlay {
@@ -77,11 +75,12 @@
         }
 
         .wipe-bar {
-    flex: 1;
-    background: rgba(40, 167, 213, 0.5); /* 0.0–1.0 ยิ่งน้อยยิ่งโปร่ง */
-    transform: translateY(-100%);
-    opacity: 0;
-}
+            flex: 1;
+            background: rgba(40, 167, 213, 0.5);
+            /* 0.0–1.0 ยิ่งน้อยยิ่งโปร่ง */
+            transform: translateY(-100%);
+            opacity: 0;
+        }
 
         .wipe-bar.animate {
             animation: wipeDown 1s ease-in-out forwards;
@@ -92,10 +91,12 @@
                 transform: translateY(-100%);
                 opacity: 1;
             }
+
             50% {
                 transform: translateY(0);
                 opacity: 1;
             }
+
             100% {
                 transform: translateY(100%);
                 opacity: 1;
@@ -121,7 +122,7 @@
     <script src="{{ asset('assets/vendor/js/mega-dropdown.js') }}"></script>
 
     <!-- Navbar: Start -->
-    @include('layouts.section.nav')
+    @include('layouts.section.nav-home')
     <!-- Navbar: End -->
 
     <!-- Sections:Start -->
@@ -176,10 +177,10 @@
 
     <script>
         const images = [
-            "{{ asset('img/slide/DJI_0112.webp') }}",
-            "{{ asset('img/slide/DJI_0113.webp') }}",
-            "{{ asset('img/slide/DJI_0114.webp') }}",
-            "{{ asset('img/slide/DJI_0115.webp') }}"
+            "{{ asset('img/slide/DJI_0112.webp') }}"
+            , "{{ asset('img/slide/DJI_0113.webp') }}"
+            , "{{ asset('img/slide/DJI_0114.webp') }}"
+            , "{{ asset('img/slide/DJI_0115.webp') }}"
         ];
 
         const slideshow = document.getElementById('slideshow');
@@ -244,7 +245,8 @@
 
         // เริ่มต้น slideshow
         setInterval(changeSlide, duration);
-        </script>
+
+    </script>
 
 
     @yield('script')
