@@ -365,28 +365,49 @@
             </div>
             <div class="modal-body p-0">
                 <div class="onboarding-content mb-0">
-                    <h3 id="modal-title-type" class="mb-1">Select "Section"</h3>
+
                     <div class="row mb-3" id="box-step">
-                        <div class="col-12 col-lg-6 mx-auto">
-                            <div class="row">
-                                <div class="col-3">
-                                    <div class="avatar avatar-md me-2">
-                                        <span class="avatar-initial rounded-circle bg-primary">1</span>
+                        <div class="col-12" id="box-section-title">
+                            <h3 id="modal-title-type">Select "Section"</h3>
+                            <div class="col-12 col-lg-6 mx-auto">
+                                <div class="row">
+                                    <div class="col-3 text-end">
+                                        <div class="avatar avatar-lg">
+                                            <span class="avatar-initial rounded-circle bg-primary">1</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 text-start">
+                                        <img src="{{ asset('img/icon/boat-icon.png') }}" alt="" width="50">
+                                        <br>
+                                        <div class="dash-line"></div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="avatar avatar-lg">
+                                            <span class="avatar-initial rounded-circle bg-secondary">2</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col text-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73z" />
-                                        <path d="M6 13l1.5 -5" />
-                                        <path d="M6 8h8l2 3" />
-                                    </svg>
-                                    <br>
-                                    <div class="dash-line"></div>
-                                </div>
-                                <div class="col-3">
-                                    <div class="avatar avatar-md me-2">
-                                        <span class="avatar-initial rounded-circle bg-secondary">2</span>
+                            </div>
+                        </div>
+
+                        <div class="col-12" id="box-station-title" style="display: none;">
+                            <h3 id="modal-title-type">Select "Station"</h3>
+                            <div class="col-12 col-lg-6 mx-auto">
+                                <div class="row">
+                                    <div class="col-3 text-end">
+                                        <div class="avatar avatar-lg">
+                                            <span class="avatar-initial rounded-circle bg-primary">1</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <img src="{{ asset('img/icon/boat-icon.png') }}" alt="" width="50">
+                                        <br>
+                                        <div class="dash-line"></div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="avatar avatar-lg">
+                                            <span class="avatar-initial rounded-circle bg-secondary">2</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -437,8 +458,17 @@
     }
 
     .dash-line {
-        border-bottom: 2px dashed #ccc;
-        margin: 8px 0;
+        margin: 0px 0;
+        color: #ccc;
+        letter-spacing: 2px;
+        font-size: 20px;
+        line-height: 1;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .dash-line::before {
+        content: '~ ~ ~ ~ ~ ~ ~ ~';
     }
 
     .btn-main-section {
@@ -695,10 +725,10 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
                 const stCol = document.createElement('div');
                 stCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3';
                 stCol.innerHTML = `
-                    <button class="btn btn-primary py-4 py-lg-8 btn-lg w-100 btn-section d-flex flex-column align-items-center btn-station btn-ios"
+                    <button class="two-tone-button w-100 align-items-center btn-station btn-ios p-0"
                             data-id="${st.id}"
                             data-name="${st.name}">
-                       <span class="mb-0 py-1 px-1 text-white fs-1 fw-bold station-nickname">${formatNickname(st.nickname)}</span></button><small class="station-name">${st.name}</small>
+                <div class="button-top">${formatNickname(st.nickname)}</div><div class="button-bottom">${st.name}</div></button>
                 `;
                 elements.boxSection.appendChild(stCol);
             });
@@ -807,7 +837,10 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
                     elements.boxStation.classList.remove('d-none');
                     elements.boxSection.classList.add('d-none');
                     toggleBg();
-                    elements.modalTitle.textContent = 'Select "Station"';
+                    //elements.modalTitle.textContent = 'Select "Station"';
+
+                    $('#box-station-title').show();
+                    $('#box-section-title').hide();
                 });
             });
         }
@@ -871,6 +904,9 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
         function resetModalView() {
             elements.boxStation.classList.add('d-none');
             elements.boxSection.classList.remove('d-none');
+
+            $('#box-station-title').hide();
+            $('#box-section-title').show();
             toggleBg();
         }
 
@@ -980,7 +1016,9 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
                 const titleText = state.selectType === 'departure' ?
                     'Select "Section"' :
                     'Select "Station"';
-                elements.modalTitle.textContent = titleText;
+                //elements.modalTitle.textContent = titleText;
+                $('#box-station-title').hide();
+                $('#box-section-title').show();
 
                 // โหลดข้อมูลใหม่ทุกครั้งที่เปิด modal
                 if (state.selectType === 'departure') {
