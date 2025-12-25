@@ -13,7 +13,7 @@
 
 html,
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif !important;
     font-weight: 400;
 }
 
@@ -377,7 +377,8 @@ main {
 }
 
 .counter button {
-    background: #ffef99;
+    background: #f06222;
+    color: #ffffff !important;
     border: none;
     border-radius: 50%;
     width: 32px;
@@ -466,6 +467,6 @@ main {
 
     /* Rotate logo on mobile */
     .logo-rotate-mobile {
-        transform: rotate(7deg);
+        transform: rotate(10deg);
     }
 }

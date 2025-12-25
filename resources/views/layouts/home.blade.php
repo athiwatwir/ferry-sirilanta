@@ -112,6 +112,19 @@
             }
         }
 
+        .card-img {
+            position: absolute;
+            top: 2%;
+            left: 60%;
+            width: 140%;
+            /* ให้รูปใหญ่กว่ากล่อง */
+            transform: translate(-50%, -50%) rotate(10deg);
+            /* ขยาย + เอียง */
+            pointer-events: none;
+            z-index: 100;
+            /* ไม่บังการคลิก (ถ้าต้องการ) */
+        }
+
     </style>
 
 </head>
@@ -141,8 +154,11 @@
                             <div class="col-12 col-lg-5">
                                 <div class="card card-no-radius-mobile mt-lg-4">
                                     <div class="card-body text-start">
-                                        <div class="mb-3 d-block d-md-none mb-6">
+                                        <div class="mb-3 d-block d-md-none mb-4">
                                             <img src="{{ asset('img/logo-v3.png') }}" alt="Logo" class="w-100 logo-rotate-mobile">
+                                        </div>
+                                        <div class="mb-3 d-none d-md-block mb-6">
+                                            <img src="{{ asset('img/logo-v3.png') }}" alt="Logo" class="card-img">
                                         </div>
                                         <h1 class="mb-0">
                                             Plan Ahead & Book <br>Your island escape
