@@ -93,11 +93,7 @@
         <!-- Useful features: Start -->
         <section id="landingFeatures" class="section-py">
             <div class="container">
-                <div class="row">
-                    <div class="col-12 px-4 mt-10 mt-lg-1">
-                        @yield('content')
-                    </div>
-                </div>
+                @yield('content')
             </div>
         </section>
         <!-- Useful features: End -->

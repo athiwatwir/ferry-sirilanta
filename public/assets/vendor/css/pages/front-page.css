@@ -17,7 +17,7 @@ body {
 
 @media (max-width: 767.98px) {
     .section-py {
-        padding-block: 3rem;
+        padding-block: 0.5rem;
         padding-inline: 0;
     }
 }
@@ -77,14 +77,12 @@ nav.layout-navbar .navbar.landing-navbar {
     --bs-front-navbar-bg: rgba(var(--bs-paper-bg-rgb));
     --bs-front-navbar-border-color: rgba(var(--bs-paper-bg-rgb), .68);
     /*border: 2px solid var(--bs-front-navbar-border-color);*/
-    background: linear-gradient(
-    to right,
-    #05bfce 0%,
-    #2fa2d6 35%,
-    #3d7ed8 55%,
-    #4f63db 75%,
-    #5f50de 100%
-  );
+    background: linear-gradient(to right,
+            #ffffff 0%,
+            #d1fbfb 20%,
+            #6de0fd 55%,
+            #468cf2 75%,
+            #5239e3 100%);
     /*margin-block-start: 1rem;*/
     padding-block: 0.614rem;
     transform: unset;

@@ -37,10 +37,18 @@ class ApiService
 
     protected function handleResponse($response)
     {
+        /*
         if ($response->successful()) {
             return $response->json();
         }
 
+
         throw new \Exception('API Error: ' . $response->body(), $response->status());
+        */
+        if ($response->serverError()) {
+            throw new \Exception('API Server Error', 500);
+        }
+
+        return $response->json();
     }
 }

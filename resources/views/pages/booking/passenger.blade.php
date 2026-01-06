@@ -6,9 +6,8 @@
     @method('post')
     @csrf
     <div class="row d-block d-lg-none">
-        <div class="col text-end mb-3">
-            <button type="button" class="btn btn-primary"> Sumary: {{ number_format(0,2) }}THB</button>
-        </div>
+        <x-booking.sumary />
+
     </div>
     <div class="row">
         <div class="col-12 col-lg-8 mb-3">

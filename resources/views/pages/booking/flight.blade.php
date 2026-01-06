@@ -24,7 +24,7 @@
                 <h6 class="mb-0">THB <strong id="label-fare-pice">0.00</strong> </h6>
             </div>
             <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="mb-0">Number of Passengers</p>
+                <p class="mb-0">Number of Passenger(s)</p>
                 <h6 class="mb-0">{{ $adult }}</h6>
             </div>
             <hr>
@@ -44,10 +44,25 @@
                     <input type="hidden" name="outbound_sub_route_id" id="outbound_sub_route_id">
                     <input type="hidden" name="return_sub_route_id" id="return_sub_route_id">
 
-                    <button id="bt-next" type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100" disabled>
-                        <span class="me-2">Next</span>
-                        <i class="icon-base ti tabler-arrow-right scaleX-n1-rtl"></i>
-                    </button>
+
+                    <div class="row ">
+                        <div class="col">
+                            <a href="/" class="btn btn-secondary btn-lg">
+                                <span class="d-none d-md-block">
+                                    << Change Selection</span>
+                                        <span class="d-block d-md-none">
+                                            << Back</span>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <button id="bt-next" type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100" disabled>
+                                <span class="me-2 d-none d-md-block">Add Passenger Details >></span>
+                                <span class="me-2 d-block d-md-none">Next >></span>
+                            </button>
+                        </div>
+                    </div>
+
+
                 </form>
 
 

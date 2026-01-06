@@ -144,7 +144,7 @@
         <!-- Hero: Start -->
         <section id="hero-animation">
             <div id="landingHero" class="section-py landing-hero position-relative">
-                <div class="bg-slideshow" id="slideshow">
+                <div class="bg-slideshow d-none d-md-block" id="slideshow">
                     <!-- Slides will be added dynamically -->
                 </div>
                 <div class="bg-overlay"></div>
@@ -154,11 +154,11 @@
                             <div class="col-12 col-lg-5">
                                 <div class="card card-no-radius-mobile mt-lg-4">
                                     <div class="card-body text-start">
-                                        <div class="mb-3 d-block d-md-none mb-4">
-                                            <img src="{{ asset('img/logo-v3.png') }}" alt="Logo" class="w-100 logo-rotate-mobile">
+                                        <div class="mb-3 d-block d-md-none mb-3">
+                                            <img src="{{ asset('img/logo-v4.png') }}" alt="Logo" class="logo-rotate-mobile" style="width: 120%;margin-left: -15%;">
                                         </div>
                                         <div class="mb-3 d-none d-md-block mb-6">
-                                            <img src="{{ asset('img/logo-v3.png') }}" alt="Logo" class="card-img">
+                                            <img src="{{ asset('img/logo-v4.png') }}" alt="Logo" class="card-img">
                                         </div>
                                         <h1 class="mb-0">
                                             Plan Ahead & Book <br>Your island escape
@@ -179,7 +179,7 @@
     <!-- Hero: End -->
 
     <!-- Useful features: Start -->
-    <section id="landingFeatures" class="py-3">
+    <section id="landingFeatures" class="">
         <div class="container">
             @yield('content')
         </div>

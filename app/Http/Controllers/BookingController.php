@@ -12,6 +12,29 @@ use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
+    public static function status()
+    {
+        $status = [
+            'DR' => ['title' => 'Waiting for Payment', 'icon' => '<i class="fi fi-circle-spin"></i>', 'class' => '', 'action' => ''],
+            'UNP' => ['title' => 'On Hold', 'icon' => '<i class="fa-solid fa-clock-rotate-left"></i>', 'class' => 'text-warning', 'action' => 'Unpaid'],
+            'CO' => ['title' => 'Approved', 'icon' => '<i class="fa-solid fa-check-double"></i>', 'class' => 'text-success', 'action' => 'Paid'],
+            'VO' => ['title' => 'Cancelled', 'icon' => '<i class="fa-solid fa-xmark"></i>', 'class' => 'text-danger', 'action' => 'Cancel'],
+            'amended' => ['title' => 'Amended', 'icon' => '<i class="fa-solid fa-list-check"></i>', 'class' => 'text-blue-900', 'action' => ''],
+            'delete' => ['title' => 'Deleted', 'icon' => '<i class="fa-solid fa-trash"></i>', 'class' => 'text-danger', 'action' => 'Delete'],
+            'EXPIRED' => ['title' => 'Booking has expired', 'icon' => '<i class="fa-solid fa-trash"></i>', 'class' => 'text-danger', 'action' => 'Delete'],
+
+        ];
+
+        return $status;
+    }
+    public static function tripTypes()
+    {
+        return [
+            'O' => 'ONE-WAY',
+            'R' => 'RETURN',
+            'M' => 'MULTI ISLAND'
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -233,5 +256,17 @@ class BookingController extends Controller
         }
 
         return $dates;
+    }
+
+    public function view($bookingno)
+    {
+        $booking = app(BookingService::class)->getBooking($bookingno);
+
+        $status = $this->status();
+        //dd($booking);
+
+        $paymentUrl = env("PAYMENT_URL") . '/payment/' . $bookingno;
+
+        return view('pages.booking.view', compact('booking', 'status', 'paymentUrl'));
     }
 }

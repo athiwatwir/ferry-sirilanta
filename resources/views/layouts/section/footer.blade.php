@@ -5,7 +5,7 @@
         gap: 1.5rem;
         justify-content: center;
         align-items: center;
-        margin-bottom: 0.8rem;
+
     }
 
     .footer-links a {
@@ -73,43 +73,73 @@
         }
     }
 
+    .ft-bg {
+        background: linear-gradient(to right,
+                #ffffff 0%,
+                #d1fbfb 20%,
+                #6de0fd 55%,
+                #468cf2 75%,
+                #5239e3 100%);
+    }
+
 </style>
 
-<footer class="footer-text text-primary" style="background-color: #ffffff;">
-    <div class="footer-bottom py-3 py-md-5">
+<footer class="footer-text">
+    <div class="footer-bottom ">
+        <div class="row ft-bg d-none d-md-block">
+            <div class="col-12 py-8">
 
-        <div class="container d-flex flex-wrap justify-content-between flex-md-row flex-column text-center text-md-start">
-            <div class="row w-100">
-                <div class="col-12">
-                    <div class="footer-links">
-                        <a href="/">View Your Booking</a>
-                        <a href="/">Station</a>
-                        <a href="/">Route Map</a>
-                        <a href="/">Time Table</a>
-                        <a href="https://www.tigerlineferry.com/" target="_blank">Tigerline Ferry</a>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div class="mb-2 mb-md-0">
-                <span class="footer-bottom-text d-none d-md-block">© Copyright
-                    <script>
-                        document.write(new Date().getFullYear());
-
-                    </script> Sirilanta Co., Ltd. All rights reserved. Use of this website indicateds your compliance with our Terms and Conditions, Terms of Use and Privacy Policy. Indicates an external site which may or may not meet accessibility guidelines.
-                </span>
-                <span class="footer-bottom-text d-block d-md-none">© Copyright
-                    <script>
-                        document.write(new Date().getFullYear());
-
-                    </script> Sirilanta Co., Ltd. All rights reserved.<br> Use of this website indicateds your compliance with our <br>Terms and Conditions, Terms of Use and Privacy Policy. <br>Indicates an external site which may or may not meet <br>accessibility guidelines.
-                </span>
-
-
-            </div>
-            <div>
 
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="container d-flex flex-wrap justify-content-between flex-md-row flex-column text-center text-md-start ">
+                    <div class="row w-100">
+                        <div class="col-12 py-2">
+                            <div class="footer-links">
+                                <a href="/">Ferry Timetable</a>
+                                <a href="/">Ferry Route Map</a>
+                                <a href="/">Check-in Station</a>
+                                <a href="/">Term & Conditions</a>
+                                <a href="/">View your booking</a>
+                                <a href="https://www.tigerlineferry.com/" target="_blank">Deals & Loyalty, visit us on TigerlineFerry.com</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="mb-2 mb-md-0 text-dark">
+                        <span class="footer-bottom-text d-none d-md-block">
+                            <p>© Copyright
+                                <script>
+                                    document.write(new Date().getFullYear());
+
+                                </script> Sirilanta Co., Ltd. All rights reserved.
+                            </p>
+                            <p>Use of this website indicateds your compliance with our Terms and Conditions, Terms of Use and Privacy Policy.</p>
+                            <p>Indicates an external site which may or may not meet accessibility guidelines.</p>
+                        </span>
+                        <span class="footer-bottom-text d-block d-md-none">
+                            <p>© Copyright
+                                <script>
+                                    document.write(new Date().getFullYear());
+
+                                </script> Sirilanta Co., Ltd. All rights reserved.
+                            </p>
+                            <p>Use of this website indicateds your compliance with our <br>Terms and Conditions, Terms of Use and Privacy Policy.</p>
+                            <p>Indicates an external site which may or may not meet <br>accessibility guidelines.</p>
+                        </span>
+
+
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </footer>

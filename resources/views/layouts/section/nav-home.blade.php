@@ -47,7 +47,7 @@
 </style>
 <nav class="layout-navbar shadow-none py-0">
 
-    <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-8">
+    <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-8 py-8">
         <!-- Menu logo wrapper: Start -->
 
         <!-- Menu logo wrapper: End -->
@@ -62,7 +62,7 @@
         <ul class="navbar-nav flex-row align-items-center ms-auto d-none d-md-block">
 
             <!-- navbar button: Start -->
-            <li>
+            <li style="display: none;">
                 <a href="" class="btn btn-primary" target="_blank"><span class="tf-icons icon-base ti tabler-search scaleX-n1-rtl me-md-1"></span><span class="d-none d-md-block">Your Booking</span></a>
             </li>
             <!-- navbar button: End -->

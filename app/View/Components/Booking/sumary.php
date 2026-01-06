@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Booking;
 
+use App\Http\Controllers\BookingController;
 use App\Services\RouteService;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -26,6 +27,8 @@ class Sumary extends Component
     {
         $sessionData = session('booking', []);
 
+        $tripTypes = BookingController::tripTypes();
+
         //dd($sessionData);
         $departStation = app(StationService::class)->getStation($sessionData['depart_station_id']);
         //dd($departStation);
@@ -37,7 +40,8 @@ class Sumary extends Component
             'sessionData' => $sessionData,
             'departStation' => $departStation,
             'destStation' => $destStation,
-            'subRoute' => $subRoute
+            'subRoute' => $subRoute,
+            'tripTypes' => $tripTypes
         ]);
     }
 }

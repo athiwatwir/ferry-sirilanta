@@ -54,7 +54,7 @@ h3 {
 h4 {
     font-size: 1.225rem !important;
     /* ~50% ของ h1 */
-    line-height: 0.6 !important;
+    line-height: 0.8 !important;
     /* เพิ่มจาก h1 (0.8) ตามสัดส่วน */
 }
 
@@ -87,7 +87,7 @@ h5 {
     h4 {
         font-size: 1.05rem !important;
         /* ~50% ของ h1 mobile */
-        line-height: 0.75 !important;
+        line-height: 0.9 !important;
         /* เพิ่มจาก h1 (0.8) ตามสัดส่วน */
     }
 
@@ -121,6 +121,14 @@ h5 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     color: #ffffff !important;
+}
+
+.btn-letgo {
+    background-color: #004ff0 !important;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: #ffffff !important;
+
 }
 
 .bg-menu {
@@ -467,6 +475,6 @@ main {
 
     /* Rotate logo on mobile */
     .logo-rotate-mobile {
-        transform: rotate(10deg);
+        transform: rotate(13deg);
     }
 }

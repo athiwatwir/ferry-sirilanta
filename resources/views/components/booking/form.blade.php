@@ -72,6 +72,7 @@
     .multi-island-link {
         text-align: center;
         font-size: 1rem;
+        font-weight: 600;
     }
 
 </style>
@@ -164,6 +165,12 @@
         transition: all 0.3s ease;
     }
 
+    #depart_date::placeholder,
+    #return_date::placeholder {
+        color: #ef6222;
+        opacity: 1;
+    }
+
     #depart_date:focus,
     #return_date:focus {
         border-bottom: 3px solid #F16424;
@@ -184,9 +191,27 @@
     }
 
 
+
+
     /* Let's Go button hover effect */
     .btn-dark.btn-lg.w-100:hover {
         color: #F16424 !important;
+    }
+
+    .avatar.avatar-lg {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        min-height: 48px;
+        flex-shrink: 0;
+    }
+
+    .avatar.avatar-lg .avatar-initial {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
 </style>
@@ -202,14 +227,14 @@
             <div class="d-flex align-items-center gap-2 flex-wrap trip-type-wrapper">
                 <div class="trip-type-container d-flex align-items-center gap-2">
                     <button type="button" class="trip-type-btn active" data-value="O" data-action="trip_type">
-                        <span>One-way</span>
+                        <span>ONE-WAY</span>
                     </button>
                     <button type="button" class="trip-type-btn" data-value="R" data-action="trip_type">
-                        <span>Return</span>
+                        <span>RETURN</span>
                     </button>
                 </div>
                 <div class="multi-island-link">
-                    <a href="/" class="">Multi Island</a>
+                    <a href="/" class="">MULTI ISLAND</a>
                 </div>
             </div>
         </div>
@@ -341,11 +366,11 @@
         </div>
         <div class="col-12">
             <div class="row align-items-center">
-                <div class="col-4">
-                    <img src="{{ asset('img/3d-hand-holding-coupon.png') }}" alt="" class="w-100">
+                <div class="col-6">
+                    <img src="{{ asset('img/3d-hand-holding-coupon.png') }}" alt="" style="margin-left: 20%;width: 80%;">
                 </div>
-                <div class="col-8">
-                    <button type="submit" class="btn btn-dark btn-lg w-100">Let's Go!</button>
+                <div class="col-6">
+                    <button type="submit" class="btn btn-secondary btn-lg w-100" id="btn-letgo">Let's Go! --></button>
                 </div>
             </div>
         </div>
@@ -364,16 +389,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-0">
-                <div class="onboarding-content mb-0">
+                <div class="onboarding-content mb-0 pb-8">
 
                     <div class="row mb-3" id="box-step">
                         <div class="col-12" id="box-section-title">
-                            <h3 id="modal-title-type">Select "Section"</h3>
+                            <h3 id="modal-title-type" style="color: #f06222;">Select "Section"</h3>
                             <div class="col-12 col-lg-6 mx-auto">
                                 <div class="row">
                                     <div class="col-3 text-end">
-                                        <div class="avatar avatar-lg">
-                                            <span class="avatar-initial rounded-circle bg-primary">1</span>
+                                        <div class="d-flex justify-content-end">
+                                            <div class="avatar avatar-lg">
+                                                <span class="avatar-initial rounded-circle bg-primary">1</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-6 text-start">
@@ -391,12 +418,14 @@
                         </div>
 
                         <div class="col-12" id="box-station-title" style="display: none;">
-                            <h3 id="modal-title-type">Select "Station"</h3>
+                            <h3 id="modal-title-type text-warning" style="color: #f06222;">Select "Station"</h3>
                             <div class="col-12 col-lg-6 mx-auto">
                                 <div class="row">
                                     <div class="col-3 text-end">
-                                        <div class="avatar avatar-lg">
-                                            <span class="avatar-initial rounded-circle bg-primary">1</span>
+                                        <div class="d-flex justify-content-end">
+                                            <div class="avatar avatar-lg">
+                                                <span class="avatar-initial rounded-circle bg-secondary">1</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-6 text-end">
@@ -406,7 +435,7 @@
                                     </div>
                                     <div class="col-3">
                                         <div class="avatar avatar-lg">
-                                            <span class="avatar-initial rounded-circle bg-secondary">2</span>
+                                            <span class="avatar-initial rounded-circle bg-primary">2</span>
                                         </div>
                                     </div>
                                 </div>
@@ -421,7 +450,7 @@
                         <div class="col-12">
                             <div class="row" id="box-station-2"></div>
                         </div>
-                        <div class="col-12 text-start mb-2">
+                        <div class="col-12 text-start mb-2 mt-3">
                             <button id="bt-back-to-station" type="button" class="btn btn-sm btn-warning">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevrons-left">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -468,7 +497,7 @@
     }
 
     .dash-line::before {
-        content: '~ ~ ~ ~ ~ ~ ~ ~';
+        content: '~ ~ ~ ~ ~ ~ ~ ~ ~ ~';
     }
 
     .btn-main-section {
@@ -518,7 +547,7 @@
         background: white;
         color: #000000;
 
-        font-size: 15px;
+        font-size: 17px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -658,7 +687,7 @@
             , passengerToggle: document.getElementById('passenger-toggle')
             , passengerMenu: document.getElementById('passenger-menu')
             , passengerSummary: document.getElementById('passenger-summary')
-            , submitButton: document.querySelector('.btn-dark.btn-lg.w-100')
+            , submitButton: document.getElementById('btn-letgo')
             , departDatePicker: document.getElementById('depart_date')
             , returnDatePicker: document.getElementById('return_date')
         };
@@ -686,6 +715,22 @@
 
         // ==================== Rendering Functions ====================
         function renderSections(stations) {
+            $('#box-step').show();
+            elements.boxSection.innerHTML = "";
+            elements.boxStation2.innerHTML = "";
+
+            Object.keys(stations).forEach(key => {
+                const section = stations[key].sections;
+                const sectionCol = document.createElement('div');
+                sectionCol.className = 'col-3 col-md-3 mb-2 px-1 px-lg-3 text-dark';
+                sectionCol.innerHTML = `<img src="${section.icon}" class="w-100 pointer btn-section" data-section="${key}">`;
+                elements.boxSection.appendChild(sectionCol);
+            });
+
+            attachSectionListeners();
+        }
+
+        function renderSections2(stations) {
             $('#box-step').show();
             elements.boxSection.innerHTML = "";
             elements.boxStation2.innerHTML = "";
@@ -815,6 +860,8 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
                 elements.submitButton.classList.add('disabled');
             } else {
                 elements.submitButton.classList.remove('disabled');
+                elements.submitButton.classList.remove('btn-secondary');
+                elements.submitButton.classList.add('btn-letgo');
             }
         }
 
