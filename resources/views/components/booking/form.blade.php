@@ -1,3 +1,5 @@
+@props(['aff_id' => null])
+
 <link href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" rel="stylesheet" />
 <style>
     .trip-type-container {
@@ -217,6 +219,7 @@
 </style>
 
 <form class="" action="{{ route('booking.flight') }}">
+    <input type="hidden" name="aff_id" value="{{ $aff_id }}">
     <div class="btn-group mb-3" role="group">
         <input type="hidden" name="trip_type" id="trip_type" value="O">
         <input type="hidden" name="dest_station_id" id="dest_station_id">

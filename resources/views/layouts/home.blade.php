@@ -163,7 +163,7 @@
                                         <h1 class="mb-0">
                                             Plan Ahead & Book <br>Your island escape
                                         </h1>
-                                        <x-booking.form />
+                                        <x-booking.form :aff_id="$aff_id" />
                                     </div>
                                 </div>
                             </div>

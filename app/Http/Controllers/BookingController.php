@@ -114,6 +114,7 @@ class BookingController extends Controller
             'promotion_id' => null,
             'api_merchant_id' => null,
             'referenceno' => null,
+            'aff_id' => $bookData['aff_id'],
 
             // ข้อมูลลูกค้า
             'customers' => $customers,
