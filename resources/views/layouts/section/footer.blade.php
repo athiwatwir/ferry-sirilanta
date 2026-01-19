@@ -99,8 +99,8 @@
                     <div class="row w-100">
                         <div class="col-12 py-2">
                             <div class="footer-links">
-                                <a href="/">Ferry Timetable</a>
-                                <a href="/">Ferry Route Map</a>
+                                <a href="{{ route('timeTable.index') }}">Ferry Timetable</a>
+                                <a href="{{ route('routeMap.index') }}">Ferry Route Map</a>
                                 <a href="/">Check-in Station</a>
                                 <a href="/">Term & Conditions</a>
                                 <a href="/">View your booking</a>
