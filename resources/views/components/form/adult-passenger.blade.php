@@ -1,12 +1,12 @@
 @props(['count'=>0])
 
-<div class="row py-3 mb-3">
+<div class="row">
     <div class="col-12">
         <h6 class="text-main">Passenger {{ $count+1 }} @if ($count==0)
             (Lead passenger)
             @endif</h6>
     </div>
-    <div class="col-12 mb-3">
+    <div class="col-12">
         <div class="row">
             <input type="hidden" name="customers[{{ $count }}][type]" value="ADULT">
             <div class="col-6 col-lg-2">
@@ -45,11 +45,11 @@
             <div class="col-12 mb-3">
                 <label>Telephone number</label>
                 <div class="row">
-                    <div class="col-12 col-lg-5">
+                    <div class="col-3 col-lg-2">
                         <x-select-country-code name="customers[{{ $count }}][mobile_code]" />
 
                     </div>
-                    <div class="col-12 col-lg-7">
+                    <div class="col-9 col-lg-4">
                         <div class="mb-3">
                             <input type="number" class="form-control" id="mobile" name="customers[{{ $count }}][mobile]">
                         </div>

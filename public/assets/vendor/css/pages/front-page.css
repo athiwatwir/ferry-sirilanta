@@ -15,9 +15,9 @@ body {
     }
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 768px) {
     .section-py {
-        padding-block: 0.5rem;
+        padding-block: 0.7rem;
         padding-inline: 0;
     }
 }
@@ -79,10 +79,10 @@ nav.layout-navbar .navbar.landing-navbar {
     /*border: 2px solid var(--bs-front-navbar-border-color);*/
     background: linear-gradient(to right,
             #ffffff 0%,
-            #d1fbfb 20%,
-            #6de0fd 55%,
-            #468cf2 75%,
-            #5239e3 100%);
+            #f0f0f0 20%,
+            #e4e4e4 55%,
+            #d1d1d1 75%,
+            #bdbdbd 100%);
     /*margin-block-start: 1rem;*/
     padding-block: 0.614rem;
     transform: unset;
@@ -91,6 +91,12 @@ nav.layout-navbar .navbar.landing-navbar {
 
 
 
+}
+
+@media (max-width: 768px) {
+    nav.layout-navbar .navbar.landing-navbar {
+        background: transparent !important;
+    }
 }
 
 nav.layout-navbar .navbar.landing-navbar {

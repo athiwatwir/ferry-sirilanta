@@ -73,8 +73,13 @@
 
     .multi-island-link {
         text-align: center;
-        font-size: 1rem;
+        font-size: 0.93rem;
         font-weight: 600;
+
+    }
+
+    .multi-island-link a {
+        color: #F16424 !important;
     }
 
 </style>
@@ -233,11 +238,11 @@
                         <span>ONE-WAY</span>
                     </button>
                     <button type="button" class="trip-type-btn" data-value="R" data-action="trip_type">
-                        <span>RETURN</span>
+                        <span>ROUND-TRIP</span>
                     </button>
                 </div>
                 <div class="multi-island-link">
-                    <a href="/" class="">MULTI ISLAND</a>
+                    <a href="/" class="">MULTI-ISLAND</a>
                 </div>
             </div>
         </div>
@@ -292,11 +297,11 @@
 
     <div class="row">
         <div class="col-12 col-md-6 mb-3 d-none" id="depart_date_container">
-            <input type="text" class="form-control form-control-lg" name="depart_date" placeholder="Depart Date" id="depart_date" />
+            <input type="text" class="form-control form-control-lg" name="depart_date" placeholder="Depart Date *" id="depart_date" />
 
         </div>
         <div class="col-12 col-md-6 mb-3 d-none" id="return_date_container">
-            <input type="text" class="form-control form-control-lg" name="return_date" placeholder="Return Date" id="return_date" />
+            <input type="text" class="form-control form-control-lg" name="return_date" placeholder="Return Date *" id="return_date" />
         </div>
     </div>
     <div class="row">
@@ -369,16 +374,18 @@
         </div>
         <div class="col-12">
             <div class="row align-items-center">
-                <div class="col-6">
+                <div class="col-5">
                     <img src="{{ asset('img/3d-hand-holding-coupon.png') }}" alt="" style="margin-left: 20%;width: 80%;">
                 </div>
-                <div class="col-6">
-                    <button type="submit" class="btn btn-secondary btn-lg w-100" id="btn-letgo">Let's Go! --></button>
+                <div class="col-7">
+                    <button type="submit" class="btn btn-main btn-lg w-100" id="btn-letgo">Let's Go! <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-circle-arrow-right ms-2">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 2l.324 .005a10 10 0 1 1 -.648 0l.324 -.005zm.613 5.21a1 1 0 0 0 -1.32 1.497l2.291 2.293h-5.584l-.117 .007a1 1 0 0 0 .117 1.993h5.584l-2.291 2.293l-.083 .094a1 1 0 0 0 1.497 1.32l4 -4l.073 -.082l.064 -.089l.062 -.113l.044 -.11l.03 -.112l.017 -.126l.003 -.075l-.007 -.118l-.029 -.148l-.035 -.105l-.054 -.113l-.071 -.111a1.008 1.008 0 0 0 -.097 -.112l-4 -4z" /></svg></button>
                 </div>
             </div>
         </div>
-        <div class="col-12">
-            <small>For groups more than 12pax, request <a href="https://tigerlineferry.com" target="_blank">TigerlineFerry.com</a></small>
+        <div class="col-12 my-2">
+            <span>For groups more than 12pax, request <a href="https://tigerlineferry.com" target="_blank">TigerlineFerry.com</a></span>
         </div>
     </div>
 
@@ -861,10 +868,16 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
 
             if (!isValid) {
                 elements.submitButton.classList.add('disabled');
+                elements.submitButton.classList.add('btn-secondary');
+                elements.submitButton.classList.remove('btn-main');
+                elements.submitButton.classList.add('text-dark');
             } else {
                 elements.submitButton.classList.remove('disabled');
                 elements.submitButton.classList.remove('btn-secondary');
-                elements.submitButton.classList.add('btn-letgo');
+                elements.submitButton.classList.remove('text-dark');
+                //elements.submitButton.classList.add('btn-letgo');
+                elements.submitButton.classList.add('btn-main');
+                //elements.submitButton.classList.add('text-dark');
             }
         }
 

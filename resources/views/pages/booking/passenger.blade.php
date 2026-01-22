@@ -28,6 +28,9 @@
                     <div class="col-12">
                         <x-form.adult-passenger count="0" />
                     </div>
+                    <div class="col-12">
+                        <x-form.float-input name="description" label="Pickup/Dropoff Description" :isrrequire="false" />
+                    </div>
                 </div>
 
                 <hr>

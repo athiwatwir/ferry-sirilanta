@@ -70,11 +70,12 @@ class BookingController extends Controller
         //customers
         $customers = [];
         foreach ($request->customers as $customer) {
-            $fullname = $customer['firstname'] . ' ' . $customer['lastname'];
+            $fullname = $customer['title']  . $customer['firstname'] . ' ' . $customer['lastname'];
             $customers[] = [
                 'fullname' => $fullname,
                 'type' => 'ADULT',
                 'email' => $customer['email'],
+                'mobile_code' => $customer['mobile_code'],
                 'mobile' => $customer['mobile'],
                 'isdefault' => 'Y'
             ];
@@ -115,6 +116,7 @@ class BookingController extends Controller
             'api_merchant_id' => null,
             'referenceno' => null,
             'aff_id' => $bookData['aff_id'],
+            'note' => $request->description ?? null,
 
             // ข้อมูลลูกค้า
             'customers' => $customers,

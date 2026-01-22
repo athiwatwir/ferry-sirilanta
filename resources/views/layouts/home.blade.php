@@ -193,10 +193,7 @@
 
     <script>
         const images = [
-            "{{ asset('img/slide/DJI_0112.webp') }}"
-            , "{{ asset('img/slide/DJI_0113.webp') }}"
-            , "{{ asset('img/slide/DJI_0114.webp') }}"
-            , "{{ asset('img/slide/DJI_0115.webp') }}"
+            "{{ asset('img/slide/image.webp') }}"
         ];
 
         const slideshow = document.getElementById('slideshow');
@@ -245,7 +242,7 @@
             const nextIndex = (currentIndex + 1) % images.length;
 
             // เริ่ม wipe effect
-            createWipeEffect();
+            //createWipeEffect();
 
             // เปลี่ยน slide หลังจาก wipe ไปครึ่งทาง
             setTimeout(() => {

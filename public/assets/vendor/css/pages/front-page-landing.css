@@ -1,24 +1,6 @@
 /* Landing
 ******************************************************************************* */
 /* (C) */
-.section-py {
-    padding-block: 6.25rem;
-    padding-inline: 0;
-}
-
-@media (max-width: 1199.98px) {
-    .section-py {
-        padding-block: 5rem;
-        padding-inline: 0;
-    }
-}
-
-@media (max-width: 767.98px) {
-    .section-py {
-        padding-block: 0.5rem;
-        padding-inline: 0;
-    }
-}
 
 /* Hero */
 .landing-hero {
