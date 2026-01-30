@@ -77,7 +77,8 @@ class BookingController extends Controller
                 'email' => $customer['email'],
                 'mobile_code' => $customer['mobile_code'],
                 'mobile' => $customer['mobile'],
-                'isdefault' => 'Y'
+                'isdefault' => 'Y',
+                'other_contact' => $customer['other_contact']
             ];
         }
 

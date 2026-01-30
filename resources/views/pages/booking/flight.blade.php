@@ -55,7 +55,7 @@
                             </a>
                         </div>
                         <div class="col">
-                            <button id="bt-next" type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100" disabled>
+                            <button id="bt-next" type="button" class="btn btn-lg btn-secondary waves-effect waves-light w-100">
                                 <span class="me-2 d-none d-md-block">Add Passenger Details >></span>
                                 <span class="me-2 d-block d-md-none">Next >></span>
                             </button>
@@ -87,6 +87,7 @@
 
 @section('script')
 <script>
+    const btNext = document.getElementById('bt-next');
     // Date selection handler
     $(document).on('click', '.date-card', function() {
         $('.date-card').removeClass('active');
@@ -112,7 +113,10 @@
     $(document).ready(function() {
         $("[data-action='book-select']").on("click", function() {
 
-            document.getElementById("bt-next").disabled = false;
+            //document.getElementById("bt-next").disabled = false;
+            btNext.type = 'submit';
+            btNext.classList.remove('btn-secondary');
+            btNext.classList.add('btn-main');
 
             // รีเซ็ตปุ่มทั้งหมด
             $("[data-action='book-select']")

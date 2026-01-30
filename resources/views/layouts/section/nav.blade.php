@@ -60,7 +60,7 @@
         <!-- Menu logo wrapper: Start -->
         <div class="navbar-brand app-brand demo d-flex py-0 me-4 me-xl-8 ms-0">
             <a href="/" class="app-brand-link">
-                <img src="{{ asset('img/logo-v5.png') }}" alt="" class="logo-default" width="200">
+                <img src="{{ asset('img/logo-t.jpg') }}" alt="" class="logo-default" width="170">
 
             </a>
         </div>

@@ -9,7 +9,7 @@
     }
 
     .footer-links a {
-
+        color: #057ece;
         text-decoration: none;
         font-size: 0.95rem;
         font-weight: 500;
@@ -75,11 +75,11 @@
 
     .ft-bg {
         background: linear-gradient(to right,
-                #ffffff 0%,
-                #f0f0f0 20%,
-                #e4e4e4 55%,
-                #d1d1d1 75%,
-                #bdbdbd 100%);
+                #f9cc3b 0%,
+                #fdc238 10%,
+                #fdc238 55%,
+                #ff7f02 75%,
+                #ff7f02 100%);
     }
 
 </style>
@@ -92,9 +92,9 @@
                     <div class="row w-100">
                         <div class="col-12 py-2">
                             <div class="footer-links">
-                                <a href="{{ route('timeTable.index') }}">Ferry Timetable</a>
-                                <a href="{{ route('routeMap.index') }}">Ferry Route Map</a>
-                                <a href="/">Check-in Station</a>
+                                <a href="https://www.tigerlineferry.com/time-table" target="_blank">Ferry Timetable</a>
+                                <a href="https://www.tigerlineferry.com/route-map" target="_blank">Ferry Route Map</a>
+                                <a href="https://www.tigerlineferry.com/station" target="_blank">Check-in Station</a>
                                 <a href="/">Term & Conditions</a>
                                 <a href="/">View your booking</a>
                                 <a href="https://www.tigerlineferry.com/" target="_blank">Deals & Loyalty, visit us on TigerlineFerry.com</a>

@@ -78,11 +78,11 @@ nav.layout-navbar .navbar.landing-navbar {
     --bs-front-navbar-border-color: rgba(var(--bs-paper-bg-rgb), .68);
     /*border: 2px solid var(--bs-front-navbar-border-color);*/
     background: linear-gradient(to right,
-            #ffffff 0%,
-            #f0f0f0 20%,
-            #e4e4e4 55%,
-            #d1d1d1 75%,
-            #bdbdbd 100%);
+            #f9cc3b 0%,
+            #fdc238 10%,
+            #fdc238 55%,
+            #ff7f02 75%,
+            #ff7f02 100%);
     /*margin-block-start: 1rem;*/
     padding-block: 0.614rem;
     transform: unset;

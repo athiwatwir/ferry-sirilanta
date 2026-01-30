@@ -42,19 +42,22 @@
 
         @if ($count==0)
         <div class="row">
-            <div class="col-12 mb-3">
+            <div class="col-12 col-lg-6 mb-3">
                 <label>Telephone number</label>
                 <div class="row">
-                    <div class="col-3 col-lg-2">
+                    <div class="col-3 col-lg-4">
                         <x-select-country-code name="customers[{{ $count }}][mobile_code]" />
 
                     </div>
-                    <div class="col-9 col-lg-4">
+                    <div class="col-9 col-lg-8">
                         <div class="mb-3">
                             <input type="number" class="form-control" id="mobile" name="customers[{{ $count }}][mobile]">
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-12 col-lg-6 mb-3">
+                <x-form.float-input name="customers[{{ $count }}][other_contact]" label="Optional Contact: WhatsApp, WeChat, LINE" :isrrequire="false" />
             </div>
 
         </div>

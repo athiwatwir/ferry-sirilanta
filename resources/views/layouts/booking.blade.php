@@ -29,7 +29,7 @@
     <link href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/vendor/css/core.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/demo.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/vendor/css/pages/front-page.css?v=1.0.1') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/vendor/css/pages/front-page.css?v=1.0.5') }}" rel="stylesheet" />
 
     <!-- Vendors CSS -->
 
@@ -40,7 +40,7 @@
 
     <!-- Page CSS -->
 
-    <link href="{{ asset('assets/vendor/css/pages/front-page-landing.css?v=1.0.1') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/vendor/css/pages/front-page-landing.css?v=1.0.5') }}" rel="stylesheet" />
 
     <!-- Helpers -->
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>

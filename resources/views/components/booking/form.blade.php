@@ -864,20 +864,22 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
 
             const isValid = hasDepart && hasDest && hasDepartDate && hasReturnDate;
 
-            elements.submitButton.disabled = !isValid;
+            //elements.submitButton.disabled = !isValid;
 
             if (!isValid) {
-                elements.submitButton.classList.add('disabled');
+                //elements.submitButton.classList.add('disabled');
                 elements.submitButton.classList.add('btn-secondary');
                 elements.submitButton.classList.remove('btn-main');
-                elements.submitButton.classList.add('text-dark');
+                elements.submitButton.classList.add('text-white');
+                elements.submitButton.type = 'button';
             } else {
                 elements.submitButton.classList.remove('disabled');
                 elements.submitButton.classList.remove('btn-secondary');
-                elements.submitButton.classList.remove('text-dark');
+                elements.submitButton.classList.remove('text-white');
                 //elements.submitButton.classList.add('btn-letgo');
                 elements.submitButton.classList.add('btn-main');
                 //elements.submitButton.classList.add('text-dark');
+                elements.submitButton.type = 'submit';
             }
         }
 

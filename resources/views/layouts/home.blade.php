@@ -152,14 +152,18 @@
                     <div class="text-center position-relative">
                         <div class="row">
                             <div class="col-12 col-lg-5">
-                                <div class="card card-no-radius-mobile mt-lg-4">
-                                    <div class="card-body text-start">
+                                <div class="card card-no-radius-mobile mt-lg-4 overflow-hidden">
+                                    <div class="card-img-top d-none d-md-block" style="
+        background-image: url('{{ asset('img/logo-v6.png') }}');
+        background-size: cover;
+        background-position: center;
+        height: 180px; position: absolute;
+    "></div>
+                                    <div class="card-body text-start mt-lg-9">
                                         <div class="mb-3 d-block d-md-none mb-3">
                                             <img src="{{ asset('img/logo-v4.png') }}" alt="Logo" class="logo-rotate-mobile" style="width: 120%;margin-left: -15%;">
                                         </div>
-                                        <div class="mb-3 d-none d-md-block mb-6">
-                                            <img src="{{ asset('img/logo-v4.png') }}" alt="Logo" class="card-img">
-                                        </div>
+
                                         <h1 class="mb-0">
                                             Plan Ahead & Book <br>Your island escape
                                         </h1>
