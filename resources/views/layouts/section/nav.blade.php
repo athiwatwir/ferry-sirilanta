@@ -57,47 +57,50 @@
 <nav class="layout-navbar shadow-none py-0">
 
     <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-8 py-2">
-        <!-- Menu logo wrapper: Start -->
-        <div class="navbar-brand app-brand demo d-flex py-0 me-4 me-xl-8 ms-0">
-            <a href="/" class="app-brand-link">
-                <img src="{{ asset('img/logo-t.jpg') }}" alt="" class="logo-default" width="170">
+        <div class="container">
 
-            </a>
-        </div>
-        <!-- Menu logo wrapper: End -->
+            <!-- Menu logo wrapper: Start -->
+            <div class="navbar-brand app-brand demo d-flex py-0 me-4 me-xl-8 ms-0">
+                <a href="/" class="app-brand-link">
+                    <img src="{{ asset('img/logo-t.jpg') }}" alt="" class="logo-default" width="170">
 
-        <!-- Mobile menu toggle: Start (ย้ายมาไว้หลัง logo) -->
-        <button class="navbar-toggler border-0 ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="display: none;">
-            <i class="icon-base ti tabler-menu-2 icon-lg align-middle fw-medium"></i>
-        </button>
-        <!-- Mobile menu toggle: End-->
+                </a>
+            </div>
+            <!-- Menu logo wrapper: End -->
 
-        <!-- Menu wrapper: Start -->
-        <div class="collapse navbar-collapse landing-nav-menu" id="navbarSupportedContent">
-            <button class="navbar-toggler border-0 text-heading position-absolute end-0 top-0 scaleX-n1-rtl p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="icon-base ti tabler-x icon-lg"></i>
+            <!-- Mobile menu toggle: Start (ย้ายมาไว้หลัง logo) -->
+            <button class="navbar-toggler border-0 ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="display: none;">
+                <i class="icon-base ti tabler-menu-2 icon-lg align-middle fw-medium"></i>
             </button>
-            <ul class="navbar-nav me-auto" style="display: none;">
-                <li class="nav-item">
-                    <a class="nav-link fw-medium" aria-current="page" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-medium" aria-current="page" href="/">Station</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-medium" aria-current="page" href="/">Route Map</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-medium" aria-current="page" href="/">Time Table</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-medium" aria-current="page" href="https://www.tigerlineferry.com/" target="_blank">Tigerline Ferry</a>
-                </li>
+            <!-- Mobile menu toggle: End-->
 
-            </ul>
+            <!-- Menu wrapper: Start -->
+            <div class="collapse navbar-collapse landing-nav-menu" id="navbarSupportedContent">
+                <button class="navbar-toggler border-0 text-heading position-absolute end-0 top-0 scaleX-n1-rtl p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="icon-base ti tabler-x icon-lg"></i>
+                </button>
+                <ul class="navbar-nav me-auto" style="display: none;">
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" aria-current="page" href="/">Station</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" aria-current="page" href="/">Route Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" aria-current="page" href="/">Time Table</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" aria-current="page" href="https://www.tigerlineferry.com/" target="_blank">Tigerline Ferry</a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="landing-menu-overlay d-lg-none"></div>
+            <!-- Menu wrapper: End -->
         </div>
-        <div class="landing-menu-overlay d-lg-none"></div>
-        <!-- Menu wrapper: End -->
     </div>
 
 </nav>
