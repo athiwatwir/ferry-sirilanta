@@ -112,9 +112,9 @@
                     <div class="row w-100 d-block d-md-none">
                         <div class="col-12 py-2">
                             <div class="footer-links">
-                                <a href="{{ route('timeTable.index') }}">Ferry Timetable</a>
-                                <a href="{{ route('routeMap.index') }}">Ferry Route Map</a>
-                                <a href="/">Check-in Station</a>
+                                <a href="https://www.tigerlineferry.com/time-table" target="_blank">Ferry Timetable</a>
+                                <a href="https://www.tigerlineferry.com/route-map" target="_blank">Ferry Route Map</a>
+                                <a href="https://www.tigerlineferry.com/station" target="_blank">Check-in Station</a>
                                 <a href="/">Term & Conditions</a>
                                 <a href="/">View your booking</a>
                                 <a href="https://www.tigerlineferry.com/" target="_blank">Deals & Loyalty, visit us on TigerlineFerry.com</a>
