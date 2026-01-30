@@ -45,7 +45,7 @@
     }
 
 </style>
-<nav class="layout-navbar shadow-none py-0">
+<nav class="layout-navbar shadow-none py-0 d-none d-md-block">
 
     <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-8 py-8">
         <!-- Menu logo wrapper: Start -->

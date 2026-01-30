@@ -131,8 +131,8 @@
 
                                     </script> Sirilanta Co., Ltd. All rights reserved.
                                 </p>
-                                <p>Use of this website indicateds your compliance with our Terms and Conditions, Terms of Use and Privacy Policy.</p>
-                                <p>Indicates an external site which may or may not meet accessibility guidelines.</p>
+                                <p>Use of this website indicateds your compliance with our Terms and Conditions, Terms of Use and Privacy Policy. Indicates an external site which may or may not meet accessibility guidelines.</p>
+
                             </span>
                             <span class="footer-bottom-text d-block d-md-none">
                                 <p>© Copyright

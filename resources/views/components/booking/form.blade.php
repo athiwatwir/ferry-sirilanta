@@ -237,12 +237,12 @@
                     <button type="button" class="trip-type-btn active" data-value="O" data-action="trip_type">
                         <span>ONE-WAY</span>
                     </button>
-                    <button type="button" class="trip-type-btn" data-value="R" data-action="trip_type">
+                    <button type="button" class="trip-type-btn" data-value="R" data-action="trip_type" disabled>
                         <span>ROUND-TRIP</span>
                     </button>
                 </div>
                 <div class="multi-island-link">
-                    <a href="/" class="">MULTI-ISLAND</a>
+                    <a href="#" class="" disabled>MULTI-ISLAND</a>
                 </div>
             </div>
         </div>

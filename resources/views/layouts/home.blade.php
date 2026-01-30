@@ -114,14 +114,14 @@
 
         .card-img {
             position: absolute;
-            top: 2%;
+            top: 8%;
             left: 60%;
-            width: 140%;
+            width: 120%;
             /* ให้รูปใหญ่กว่ากล่อง */
             transform: translate(-50%, -50%) rotate(10deg);
             /* ขยาย + เอียง */
             pointer-events: none;
-            z-index: 100;
+            z-index: 90;
             /* ไม่บังการคลิก (ถ้าต้องการ) */
         }
 
@@ -143,7 +143,7 @@
     <div data-bs-spy="scroll" class="scrollspy-example">
         <!-- Hero: Start -->
         <section id="hero-animation">
-            <div id="landingHero" class="section-py landing-hero position-relative">
+            <div id="landingHero" class="section-py pb-10 landing-hero position-relative">
                 <div class="bg-slideshow d-none d-md-block" id="slideshow">
                     <!-- Slides will be added dynamically -->
                 </div>
@@ -153,12 +153,9 @@
                         <div class="row">
                             <div class="col-12 col-lg-5">
                                 <div class="card card-no-radius-mobile mt-lg-4 overflow-hidden">
-                                    <div class="card-img-top d-none d-md-block" style="
-        background-image: url('{{ asset('img/logo-v6.png') }}');
-        background-size: cover;
-        background-position: center;
-        height: 180px; position: absolute;
-    "></div>
+                                    <div class="mb-3 d-none d-md-block mb-6">
+                                        <img src="{{ asset('img/logo-v4.png') }}" alt="Logo" class="card-img">
+                                    </div>
                                     <div class="card-body text-start mt-lg-9">
                                         <div class="mb-3 d-block d-md-none mb-3">
                                             <img src="{{ asset('img/logo-v4.png') }}" alt="Logo" class="logo-rotate-mobile" style="width: 120%;margin-left: -15%;">
