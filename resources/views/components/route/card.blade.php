@@ -15,7 +15,7 @@ $departDateTextShort = \Carbon\Carbon::parse($departDate)->format('D d M');
 
 </style>
 @if (!empty($route))
-<div class="col-12 card mb-3 p-3">
+<div class="col-12 card mb-3 p-3 card-{{ $type }}">
 
     <div class="row ">
         <div class="col-12 col-lg-6 border-end">
@@ -38,7 +38,6 @@ $departDateTextShort = \Carbon\Carbon::parse($departDate)->format('D d M');
                         </div>
                         @endforeach
                     </div>
-
 
                 </div>
                 <div class="col col-lg-4 text-end">
@@ -72,7 +71,6 @@ $departDateTextShort = \Carbon\Carbon::parse($departDate)->format('D d M');
                 </div>
             </div>
 
-
         </div>
 
         <div class="col-4 col-lg-2 text-end text-primary">
@@ -91,18 +89,21 @@ $departDateTextShort = \Carbon\Carbon::parse($departDate)->format('D d M');
 @section('script')
 @parent
 <script>
+    //const card_type = ".card-{{ $type }}";
+    //console.log(card_type);
     document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll("button[data-action='book-select']").forEach(function(btn) {
 
             btn.addEventListener("click", function() {
 
                 // เอา highlight ออกจากทุก card
-                document.querySelectorAll(".card").forEach(function(card) {
+                document.querySelectorAll(".card-{{ $type }}").forEach(function(card) {
+                    //console.log(card);
                     card.classList.remove("selected-card");
                 });
 
                 // หา card ที่ปุ่มนี้อยู่ในนั้น แล้วเพิ่ม highlight
-                const card = btn.closest(".card");
+                const card = btn.closest(".card-{{ $type }}");
                 card.classList.add("selected-card");
             });
 

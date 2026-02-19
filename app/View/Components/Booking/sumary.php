@@ -26,21 +26,23 @@ class Sumary extends Component
     public function render(): View|Closure|string
     {
         $sessionData = session('booking', []);
-
+        $booking_routes = session('booking_routes', []);
+        //dd($booking_routes);
         $tripTypes = BookingController::tripTypes();
 
-        //dd($sessionData);
-        $departStation = app(StationService::class)->getStation($sessionData['depart_station_id']);
-        //dd($departStation);
-        $destStation = app(StationService::class)->getStation($sessionData['dest_station_id']);
+        $bookingRoutes = [];
+        foreach ($booking_routes as $booking_route) {
+            $subRoute = app(RouteService::class)->getRoute($booking_route['selected_route_id']);
+            $bookingRoutes[] = [
+                'traveldate' => $booking_route['traveldate'],
+                'route' => $subRoute,
+            ];
+        }
 
-        $subRoute = app(RouteService::class)->getRoute($sessionData['outbound_sub_route_id']);
-
+        //dd($bookingRoutes);
         return view('components.booking.sumary', [
             'sessionData' => $sessionData,
-            'departStation' => $departStation,
-            'destStation' => $destStation,
-            'subRoute' => $subRoute,
+            'bookingRoutes' => $bookingRoutes,
             'tripTypes' => $tripTypes
         ]);
     }

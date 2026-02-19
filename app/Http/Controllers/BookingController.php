@@ -59,13 +59,15 @@ class BookingController extends Controller
         //dd($request->all());
         $bookData = session('booking');
         $data = $request->all();
+        $bookingRoutes = session('booking_routes', []);
 
         //return redirect()->route('booking.payment', ['id' => '5180dcca-65d9-4b80-b6a7-e1654ff97bf8']);
         //dd($request->all());
 
-        $subRoute = app(RouteService::class)->getRoute($bookData['outbound_sub_route_id']);
+        //$subRoute = app(RouteService::class)->getRoute($bookData['outbound_sub_route_id']);
+        $totalPassenger = $bookData['adult'];
 
-        $totalamt = $subRoute['prices']['regular'] * $bookData['adult'];
+        //$totalamt = $subRoute['prices']['regular'] * $bookData['adult'];
 
         //customers
         $customers = [];
@@ -84,22 +86,25 @@ class BookingController extends Controller
 
         $routes = [];
         if ($bookData['trip_type'] == 'O') {
+            $subRoute = app(RouteService::class)->getRoute($bookingRoutes[0]['selected_route_id']);
+
+            $totalamt = $totalPassenger * $subRoute['prices']['regular'];
             $routes[] = [
-                'id' => $bookData['outbound_sub_route_id'],
-                'traveldate' => $bookData['depart_date'],
+                'id' => $subRoute['id'],
+                'traveldate' => $bookingRoutes[0]['traveldate'],
                 'price' => $totalamt
             ];
-        } else {
-            $routes[] = [
-                'id' => $bookData['outbound_sub_route_id'],
-                'traveldate' => $bookData['depart_date'],
-                'price' => 0
-            ];
-            $routes[] = [
-                'id' => $bookData['return_sub_route_id'],
-                'traveldate' => $bookData['return_date'],
-                'price' => 0
-            ];
+        } elseif ($bookData['trip_type'] == 'R') {
+            foreach ($bookingRoutes as $bookingRoute) {
+                $subRoute = app(RouteService::class)->getRoute($bookingRoute['selected_route_id']);
+
+                $totalamt = $totalPassenger * $subRoute['prices']['regular'];
+                $routes[] = [
+                    'id' => $subRoute['id'],
+                    'traveldate' => $bookingRoute['traveldate'],
+                    'price' => $totalamt
+                ];
+            }
         }
 
         $data = [
@@ -173,34 +178,65 @@ class BookingController extends Controller
         $trip_type = request()->trip_type;
         $adult = request()->adult ?? 1;
 
-        $_departDate = Carbon::parse($depart_date)->format('d/m/Y');
-        $departDateText = Carbon::parse($depart_date)->format('D d M Y');
-
-        $aRoutes = app(RouteService::class)->getRoutes($depart_station, $dest_station, $depart_date);
-        $aDate = $this->generateDateList($depart_date);
-
-
-        $bRoutes = [];
-        if ($trip_type == 'R') {
-            $bRoutes = app(RouteService::class)->getRoutes($dest_station, $depart_station, $return_date);
-        }
-
-        request()->session()->put('booking', request()->query());
-        //dd(request()->query());
 
         $departStation = app(StationService::class)->getStation($depart_station);
         //dd($departStation);
         $destStation = app(StationService::class)->getStation($dest_station);
 
+        $bookingRoutes = [];
+
+        if ($trip_type == 'O') {
+            $routes = app(RouteService::class)->getRoutes($depart_station, $dest_station, $depart_date);
+
+            $_departDate = Carbon::parse($depart_date)->format('Y-m-d');
+            $departDateText = Carbon::parse($depart_date)->format('D d M Y');
+
+            $bookingRoutes[] = [
+                'traveldate' => $_departDate,
+                'traveldateText' => $departDateText,
+                'departStation' => $departStation,
+                'destStation' => $destStation,
+                'routes' => $routes
+            ];
+        } elseif ($trip_type == 'R') {
+            $routes = app(RouteService::class)->getRoutes($depart_station, $dest_station, $depart_date);
+
+            $_departDate = Carbon::parse($depart_date)->format('Y-m-d');
+            $departDateText = Carbon::parse($depart_date)->format('D d M Y');
+
+            $bookingRoutes[] = [
+                'traveldate' => $_departDate,
+                'traveldateText' => $departDateText,
+                'departStation' => $departStation,
+                'destStation' => $destStation,
+                'routes' => $routes
+            ];
+
+            $routes = app(RouteService::class)->getRoutes($dest_station, $depart_station, $return_date);
+            $_departDate = Carbon::parse($return_date)->format('Y-m-d');
+            $departDateText = Carbon::parse($return_date)->format('D d M Y');
+
+            $bookingRoutes[] = [
+                'traveldate' => $_departDate,
+                'traveldateText' => $departDateText,
+                'departStation' => $destStation,
+                'destStation' => $departStation,
+                'routes' => $routes
+            ];
+        } elseif ($trip_type == 'M') {
+            $mRoutes = app(RouteService::class)->getRoutes($depart_station, $dest_station, $depart_date);
+        }
+
+        request()->session()->put('booking', request()->query());
+        //dd(request()->query());
+
         //dd(session('booking'));
         return view('pages.booking.flight', [
-            'aRoutes' => $aRoutes,
-            'bRoutes' => $bRoutes,
+            'bookingRoutes' => $bookingRoutes,
             'sessionData' => session('booking'),
             'tripType' => $trip_type,
             'departStation' => $departStation,
             'destStation' => $destStation,
-            'aDate' => $aDate,
             'depart_date' => $depart_date,
             'return_date' => $return_date,
             '_departDate' => $_departDate,
@@ -211,13 +247,12 @@ class BookingController extends Controller
 
     public function passenger(Request $request)
     {
-        $outbound_sub_route_id = $request->outbound_sub_route_id;
-        $return_sub_route_id = $request->return_sub_route_id;
+        //dd($request->all());
+        $booking_routes = $request->booking_routes;
 
         $booking = session('booking', []);
-        $booking['outbound_sub_route_id'] = $outbound_sub_route_id;
-        $booking['return_sub_route_id'] = $return_sub_route_id;
         session(['booking' => $booking]);
+        session(['booking_routes' => $booking_routes]);
 
         return view('pages.booking.passenger', [
             'sessionData' => session('booking'),

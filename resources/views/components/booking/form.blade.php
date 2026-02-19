@@ -237,7 +237,7 @@
                     <button type="button" class="trip-type-btn active" data-value="O" data-action="trip_type">
                         <span>ONE-WAY</span>
                     </button>
-                    <button type="button" class="trip-type-btn" data-value="R" data-action="trip_type" disabled>
+                    <button type="button" class="trip-type-btn" data-value="R" data-action="trip_type">
                         <span>ROUND-TRIP</span>
                     </button>
                 </div>
