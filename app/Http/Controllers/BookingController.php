@@ -113,7 +113,7 @@ class BookingController extends Controller
             'adult_passenger' => $bookData['adult'],
             //'child_passenger' => $bookData['child'],
             //'infant_passenger' => $bookData['infant'],
-            'user_id' => null,
+            'user_id' => $bookData['aff_id'],
             'trip_type' => $bookData['trip_type'],
             'note' => null,
             'book_channel' => 'API',
