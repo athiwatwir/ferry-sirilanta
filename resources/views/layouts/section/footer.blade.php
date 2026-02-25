@@ -96,7 +96,7 @@
                                 <a href="https://www.tigerlineferry.com/route-map" target="_blank">Ferry Route Map</a>
                                 <a href="https://www.tigerlineferry.com/station" target="_blank">Check-in Station</a>
                                 <a href="/">Term & Conditions</a>
-                                <a href="/">View your booking</a>
+                                <a href="{{ route('me.index') }}">View your booking</a>
                                 <a href="https://www.tigerlineferry.com/" target="_blank">Deals & Loyalty, visit us on TigerlineFerry.com</a>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
                                 <a href="https://www.tigerlineferry.com/route-map" target="_blank">Ferry Route Map</a>
                                 <a href="https://www.tigerlineferry.com/station" target="_blank">Check-in Station</a>
                                 <a href="/">Term & Conditions</a>
-                                <a href="/">View your booking</a>
+                                <a href="{{ route('me.index') }}">View your booking</a>
                                 <a href="https://www.tigerlineferry.com/" target="_blank">Deals & Loyalty, visit us on TigerlineFerry.com</a>
                             </div>
                         </div>
