@@ -41,7 +41,7 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="terms_accepted" value="1" id="termsCheckbox">
                             <label class="form-check-label" for="termsCheckbox">
-                                By completing to this booking, you agree to buy the product and confirm you have read and accept the full <a href="{{ route('terms.index') }}" target="_blank">terms and conditions.</a>
+                                By completing to this booking, you agree to buy the product and confirm you have read and accept the full <a href="{{ route('terms.index') }}" target="_blank"><u>terms and conditions.</u></a>
                             </label>
                         </div>
                     </div>
