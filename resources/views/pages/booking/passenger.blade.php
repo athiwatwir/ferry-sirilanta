@@ -36,13 +36,24 @@
                 </div>
 
                 <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="terms_accepted" value="1" id="termsCheckbox">
+                            <label class="form-check-label" for="termsCheckbox">
+                                By completing to this booking, you agree to buy the product and confirm you have read and accept the full <a href="{{ route('terms.index') }}" target="_blank">terms and conditions.</a>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
                 <div class="row pe-3">
                     <div class="col">
                         <a href="{{ route('booking.flight', $sessionData) }}" class="btn btn-lg btn-secondary" type="button">
                             << Change / Edit</a>
                     </div>
                     <div class="col text-end">
-                        <button class="btn btn-lg btn-main waves-effect waves-light" type="submit" id="bt-next">Book / Payment >></button>
+                        <button class="btn btn-lg btn-secondary waves-effect waves-light" type="submit" id="bt-next" disabled>Book / Payment >></button>
                     </div>
 
                 </div>
@@ -62,3 +73,29 @@
 
 </form>
 @stop
+
+@section('script')
+<script>
+    (function() {
+        var checkbox = document.getElementById('termsCheckbox');
+        var btn = document.getElementById('bt-next');
+        if (!checkbox || !btn) return;
+
+        function updateButton() {
+            if (checkbox.checked) {
+                btn.disabled = false;
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('btn-main');
+            } else {
+                btn.disabled = true;
+                btn.classList.remove('btn-main');
+                btn.classList.add('btn-secondary');
+            }
+        }
+
+        checkbox.addEventListener('change', updateButton);
+        updateButton(); // init state
+    })();
+
+</script>
+@endsection
