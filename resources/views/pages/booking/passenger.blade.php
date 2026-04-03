@@ -19,9 +19,7 @@
                 </div>
 
 
-                @foreach($sessionData as $key => $value)
-                <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-                @endforeach
+                @include('components.booking.session-query-hidden', ['data' => $sessionData])
 
 
                 <div class="row p-3">

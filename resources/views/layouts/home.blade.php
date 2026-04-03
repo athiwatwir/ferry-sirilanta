@@ -8,7 +8,7 @@
 
     <title>SIRI LANTA, Official Website Tigerline Ferry & Sirilanta Speedboat go to all islands</title>
 
-    <meta name="description" content="" />
+    <meta name="description" content="SIRI LANTA, Official Website Tigerline Ferry & Sirilanta Speedboat go to all islands" />
 
     @include('layouts.section.style')
     @yield('style')

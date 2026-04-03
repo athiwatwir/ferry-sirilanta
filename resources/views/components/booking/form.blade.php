@@ -7,18 +7,19 @@
         border-radius: 50px;
         padding: 6px;
         display: inline-flex;
-        /* เปลี่ยนจาก flex เป็น inline-flex */
         width: auto;
-        /* เปลี่ยนจาก 100% เป็น auto */
+        max-width: 100%;
         gap: 0;
-
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
         box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    /* เพิ่ม wrapper สำหรับจัดให้อยู่กึ่งกลาง */
     .trip-type-wrapper {
         display: flex;
-
+        flex-wrap: nowrap;
+        justify-content: center;
         margin-bottom: 1rem;
     }
 
@@ -26,16 +27,16 @@
         position: relative;
         background: transparent;
         border: none;
-        padding: 8px 40px;
+        padding: 8px 28px;
         border-radius: 50px;
         font-weight: 700;
         color: #666;
         transition: all 0.3s ease;
-        font-size: 0.9rem;
-        letter-spacing: 0.5px;
-        flex: 1;
+        font-size: 0.85rem;
+        letter-spacing: 0.35px;
+        flex: 1 1 0;
+        min-width: 0;
         white-space: nowrap;
-        /* เพิ่มบรรทัดนี้ */
     }
 
     @media (max-width: 768px) {
@@ -44,11 +45,17 @@
         }
 
         .trip-type-btn {
-            padding: 10px 16px;
-            font-size: 0.75rem;
-            letter-spacing: 0.3px;
+            padding: 8px 10px;
+            font-size: 0.68rem;
+            letter-spacing: 0.15px;
             white-space: nowrap;
-            /* เพิ่มบรรทัดนี้ด้วย */
+        }
+    }
+
+    @media (max-width: 380px) {
+        .trip-type-btn {
+            padding: 8px 6px;
+            font-size: 0.62rem;
         }
     }
 
@@ -223,7 +230,10 @@
 
 </style>
 
-<form class="" action="{{ route('booking.flight') }}">
+<form class="" action="{{ route('booking.flight') }}" method="get" id="booking-search-form">
+    @if (session('booking_error'))
+    <div class="alert alert-warning mb-3" role="alert">{{ session('booking_error') }}</div>
+    @endif
     <input type="hidden" name="aff_id" value="{{ $aff_id }}">
     <div class="btn-group mb-3" role="group">
         <input type="hidden" name="trip_type" id="trip_type" value="O">
@@ -231,18 +241,18 @@
         <input type="hidden" name="depart_station_id" id="depart_station_id">
     </div>
     <div class="row mb-3">
-        <div class="col">
-            <div class="d-flex align-items-center gap-2 flex-wrap trip-type-wrapper">
-                <div class="trip-type-container d-flex align-items-center gap-2">
+        <div class="col p-0">
+            <div class="d-flex align-items-center justify-content-center flex-nowrap trip-type-wrapper">
+                <div class="trip-type-container">
                     <button type="button" class="trip-type-btn active" data-value="O" data-action="trip_type">
                         <span>ONE-WAY</span>
                     </button>
                     <button type="button" class="trip-type-btn" data-value="R" data-action="trip_type">
                         <span>ROUND-TRIP</span>
                     </button>
-                </div>
-                <div class="multi-island-link">
-                    <a href="#" class="" disabled>MULTI-ISLAND</a>
+                    <button type="button" class="trip-type-btn" data-value="M" data-action="trip_type">
+                        <span>MULTI-ISLAND</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -302,6 +312,16 @@
         </div>
         <div class="col-12 col-md-6 mb-3 d-none" id="return_date_container">
             <input type="text" class="form-control form-control-lg" name="return_date" placeholder="Return Date *" id="return_date" />
+        </div>
+    </div>
+    <div class="row d-none" id="multi_leg_outer">
+        <div class="col-12 mb-2">
+            <p class="text-muted small mb-1">Island hops (A → B → C …). Pick each stop in order, then a travel date per leg. At least two stops are required.</p>
+            <div id="multi_leg_container"></div>
+        </div>
+        <div class="col-12 mb-3 d-none" id="multi_leg_actions">
+            <button type="button" class="btn btn-sm btn-outline-secondary me-2" id="btn_add_multi_leg">+ Add island</button>
+            <button type="button" class="btn btn-sm btn-link text-danger d-none" id="btn_remove_last_multi_leg">Remove last stop</button>
         </div>
     </div>
     <div class="row">
@@ -599,15 +619,6 @@
 
 <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
 <script>
-    document.querySelectorAll('.trip-type-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.trip-type-btn').forEach(b => {
-                b.classList.remove('active');
-            });
-            this.classList.add('active');
-        });
-    });
-
     function toggleBg() {
         const avatars = document.querySelectorAll('.avatar .avatar-initial');
         const midCol = document.querySelector('.col.text-start');
@@ -674,12 +685,165 @@
             , selectType: null
             , destStationId: null
             , departStationId: null
+            , multiStops: []
+            , multiNextIndex: 0
+            , multiFp: []
+            , multiLegDates: {}
             , passengerCounts: {
                 adult: 2
                 , child: 0
                 , infant: 0
             }
         };
+
+        function getTripType() {
+            return elements.tripTypeInput ? elements.tripTypeInput.value : 'O';
+        }
+
+        function clearLegacyDatePickers() {
+            ['depart_date', 'return_date'].forEach(function(id) {
+                const el = document.getElementById(id);
+                if (!el) {
+                    return;
+                }
+                if (el._flatpickr) {
+                    el._flatpickr.clear();
+                } else {
+                    el.value = '';
+                }
+            });
+        }
+
+        function destroyMultiPickers() {
+            (state.multiFp || []).forEach(function(fp) {
+                if (fp && typeof fp.destroy === 'function') {
+                    fp.destroy();
+                }
+            });
+            state.multiFp = [];
+        }
+
+        function resetMultiIslandState() {
+            destroyMultiPickers();
+            state.multiStops = [];
+            state.multiNextIndex = 0;
+            state.multiLegDates = {};
+            const outer = document.getElementById('multi_leg_outer');
+            const actions = document.getElementById('multi_leg_actions');
+            const container = document.getElementById('multi_leg_container');
+            if (outer) {
+                outer.classList.add('d-none');
+            }
+            if (actions) {
+                actions.classList.add('d-none');
+            }
+            if (container) {
+                container.innerHTML = '';
+            }
+        }
+
+        function updateDestinationRowForTripType() {
+            const destinationElement = document.querySelector('.selection-underline[data-type="destination"]');
+            if (!destinationElement) {
+                return;
+            }
+            const destinationTitle = destinationElement.querySelector('.selection-underline-title');
+            const destinationSubtitle = destinationElement.querySelector('.selection-underline-subtitle');
+            if (getTripType() === 'M') {
+                destinationTitle.textContent = state.multiStops.length ? (state.multiStops[0].name || 'First island stop') : 'First island stop';
+                destinationSubtitle.textContent = state.multiStops.length ? 'Selected first stop' : 'Choose your first stop after departure';
+            } else if (!state.destStationId) {
+                destinationTitle.textContent = 'Choose Your Destination';
+                destinationSubtitle.textContent = 'Where do you want to go?';
+            }
+        }
+
+        function renderMultiLegUI() {
+            const outer = document.getElementById('multi_leg_outer');
+            const actions = document.getElementById('multi_leg_actions');
+            const container = document.getElementById('multi_leg_container');
+            const btnRemove = document.getElementById('btn_remove_last_multi_leg');
+            const btnAdd = document.getElementById('btn_add_multi_leg');
+            if (!outer || !container || getTripType() !== 'M') {
+                return;
+            }
+
+            document.querySelectorAll('#multi_leg_container .js-multi-leg-date').forEach(function(el) {
+                const idx = el.dataset.legIndex != null ? parseInt(el.dataset.legIndex, 10) : NaN;
+                if (!isNaN(idx) && el.value) {
+                    state.multiLegDates[idx] = el.value;
+                }
+            });
+
+            destroyMultiPickers();
+
+            if (!state.departStationId || state.multiStops.length === 0) {
+                outer.classList.add('d-none');
+                if (actions) {
+                    actions.classList.add('d-none');
+                }
+                return;
+            }
+
+            outer.classList.remove('d-none');
+            if (actions) {
+                actions.classList.remove('d-none');
+            }
+
+            const departName = document.querySelector('.selection-underline[data-type="departure"] .selection-underline-title').textContent || 'Departure';
+
+            let html = '';
+            state.multiStops.forEach(function(stop, i) {
+                const fromName = i === 0 ? departName : state.multiStops[i - 1].name;
+                const savedDate = state.multiLegDates[i] ? escAttr(state.multiLegDates[i]) : '';
+                html += '<div class="card mb-3 p-3 border">';
+                html += '<div class="fw-bold text-primary mb-2">Leg ' + (i + 1) + ': ' + escHtml(fromName) + ' → ' + escHtml(stop.name) + '</div>';
+                html += '<input type="hidden" name="multi_segment_dest[' + i + ']" value="' + escAttr(stop.id) + '">';
+                html += '<label class="form-label small mb-1">Travel date for this leg</label>';
+                html += '<input type="text" class="form-control form-control-lg js-multi-leg-date" name="multi_segment_date[' + i + ']" id="multi_segment_date_input_' + i + '" data-leg-index="' + i + '" placeholder="Date *" autocomplete="off" value="' + savedDate + '" required>';
+                html += '</div>';
+            });
+            container.innerHTML = html;
+
+            document.querySelectorAll('.js-multi-leg-date').forEach(function(el) {
+                const legIdx = el.dataset.legIndex != null ? parseInt(el.dataset.legIndex, 10) : NaN;
+                const fp = flatpickr(el, {
+                    monthSelectorType: 'static'
+                    , static: true
+                    , minDate: 'today'
+                    , disableMobile: true
+                    , onChange: function(selectedDates, dateStr) {
+                        if (!isNaN(legIdx)) {
+                            state.multiLegDates[legIdx] = dateStr;
+                        }
+                        validateForm();
+                    }
+                });
+                state.multiFp.push(fp);
+            });
+
+            if (btnAdd) {
+                btnAdd.classList.toggle('d-none', state.multiStops.length >= 8);
+            }
+            if (btnRemove) {
+                btnRemove.classList.toggle('d-none', state.multiStops.length <= 2);
+            }
+
+            const last = state.multiStops[state.multiStops.length - 1];
+            if (last && elements.destStationInput) {
+                elements.destStationInput.value = last.id;
+            }
+
+            const prunedDates = {};
+            for (let li = 0; li < state.multiStops.length; li++) {
+                if (state.multiLegDates[li]) {
+                    prunedDates[li] = state.multiLegDates[li];
+                }
+            }
+            state.multiLegDates = prunedDates;
+
+            updateDestinationRowForTripType();
+        }
 
         // ==================== DOM Elements Cache ====================
         const elements = {
@@ -712,14 +876,16 @@
             }, (err) => console.error("Error loading departure stations:", err));
         }
 
-        function loadDestStations(departStationId) {
+        function loadDestStations(departStationId, onReady) {
             apiGet("station/destination", {
                 group: 'N'
                 , depart_station: departStationId
             }, (res) => {
                 state.destStations = res.data;
-                // สำหรับ destination ให้แสดง station ทั้งหมดเลย
                 renderAllStations(state.destStations);
+                if (typeof onReady === 'function') {
+                    onReady();
+                }
             }, (err) => console.error("Error loading destination stations:", err));
         }
 
@@ -824,16 +990,26 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
             const hasDest = !!state.destStationId;
             const departDateContainer = document.getElementById('depart_date_container');
             const returnDateContainer = document.getElementById('return_date_container');
-            const tripType = elements.tripTypeInput ? elements.tripTypeInput.value : 'O';
-            const needsReturnDate = tripType === 'R' || tripType === 'M';
+            const tripType = getTripType();
+            const needsReturnDate = tripType === 'R';
+            const isMulti = tripType === 'M';
+
+            if (isMulti) {
+                if (departDateContainer) {
+                    departDateContainer.classList.add('d-none');
+                }
+                if (returnDateContainer) {
+                    returnDateContainer.classList.add('d-none');
+                }
+                renderMultiLegUI();
+                return;
+            }
 
             if (hasDepart && hasDest) {
-                // แสดง depart date container
                 if (departDateContainer) {
                     departDateContainer.classList.remove('d-none');
                 }
 
-                // แสดง return date container เฉพาะเมื่อเลือก round-trip
                 if (returnDateContainer) {
                     if (needsReturnDate) {
                         returnDateContainer.classList.remove('d-none');
@@ -842,7 +1018,6 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
                     }
                 }
             } else {
-                // ซ่อน date containers ทั้งหมด
                 if (departDateContainer) {
                     departDateContainer.classList.add('d-none');
                 }
@@ -854,15 +1029,29 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
 
         // ==================== Validation Functions ====================
         function validateForm() {
-            const hasDepart = !!state.departStationId;
-            const hasDest = !!state.destStationId;
-            const hasDepartDate = !!elements.departDatePicker.value;
+            const tripType = getTripType();
+            let isValid = false;
 
-            const tripType = elements.tripTypeInput.value;
-            const needsReturnDate = tripType === 'R' || tripType === 'M';
-            const hasReturnDate = needsReturnDate ? !!elements.returnDatePicker.value : true;
-
-            const isValid = hasDepart && hasDest && hasDepartDate && hasReturnDate;
+            if (tripType === 'M') {
+                const hasDepart = !!state.departStationId;
+                const enoughStops = state.multiStops.length >= 2;
+                let allDates = true;
+                for (let i = 0; i < state.multiStops.length; i++) {
+                    const el = document.getElementById('multi_segment_date_input_' + i);
+                    if (!el || !el.value) {
+                        allDates = false;
+                        break;
+                    }
+                }
+                isValid = hasDepart && enoughStops && allDates;
+            } else {
+                const hasDepart = !!state.departStationId;
+                const hasDest = !!state.destStationId;
+                const hasDepartDate = !!elements.departDatePicker.value;
+                const needsReturnDate = tripType === 'R';
+                const hasReturnDate = needsReturnDate ? !!elements.returnDatePicker.value : true;
+                isValid = hasDepart && hasDest && hasDepartDate && hasReturnDate;
+            }
 
             //elements.submitButton.disabled = !isValid;
 
@@ -926,38 +1115,77 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
             });
         }
 
+        function escAttr(s) {
+            return String(s == null ? '' : s)
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/</g, '&lt;');
+        }
+
+        function escHtml(s) {
+            return String(s == null ? '' : s)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
         function handleStationSelection(stationId, stationName) {
             if (state.selectType === 'departure') {
+                resetMultiIslandState();
                 state.departStationId = stationId;
                 elements.departStationInput.value = stationId;
 
-                // อัพเดทชื่อใน selection-underline
                 const departureElement = document.querySelector('.selection-underline[data-type="departure"]');
                 const departureTitle = departureElement.querySelector('.selection-underline-title');
                 const departureSubtitle = departureElement.querySelector('.selection-underline-subtitle');
                 departureTitle.textContent = stationName;
                 departureSubtitle.textContent = 'Selected departure point';
 
-                // เคลียร์ destination
                 state.destStationId = null;
                 elements.destStationInput.value = '';
                 const destinationElement = document.querySelector('.selection-underline[data-type="destination"]');
                 const destinationTitle = destinationElement.querySelector('.selection-underline-title');
                 const destinationSubtitle = destinationElement.querySelector('.selection-underline-subtitle');
-                destinationTitle.textContent = 'Choose Your Destination';
-                destinationSubtitle.textContent = 'Where do you want to go?';
+                if (getTripType() === 'M') {
+                    destinationTitle.textContent = 'First island stop';
+                    destinationSubtitle.textContent = 'Choose your first stop after departure';
+                } else {
+                    destinationTitle.textContent = 'Choose Your Destination';
+                    destinationSubtitle.textContent = 'Where do you want to go?';
+                }
 
                 loadDestStations(stationId);
             } else if (state.selectType === 'destination') {
+                if (getTripType() === 'M') {
+                    state.multiLegDates = {};
+                    state.multiStops = [{
+                        id: stationId
+                        , name: stationName
+                    }];
+                    state.destStationId = stationId;
+                    elements.destStationInput.value = stationId;
+                    const destinationElement = document.querySelector('.selection-underline[data-type="destination"]');
+                    const destinationTitle = destinationElement.querySelector('.selection-underline-title');
+                    const destinationSubtitle = destinationElement.querySelector('.selection-underline-subtitle');
+                    destinationTitle.textContent = stationName;
+                    destinationSubtitle.textContent = 'Selected first stop';
+                } else {
+                    state.destStationId = stationId;
+                    elements.destStationInput.value = stationId;
+                    const destinationElement = document.querySelector('.selection-underline[data-type="destination"]');
+                    const destinationTitle = destinationElement.querySelector('.selection-underline-title');
+                    const destinationSubtitle = destinationElement.querySelector('.selection-underline-subtitle');
+                    destinationTitle.textContent = stationName;
+                    destinationSubtitle.textContent = 'Selected destination';
+                }
+            } else if (state.selectType === 'multi_next') {
+                state.multiStops = state.multiStops.slice(0, state.multiNextIndex);
+                state.multiStops.push({
+                    id: stationId
+                    , name: stationName
+                });
                 state.destStationId = stationId;
                 elements.destStationInput.value = stationId;
-
-                // อัพเดทชื่อใน selection-underline
-                const destinationElement = document.querySelector('.selection-underline[data-type="destination"]');
-                const destinationTitle = destinationElement.querySelector('.selection-underline-title');
-                const destinationSubtitle = destinationElement.querySelector('.selection-underline-subtitle');
-                destinationTitle.textContent = stationName;
-                destinationSubtitle.textContent = 'Selected destination';
             }
 
             toggleDateInputs();
@@ -979,31 +1207,53 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
         function setupTripTypeHandlers() {
             document.querySelectorAll("[data-action='trip_type']").forEach(btn => {
                 btn.addEventListener('click', function() {
-                    document.querySelectorAll("[data-action='trip_type']").forEach(b => {
-                        b.classList.remove('btn-main');
-                        b.classList.add('btn-light');
+                    const prev = elements.tripTypeInput.value;
+
+                    document.querySelectorAll('.trip-type-btn').forEach(function(b) {
+                        b.classList.remove('active');
                     });
-                    this.classList.remove('btn-light');
-                    this.classList.add('btn-main');
+                    this.classList.add('active');
 
                     const value = this.dataset.value;
                     elements.tripTypeInput.value = value;
 
-                    console.log('Trip type changed to:', value);
+                    if (value !== 'M') {
+                        resetMultiIslandState();
+                    }
 
-                    // อัพเดทการแสดง date inputs
-                    toggleDateInputs();
-
-                    if (value === 'O') {
-                        if (elements.returnDatePicker) {
-                            elements.returnDatePicker.required = false;
-                        }
-                    } else {
-                        if (elements.returnDatePicker) {
-                            elements.returnDatePicker.required = true;
+                    if (prev === 'M' && value !== 'M') {
+                        state.destStationId = null;
+                        elements.destStationInput.value = '';
+                        const destinationElement = document.querySelector('.selection-underline[data-type="destination"]');
+                        if (destinationElement) {
+                            const destinationTitle = destinationElement.querySelector('.selection-underline-title');
+                            const destinationSubtitle = destinationElement.querySelector('.selection-underline-subtitle');
+                            destinationTitle.textContent = 'Choose Your Destination';
+                            destinationSubtitle.textContent = 'Where do you want to go?';
                         }
                     }
 
+                    if (value === 'M' && prev !== 'M') {
+                        clearLegacyDatePickers();
+                        state.destStationId = null;
+                        elements.destStationInput.value = '';
+                        resetMultiIslandState();
+                        const destinationElement = document.querySelector('.selection-underline[data-type="destination"]');
+                        if (destinationElement) {
+                            const destinationTitle = destinationElement.querySelector('.selection-underline-title');
+                            const destinationSubtitle = destinationElement.querySelector('.selection-underline-subtitle');
+                            destinationTitle.textContent = 'First island stop';
+                            destinationSubtitle.textContent = 'Choose your first stop after departure';
+                        }
+                    }
+
+                    toggleDateInputs();
+
+                    if (elements.returnDatePicker) {
+                        elements.returnDatePicker.required = value === 'R';
+                    }
+
+                    updateDestinationRowForTripType();
                     validateForm();
                 });
             });
@@ -1076,24 +1326,47 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
         function setupModalHandlers() {
             $(elements.modal).on('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
-                state.selectType = button.dataset.type;
+                if (button && button.dataset && button.dataset.type) {
+                    state.selectType = button.dataset.type;
+                }
 
-                const titleText = state.selectType === 'departure' ?
-                    'Select "Section"' :
-                    'Select "Station"';
-                //elements.modalTitle.textContent = titleText;
                 $('#box-station-title').hide();
                 $('#box-section-title').show();
 
-                // โหลดข้อมูลใหม่ทุกครั้งที่เปิด modal
                 if (state.selectType === 'departure') {
                     loadDepartStations();
                 } else if (state.selectType === 'destination' && state.departStationId) {
                     loadDestStations(state.departStationId);
+                } else if (state.selectType === 'multi_next' && state.multiStops.length) {
+                    loadDestStations(state.multiStops[state.multiStops.length - 1].id);
                 }
             });
 
             elements.backButton.addEventListener('click', resetModalView);
+
+            const btnAddMulti = document.getElementById('btn_add_multi_leg');
+            if (btnAddMulti) {
+                btnAddMulti.addEventListener('click', function() {
+                    if (getTripType() !== 'M' || !state.departStationId || state.multiStops.length < 1) {
+                        return;
+                    }
+                    state.selectType = 'multi_next';
+                    state.multiNextIndex = state.multiStops.length;
+                    $(elements.modal).modal('show');
+                });
+            }
+
+            const btnRemoveMulti = document.getElementById('btn_remove_last_multi_leg');
+            if (btnRemoveMulti) {
+                btnRemoveMulti.addEventListener('click', function() {
+                    if (state.multiStops.length <= 2) {
+                        return;
+                    }
+                    state.multiStops.pop();
+                    renderMultiLegUI();
+                    validateForm();
+                });
+            }
         }
 
         // ==================== Initialization ====================
@@ -1106,7 +1379,8 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
             updatePassengerSummary();
             elements.departDatePicker.addEventListener('change', validateForm);
             elements.returnDatePicker.addEventListener('change', validateForm);
-            toggleDateInputs(); // ตรวจสอบสถานะเริ่มต้น
+            updateDestinationRowForTripType();
+            toggleDateInputs();
             validateForm();
         }
 

@@ -7,7 +7,7 @@
 
     <title>SIRI LANTA, Official Website Tigerline Ferry & Sirilanta Speedboat go to all islands</title>
 
-    <meta name="description" content="" />
+    <meta name="description" content="SIRI LANTA, Official Website Tigerline Ferry & Sirilanta Speedboat go to all islands" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../../assets/img/favicon/favicon.ico" />

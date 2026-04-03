@@ -7,7 +7,6 @@ use App\Services\RouteService;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use App\Services\StationService;
 
 class Sumary extends Component
 {
@@ -32,7 +31,8 @@ class Sumary extends Component
 
         $bookingRoutes = [];
         foreach ($booking_routes as $booking_route) {
-            $subRoute = app(RouteService::class)->getRoute($booking_route['selected_route_id']);
+            $raw = app(RouteService::class)->getRoute($booking_route['selected_route_id']);
+            $subRoute = is_array($raw) ? $this->normalizeRouteForSummary($raw) : [];
             $bookingRoutes[] = [
                 'traveldate' => $booking_route['traveldate'],
                 'route' => $subRoute,
@@ -45,5 +45,35 @@ class Sumary extends Component
             'bookingRoutes' => $bookingRoutes,
             'tripTypes' => $tripTypes
         ]);
+    }
+
+    /**
+     * Passenger summary expects departure_station / destination_station with name & nickname.
+     */
+    private function normalizeRouteForSummary(array $route): array
+    {
+        foreach (['departure_station', 'destination_station'] as $key) {
+            if (! isset($route[$key]) || ! is_array($route[$key])) {
+                $route[$key] = ['name' => '', 'nickname' => '', 'piername' => null];
+            } else {
+                $route[$key] = array_merge(
+                    ['name' => '', 'nickname' => '', 'piername' => null],
+                    $route[$key]
+                );
+            }
+        }
+
+        $route['departure_time'] = $route['departure_time'] ?? '';
+        $route['arrival_time'] = $route['arrival_time'] ?? '';
+
+        if (! isset($route['prices']) || ! is_array($route['prices'])) {
+            $route['prices'] = [];
+        }
+        $route['prices'] = array_merge(
+            ['regular' => 0.0, 'regular_subtotal' => 0.0, 'regular_discount' => 0.0],
+            $route['prices']
+        );
+
+        return $route;
     }
 }

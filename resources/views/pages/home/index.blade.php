@@ -77,28 +77,4 @@ $sliders = [
         </section>
     </div>
 </div>
-<div class="row" style="display: none;">
-    <div class="col-12 col-lg-8 mx-auto mt-4">
-        <div class="row justify-content-center align-items-center">
-            <div class="col-2 col-lg-2 d-flex justify-content-center">
-                <img src="{{ asset('img/partner/nokair-logo.webp') }}" alt="" class="w-100">
-            </div>
-            <div class="col-2 col-lg-2 d-flex justify-content-center">
-                <img src="{{ asset('img/partner/SiriLanta_Speedboat.webp') }}" alt="" class="w-100">
-            </div>
-            <div class="col-2 col-lg-2 d-flex justify-content-center">
-                <img src="{{ asset('img/partner/spd-logo.webp') }}" alt="" class="w-100">
-            </div>
-            <div class="col-2 col-lg-2 d-flex justify-content-center">
-                <img src="{{ asset('img/partner/7-11_logo.webp') }}" alt="" class="w-100">
-            </div>
-            <div class="col-2 col-lg-2 d-flex justify-content-center">
-                <img src="{{ asset('img/partner/123travel-logo.webp') }}" alt="" class="w-100">
-            </div>
-            <div class="col-2 col-lg-2 d-flex justify-content-center">
-                <img src="{{ asset('img/partner/aisasia.webp') }}" alt="" class="w-100">
-            </div>
-        </div>
-    </div>
-</div>
 @stop

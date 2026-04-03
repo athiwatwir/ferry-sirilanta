@@ -1,13 +1,26 @@
 @extends('layouts.booking')
 
 @section('content')
+@php
+    $flightLegCount = count($bookingRoutes);
+    $flightLegIndices = $flightLegCount > 0 ? range(1, $flightLegCount) : [];
+@endphp
 <link href="{{ asset('css/pages/page-flight.css') }}" rel="stylesheet" />
+{{-- layout booking ไม่มี flatpickr.js — ต้องโหลดก่อนสคริปต์ใน x-booking.flight ถึงจะผูกปุ่ม Change ได้ --}}
+<script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+
+@if (session('booking_error'))
+    <div class="alert alert-warning alert-dismissible fade show mb-3" role="alert">
+        {{ session('booking_error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
 
 <div class="row">
 
     @foreach($bookingRoutes as $bookingRoute)
     <div class="col-12">
-        <x-booking.flight :routes="$bookingRoute['routes']" :departStation="$bookingRoute['departStation']" :destStation="$bookingRoute['destStation']" :type="$loop->iteration" :departDateText="$bookingRoute['traveldateText']" :depart_date="$bookingRoute['traveldate']" />
+        <x-booking.flight :routes="$bookingRoute['routes']" :departStation="$bookingRoute['departStation']" :destStation="$bookingRoute['destStation']" :type="$loop->iteration" :departDateText="$bookingRoute['traveldateText']" :depart_date="$bookingRoute['traveldate']" :sessionTripType="$tripType" />
     </div>
     @endforeach
 
@@ -34,9 +47,7 @@
                     @csrf
                     @method('post')
 
-                    @foreach($sessionData as $key => $value)
-                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-                    @endforeach
+                    @include('components.booking.session-query-hidden', ['data' => $sessionData])
 
                     @foreach($bookingRoutes as $bookingRoute)
                     <input type="hidden" name="booking_routes[{{ $loop->index }}][selected_route_id]" id="selected_route_{{ $loop->iteration }}">
@@ -66,9 +77,7 @@
 {{-- Form สำหรับเปลี่ยนวันที่ --}}
 <form method="GET" action="{{ route('booking.flight') }}" id="frm">
     @csrf
-    @foreach($sessionData as $key => $value)
-    <input type="hidden" name="{{ $key }}" value="{{ $value }}" id="frm_{{ $key }}">
-    @endforeach
+    @include('components.booking.session-query-hidden', ['data' => $sessionData])
 </form>
 
 @stop
@@ -79,16 +88,11 @@
     $(document).ready(function() {
 
         // -------------------------------------------------------
-        // State: สร้าง dynamic จาก type จริงในหน้า
-        // ไม่ hardcode A/B เพื่อรองรับทุกกรณี
+        // ทุกขาต้องมีการเลือก route — ใช้จำนวนขาจากเซิร์ฟเวอร์ ไม่ใช่แค่ปุ่ม SELECT ในหน้า
+        // (ถ้าขาใดไม่มีเที่ยว จะไม่มีปุ่ม แต่ยังต้องบล็อก Next จนกว่าจะเปลี่ยนวัน/เส้นทาง)
         // -------------------------------------------------------
-        const requiredTypes = [...new Set(
-            $("[data-action='book-select']").map(function() {
-                return $(this).data('type');
-            }).get()
-        )];
+        const requiredTypes = @json($flightLegIndices);
 
-        // map: type -> { id, price }  สร้างอัตโนมัติตาม type ที่มีจริง
         const selected = {};
         requiredTypes.forEach(function(type) {
             selected[type] = {
@@ -118,7 +122,7 @@
         // ตรวจสอบว่าเลือกครบทุก type แล้วหรือยัง
         // -------------------------------------------------------
         function checkAllSelected() {
-            const allSelected = requiredTypes.every(function(type) {
+            const allSelected = requiredTypes.length > 0 && requiredTypes.every(function(type) {
                 return selected[type] && selected[type].id !== null;
             });
             const btNext = document.getElementById('bt-next');

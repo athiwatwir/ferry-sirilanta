@@ -94,7 +94,7 @@ class BookingController extends Controller
                 'traveldate' => $bookingRoutes[0]['traveldate'],
                 'price' => $totalamt
             ];
-        } elseif ($bookData['trip_type'] == 'R') {
+        } elseif (in_array($bookData['trip_type'], ['R', 'M'], true)) {
             foreach ($bookingRoutes as $bookingRoute) {
                 $subRoute = app(RouteService::class)->getRoute($bookingRoute['selected_route_id']);
 
@@ -178,14 +178,64 @@ class BookingController extends Controller
         $trip_type = request()->trip_type;
         $adult = request()->adult ?? 1;
 
-
-        $departStation = app(StationService::class)->getStation($depart_station);
-        //dd($departStation);
-        $destStation = app(StationService::class)->getStation($dest_station);
-
         $bookingRoutes = [];
+        $_departDate = null;
+        $departDateText = null;
+        $departStation = null;
+        $destStation = null;
+        $segmentDestIds = [];
 
-        if ($trip_type == 'O') {
+        if (!in_array($trip_type, ['O', 'R', 'M'], true)) {
+            return redirect('/')->with('booking_error', 'Invalid trip type.');
+        }
+
+        if ($trip_type === 'M') {
+            if (!$depart_station) {
+                return redirect('/')->with('booking_error', 'Please select a departure point.');
+            }
+
+            $segmentDestIds = array_values((array) request()->input('multi_segment_dest', []));
+            $segmentDates = array_values((array) request()->input('multi_segment_date', []));
+
+            if (count($segmentDestIds) < 2 || count($segmentDestIds) !== count($segmentDates)) {
+                return redirect('/')->with('booking_error', 'Multi-island trips need at least two stops, each with a travel date.');
+            }
+
+            $fromId = $depart_station;
+            foreach ($segmentDestIds as $i => $toId) {
+                $date = $segmentDates[$i] ?? null;
+                if ($toId === null || $toId === '' || !$date) {
+                    return redirect('/')->with('booking_error', 'Each island hop needs a destination and date.');
+                }
+
+                $routes = app(RouteService::class)->getRoutes($fromId, $toId, $date);
+                $fromStation = app(StationService::class)->getStation($fromId);
+                $toStation = app(StationService::class)->getStation($toId);
+                $_dt = Carbon::parse($date)->format('Y-m-d');
+                $dtText = Carbon::parse($date)->format('D d M Y');
+
+                $bookingRoutes[] = [
+                    'traveldate' => $_dt,
+                    'traveldateText' => $dtText,
+                    'departStation' => $fromStation,
+                    'destStation' => $toStation,
+                    'routes' => $routes,
+                ];
+                $fromId = $toId;
+            }
+
+            $_departDate = $bookingRoutes[0]['traveldate'];
+            $departDateText = $bookingRoutes[0]['traveldateText'];
+            $departStation = $bookingRoutes[0]['departStation'];
+            $destStation = $bookingRoutes[count($bookingRoutes) - 1]['destStation'];
+            $depart_date = $_departDate;
+        } elseif ($trip_type === 'O') {
+            if (!$depart_station || !$dest_station || !$depart_date) {
+                return redirect('/')->with('booking_error', 'Please complete your trip details.');
+            }
+
+            $departStation = app(StationService::class)->getStation($depart_station);
+            $destStation = app(StationService::class)->getStation($dest_station);
             $routes = app(RouteService::class)->getRoutes($depart_station, $dest_station, $depart_date);
 
             $_departDate = Carbon::parse($depart_date)->format('Y-m-d');
@@ -196,9 +246,16 @@ class BookingController extends Controller
                 'traveldateText' => $departDateText,
                 'departStation' => $departStation,
                 'destStation' => $destStation,
-                'routes' => $routes
+                'routes' => $routes,
             ];
-        } elseif ($trip_type == 'R') {
+        } elseif ($trip_type === 'R') {
+            if (!$depart_station || !$dest_station || !$depart_date || !$return_date) {
+                return redirect('/')->with('booking_error', 'Please complete your trip details.');
+            }
+
+            $departStation = app(StationService::class)->getStation($depart_station);
+            $destStation = app(StationService::class)->getStation($dest_station);
+
             $routes = app(RouteService::class)->getRoutes($depart_station, $dest_station, $depart_date);
 
             $_departDate = Carbon::parse($depart_date)->format('Y-m-d');
@@ -209,7 +266,7 @@ class BookingController extends Controller
                 'traveldateText' => $departDateText,
                 'departStation' => $departStation,
                 'destStation' => $destStation,
-                'routes' => $routes
+                'routes' => $routes,
             ];
 
             $routes = app(RouteService::class)->getRoutes($dest_station, $depart_station, $return_date);
@@ -221,16 +278,20 @@ class BookingController extends Controller
                 'traveldateText' => $departDateText,
                 'departStation' => $destStation,
                 'destStation' => $departStation,
-                'routes' => $routes
+                'routes' => $routes,
             ];
-        } elseif ($trip_type == 'M') {
-            $mRoutes = app(RouteService::class)->getRoutes($depart_station, $dest_station, $depart_date);
+
+            $_departDate = $bookingRoutes[0]['traveldate'];
+            $departDateText = $bookingRoutes[0]['traveldateText'];
         }
 
-        request()->session()->put('booking', request()->query());
-        //dd(request()->query());
+        $sessionQuery = request()->query();
+        if ($trip_type === 'M' && count($bookingRoutes) > 0 && count($segmentDestIds) > 0) {
+            $sessionQuery['depart_date'] = $bookingRoutes[0]['traveldate'];
+            $sessionQuery['dest_station_id'] = (string) $segmentDestIds[count($segmentDestIds) - 1];
+        }
+        request()->session()->put('booking', $sessionQuery);
 
-        //dd(session('booking'));
         return view('pages.booking.flight', [
             'bookingRoutes' => $bookingRoutes,
             'sessionData' => session('booking'),
@@ -241,16 +302,41 @@ class BookingController extends Controller
             'return_date' => $return_date,
             '_departDate' => $_departDate,
             'adult' => $adult,
-            'departDateText' => $departDateText
+            'departDateText' => $departDateText,
         ]);
     }
 
     public function passenger(Request $request)
     {
-        //dd($request->all());
-        $booking_routes = $request->booking_routes;
+        $booking_routes = $request->input('booking_routes', []);
 
+        if (! is_array($booking_routes)) {
+            $booking_routes = [];
+        }
+
+        foreach ($booking_routes as $row) {
+            $selectedId = $row['selected_route_id'] ?? null;
+            if ($selectedId === null || $selectedId === '') {
+                return redirect()
+                    ->route('booking.flight', session('booking', []))
+                    ->with(
+                        'booking_error',
+                        'Please choose a sailing for every leg. If a leg has no trips, use Change to pick another date or go back and adjust your route.'
+                    );
+            }
+        }
+
+        $mergeKeys = [
+            'trip_type', 'depart_station_id', 'dest_station_id', 'depart_date', 'return_date',
+            'adult', 'aff_id', 'multi_segment_dest', 'multi_segment_date',
+        ];
         $booking = session('booking', []);
+        foreach ($mergeKeys as $key) {
+            if ($request->exists($key)) {
+                $booking[$key] = $request->input($key);
+            }
+        }
+
         session(['booking' => $booking]);
         session(['booking_routes' => $booking_routes]);
 
