@@ -155,3 +155,13 @@
 
     </div>
 </footer>
+
+<script>
+    console.log('aff_id', @json(session('aff_id')));
+    console.log('api_key', @json(session('api_key')));
+    console.log('agent', @json(session('agent')));
+    console.log('referral', @json(session('referral')));
+    console.log('booking', @json(session('booking')));
+    console.log('booking_routes', @json(session('booking_routes')));
+
+</script>

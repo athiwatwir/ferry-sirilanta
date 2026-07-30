@@ -27,9 +27,20 @@
                         <x-form.adult-passenger count="0" />
                     </div>
                     <div class="col-12">
-                        <label for="description">CUSTOMER NOTE | REQUEST</label>
-                        <textarea class="form-control" id="description" name="description" placeholder="Please provide your transfer detail if only selected station named a hotel or airport"></textarea>
-                        <small class="text-danger">Please make sure your provided detail is within area, note that given a pick-up location outside of the selected city / area range will result in an unconfirmed transfer, Extra request which is not relevant will not be confirmed here, customer can call 081 358 8989 if necessary</small>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label for="description" class="mb-0">CUSTOMER NOTE | REQUEST</label>
+                            <small class="text-muted"><span id="description-count">0</span> / 200</small>
+                        </div>
+                        <textarea
+                            class="form-control"
+                            id="description"
+                            name="description"
+                            maxlength="200"
+                            rows="4"
+                            placeholder="Please provide your transfer detail if the selected station is a hotel or airport"
+                        ></textarea>
+                        <small class="text-muted d-block mt-1">Maximum 200 characters.</small>
+                        <small class="text-danger d-block mt-1">Please make sure your provided detail is within area. A pick-up location outside the selected city / area range may result in an unconfirmed transfer. Extra requests that are not relevant will not be confirmed here. If necessary, please call 081 358 8989.</small>
                     </div>
                 </div>
 
@@ -77,9 +88,11 @@
     (function() {
         var checkbox = document.getElementById('termsCheckbox');
         var btn = document.getElementById('bt-next');
-        if (!checkbox || !btn) return;
+        var description = document.getElementById('description');
+        var descriptionCount = document.getElementById('description-count');
 
         function updateButton() {
+            if (!checkbox || !btn) return;
             if (checkbox.checked) {
                 btn.disabled = false;
                 btn.classList.remove('btn-secondary');
@@ -91,9 +104,24 @@
             }
         }
 
-        checkbox.addEventListener('change', updateButton);
-        updateButton(); // init state
-    })();
+        function updateDescriptionCount() {
+            if (!description || !descriptionCount) return;
+            var length = description.value.length;
+            descriptionCount.textContent = length;
+            descriptionCount.classList.toggle('text-danger', length >= 200);
+            descriptionCount.parentElement.classList.toggle('text-danger', length >= 200);
+            descriptionCount.parentElement.classList.toggle('text-muted', length < 200);
+        }
 
+        if (checkbox) {
+            checkbox.addEventListener('change', updateButton);
+            updateButton();
+        }
+
+        if (description) {
+            description.addEventListener('input', updateDescriptionCount);
+            updateDescriptionCount();
+        }
+    })();
 </script>
 @endsection

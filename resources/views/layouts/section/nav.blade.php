@@ -28,6 +28,19 @@
 </style>
 
 <style>
+    .logo-default {
+        width: 170px;
+        height: auto;
+    }
+
+    /* iPad / tablet */
+    @media (max-width: 1199.98px) {
+        .logo-default {
+            width: 130px !important;
+        }
+    }
+
+    /* มือถือ */
     @media (max-width: 768px) {
         nav.layout-navbar {
             position: relative !important;
@@ -45,14 +58,11 @@
             justify-content: center;
         }
 
-        .navbar-brand.app-brand img {}
-
         .logo-default {
-            width: 200px !important;
+            width: 110px !important;
             margin: 0 auto;
         }
     }
-
 </style>
 <nav class="layout-navbar shadow-none py-0">
 
@@ -63,7 +73,6 @@
             <div class="navbar-brand app-brand demo d-flex py-0 me-4 me-xl-8 ms-0">
                 <a href="/" class="app-brand-link">
                     <img src="{{ asset('img/logo-t.jpg') }}" alt="" class="logo-default" width="170">
-
                 </a>
             </div>
             <!-- Menu logo wrapper: End -->

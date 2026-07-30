@@ -113,7 +113,7 @@ class BookingController extends Controller
             'adult_passenger' => $bookData['adult'],
             //'child_passenger' => $bookData['child'],
             //'infant_passenger' => $bookData['infant'],
-            'user_id' => $bookData['aff_id'],
+            'user_id' => $bookData['aff_id'] ?? null,
             'trip_type' => $bookData['trip_type'],
             'note' => null,
             'book_channel' => 'API',
@@ -121,7 +121,7 @@ class BookingController extends Controller
             'promotion_id' => null,
             'api_merchant_id' => null,
             'referenceno' => null,
-            'aff_id' => $bookData['aff_id'],
+            'aff_id' => $bookData['aff_id'] ?? null,
             'note' => $request->description ?? null,
 
             // ข้อมูลลูกค้า
@@ -327,8 +327,15 @@ class BookingController extends Controller
         }
 
         $mergeKeys = [
-            'trip_type', 'depart_station_id', 'dest_station_id', 'depart_date', 'return_date',
-            'adult', 'aff_id', 'multi_segment_dest', 'multi_segment_date',
+            'trip_type',
+            'depart_station_id',
+            'dest_station_id',
+            'depart_date',
+            'return_date',
+            'adult',
+            'aff_id',
+            'multi_segment_dest',
+            'multi_segment_date',
         ];
         $booking = session('booking', []);
         foreach ($mergeKeys as $key) {

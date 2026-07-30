@@ -72,6 +72,22 @@
             margin-top: auto;
         }
 
+        /* iPad / tablet: ลดขอบข้างที่ container ทิ้งไว้ */
+        @media (min-width: 768px) and (max-width: 1199.98px) {
+            .container {
+                max-width: 100%;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        /* ดันเนื้อหาลงให้พ้น fixed navbar (มือถือ nav เป็น relative อยู่แล้ว) */
+        @media (min-width: 769px) {
+            #landingFeatures.booking-page-content.section-py {
+                padding-top: 6.5rem;
+            }
+        }
+
     </style>
 
 </head>
@@ -91,7 +107,7 @@
     <div data-bs-spy="scroll" class="scrollspy-example">
 
         <!-- Useful features: Start -->
-        <section id="landingFeatures" class="section-py">
+        <section id="landingFeatures" class="section-py booking-page-content">
             <div class="container">
                 @yield('content')
             </div>

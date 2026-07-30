@@ -2,460 +2,762 @@
 
 @section('style')
 <style>
-    :root {
-        --booking-brand: #045990;
-        --booking-brand-dark: #034a73;
-        --booking-accent: #f16225;
-        --booking-accent-soft: rgba(241, 98, 37, 0.12);
-        --booking-surface: #f4f8fc;
-        --booking-border: rgba(4, 89, 144, 0.12);
-        --booking-shadow: 0 12px 40px rgba(4, 89, 144, 0.08);
-        --booking-shadow-hover: 0 16px 48px rgba(4, 89, 144, 0.12);
+    .bv {
+        max-width: 920px;
+        margin: 0 auto 1.5rem;
+        color: #111;
+        font-size: 0.925rem;
     }
 
-    .booking-view-wrap {
-        max-width: 960px;
-        margin: 0 auto 3rem;
-        padding: 0 0.75rem;
+    .bv-card {
+        background: #fff;
+        border: 1px solid #222;
     }
 
-    .booking-view-hero {
-        background: linear-gradient(135deg, #0c79b6 0%, #253b7a 100%);
-        color: #fff;
-        border-radius: 1rem 1rem 0 0;
-        padding: 1.75rem 1.5rem 1.5rem;
-        position: relative;
-        overflow: hidden;
+    .bv-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.5rem 1rem;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #222;
     }
 
-    .booking-view-hero::after {
-        content: '';
-        position: absolute;
-        top: -40%;
-        right: -15%;
-        width: 55%;
-        height: 140%;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
-        pointer-events: none;
+    .bv-head h1 {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #111;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
     }
 
-    .booking-view-hero h1,
-    .booking-view-hero h2 {
-        color: #fff !important;
-        position: relative;
-        z-index: 1;
+    .bv-head .meta {
+        font-size: 0.85rem;
+        color: #333;
+        font-variant-numeric: tabular-nums;
     }
 
-    .booking-invoice-pill {
+    .bv-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem 1rem;
+        padding: 0.55rem 1rem;
+        border-bottom: 1px solid #ddd;
+        background: #fafafa;
+    }
+
+    .bv-bar .status {
+        font-weight: 700;
+        color: #111;
+        font-size: 0.9rem;
+    }
+
+    .bv-bar .status span {
+        font-weight: 400;
+        color: #444;
+    }
+
+    .bv-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+
+    .bv-actions .btn {
+        border-radius: 0.35rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        padding: 0.4rem 0.9rem;
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        background: rgba(255, 255, 255, 0.18);
-        backdrop-filter: blur(8px);
-        padding: 0.5rem 1rem;
-        border-radius: 999px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        border: 1px solid rgba(255, 255, 255, 0.25);
+        gap: 0.4rem;
+        border: none;
+        text-decoration: none;
+        transition: background-color 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .booking-status-strip {
-        background: var(--booking-surface);
-        border-bottom: 1px solid var(--booking-border);
-        padding: 1rem 1.5rem;
+    .bv-actions .btn i {
+        font-size: 1.05rem;
+        line-height: 1;
     }
 
-    .booking-status-strip h3 {
-        font-size: 1.1rem !important;
-        margin: 0;
-        color: var(--booking-brand);
+    .bv-btn-orange {
+        background: #f16225;
+        color: #fff !important;
     }
 
-    .booking-body {
-        background: #fff;
-        border-radius: 0 0 1rem 1rem;
-        box-shadow: var(--booking-shadow);
-        overflow: hidden;
+    .bv-btn-orange:hover {
+        background: #d95218;
+        color: #fff !important;
+        box-shadow: 0 2px 8px rgba(241, 98, 37, 0.35);
     }
 
-    .booking-body-inner {
-        padding: 1.5rem 1.25rem 1.75rem;
+    .bv-btn-blue {
+        background: #045990;
+        color: #fff !important;
     }
 
-    @media (min-width: 768px) {
-        .booking-body-inner {
-            padding: 2rem 2rem 2.25rem;
-        }
+    .bv-btn-blue:hover {
+        background: #034a73;
+        color: #fff !important;
+        box-shadow: 0 2px 8px rgba(4, 89, 144, 0.35);
     }
 
-    .booking-section-head {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin: 1.75rem 0 1.25rem;
-        padding-bottom: 0.65rem;
-        border-bottom: 2px solid var(--booking-accent-soft);
+    .bv-body {
+        padding: 0.75rem 1rem 1rem;
     }
 
-    .booking-section-head:first-of-type {
+    .bv-sec {
+        margin-top: 0.85rem;
+    }
+
+    .bv-sec:first-child {
         margin-top: 0;
     }
 
-    .booking-section-head .icon-wrap {
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 0.65rem;
-        background: linear-gradient(145deg, var(--booking-accent-soft), rgba(4, 89, 144, 0.08));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--booking-accent);
-        font-size: 1.15rem;
-    }
-
-    .booking-section-head span {
-        font-size: 1.05rem;
+    .bv-sec-title {
+        margin: 0 0 0.4rem;
+        padding-bottom: 0.25rem;
+        border-bottom: 1px solid #111;
+        font-size: 0.78rem;
         font-weight: 700;
-        color: var(--booking-brand);
-        letter-spacing: -0.02em;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #111;
     }
 
-    .booking-dl {
-        display: grid;
-        gap: 0;
+    .bv-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+    }
+
+    .bv-table th,
+    .bv-table td {
+        padding: 0.35rem 0.5rem;
+        border-bottom: 1px solid #e5e5e5;
+        vertical-align: top;
+        text-align: left;
+    }
+
+    .bv-table th {
+        width: 38%;
+        font-weight: 600;
+        color: #555;
+        font-size: 0.8rem;
+    }
+
+    .bv-table td {
+        color: #111;
+        font-weight: 500;
+        font-size: 0.9rem;
+        word-break: break-word;
     }
 
     @media (min-width: 768px) {
-        .booking-dl {
+        .bv-grid-2 {
+            display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0 1.5rem;
+            gap: 0 1.25rem;
+        }
+
+        .bv-grid-2 .bv-table th {
+            width: 42%;
         }
     }
 
-    .booking-dl-item {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-        padding: 0.85rem 0;
-        border-bottom: 1px solid #eef2f6;
+    .bv-route {
+        border: 1px solid #ddd;
+        margin-bottom: 0.5rem;
     }
 
-    .booking-dl-item .label {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: #6c757d;
-        font-weight: 600;
+    .bv-route:last-child {
+        margin-bottom: 0;
     }
 
-    .booking-dl-item .value {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #212529;
-    }
-
-    .booking-dl-item .value i {
-        color: var(--booking-brand);
-        margin-right: 0.35rem;
-    }
-
-    .route-journey {
-        background: linear-gradient(180deg, #fff 0%, #f8fbfe 100%);
-        border: 1px solid var(--booking-border);
-        border-radius: 0.85rem;
-        padding: 1.25rem 1rem;
-        margin-bottom: 1rem;
-        transition: box-shadow 0.2s ease, border-color 0.2s ease;
-    }
-
-    .route-journey:hover {
-        box-shadow: var(--booking-shadow-hover);
-        border-color: rgba(4, 89, 144, 0.2);
-    }
-
-    .route-journey .point {
-        font-weight: 700;
-        color: var(--booking-brand);
-        font-size: 0.95rem;
-        line-height: 1.35;
-    }
-
-    .route-journey .time {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: var(--booking-accent);
-        margin-bottom: 0.25rem;
-    }
-
-    .route-journey-mid {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.75rem 0;
-        min-height: 3rem;
-    }
-
-    .route-line {
-        flex: 1;
-        max-width: 120px;
-        height: 3px;
-        background: linear-gradient(90deg, var(--booking-brand), var(--booking-accent));
-        border-radius: 2px;
-        position: relative;
-    }
-
-    .route-line::after {
-        content: '';
-        position: absolute;
-        right: -2px;
-        top: 50%;
-        transform: translateY(-50%);
-        border: 6px solid transparent;
-        border-left-color: var(--booking-accent);
-    }
-
-    .route-icon-mid {
-        width: 2.25rem;
-        height: 2.25rem;
-        border-radius: 50%;
-        background: var(--booking-accent-soft);
-        color: var(--booking-accent);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
-        margin: 0 0.5rem;
-    }
-
-    .passenger-tile {
+    .bv-route-head {
         display: flex;
         flex-wrap: wrap;
-        gap: 1rem;
-        align-items: flex-start;
-        background: #fff;
-        border: 1px solid var(--booking-border);
-        border-radius: 0.85rem;
-        padding: 1.1rem 1.15rem;
-        margin-bottom: 0.75rem;
-        transition: box-shadow 0.2s ease;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.25rem 0.75rem;
+        padding: 0.35rem 0.55rem;
+        background: #f5f5f5;
+        border-bottom: 1px solid #ddd;
+        font-size: 0.8rem;
+        font-weight: 600;
     }
 
-    .passenger-tile:hover {
-        box-shadow: 0 8px 24px rgba(4, 89, 144, 0.06);
+    .bv-route-head-right {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.45rem 0.75rem;
+        margin-left: auto;
+        text-align: right;
     }
 
-    .passenger-avatar {
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--booking-brand), var(--booking-brand-dark));
-        color: #fff;
+    .bv-ticketno {
+        color: #f16225;
+        font-weight: 800;
+        font-size: 0.9rem;
+        letter-spacing: 0.02em;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .bv-ticketno small {
+        font-weight: 600;
+        font-size: 0.7rem;
+        color: #f16225;
+        margin-right: 0.2rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .bv-route-body {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    @media (min-width: 576px) {
+        .bv-route-body {
+            grid-template-columns: 1fr auto 1fr;
+            align-items: start;
+        }
+    }
+
+    .bv-leg {
+        padding: 0.5rem 0.55rem;
+    }
+
+    .bv-leg .role {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #666;
+        margin-bottom: 0.15rem;
+    }
+
+    .bv-leg .time {
+        font-size: 1.05rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        line-height: 1.2;
+        margin-bottom: 0.15rem;
+    }
+
+    .bv-leg .name {
+        font-weight: 600;
+        line-height: 1.3;
+        font-size: 0.9rem;
+    }
+
+    .bv-leg .sub {
+        font-size: 0.8rem;
+        color: #555;
+        line-height: 1.35;
+        margin-top: 0.1rem;
+    }
+
+    .bv-arrow {
+        display: none;
+        padding: 0.75rem 0.35rem;
+        color: #888;
+        font-size: 0.85rem;
+        text-align: center;
+        align-self: center;
+    }
+
+    @media (min-width: 576px) {
+        .bv-arrow {
+            display: block;
+        }
+    }
+
+    .bv-arrow-mobile {
+        display: block;
+        text-align: center;
+        padding: 0.15rem;
+        color: #888;
+        border-top: 1px dashed #ddd;
+        border-bottom: 1px dashed #ddd;
+        font-size: 0.75rem;
+    }
+
+    @media (min-width: 576px) {
+        .bv-arrow-mobile {
+            display: none;
+        }
+    }
+
+    .bv-pass {
+        border: 1px solid #ddd;
+        margin-bottom: 0.4rem;
+    }
+
+    .bv-pass:last-child {
+        margin-bottom: 0;
+    }
+
+    .bv-pass-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.35rem 0.75rem;
+        padding: 0.35rem 0.55rem;
+        background: #f5f5f5;
+        border-bottom: 1px solid #ddd;
         font-weight: 700;
         font-size: 0.9rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
     }
 
-    .passenger-name {
-        font-weight: 700;
-        color: #212529;
-        margin-bottom: 0.35rem;
+    .bv-pass-head .idx {
+        color: #666;
+        font-weight: 600;
+        font-size: 0.8rem;
     }
 
-    .passenger-meta {
-        font-size: 0.875rem;
-        color: #5c6b7a;
-    }
-
-    .passenger-meta i {
-        color: var(--booking-brand);
-        width: 1.1rem;
-    }
-
-    .payment-card {
-        background: linear-gradient(135deg, rgba(4, 89, 144, 0.06) 0%, rgba(241, 98, 37, 0.06) 100%);
-        border: 1px solid var(--booking-border);
-        border-radius: 0.85rem;
-        padding: 1.25rem 1.35rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .payment-card .label {
+    .bv-pass-head .type {
+        margin-left: auto;
         font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: #6c757d;
         font-weight: 600;
+        color: #444;
+        border: 1px solid #bbb;
+        padding: 0.05rem 0.4rem;
     }
 
-    .payment-card .amount {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: var(--booking-brand);
-        letter-spacing: -0.02em;
+    .bv-note {
+        padding: 0.45rem 0.55rem;
+        border: 1px solid #ddd;
+        background: #fafafa;
+        white-space: pre-wrap;
+        word-break: break-word;
+        line-height: 1.4;
+        font-size: 0.875rem;
     }
 
-    .badge-status-draft {
-        background: linear-gradient(135deg, #fff3cd, #ffe69c);
-        color: #856404;
-        font-weight: 600;
-        padding: 0.4em 0.85em;
-        border-radius: 999px;
+    .bv-empty {
+        color: #777;
+        font-size: 0.85rem;
+        padding: 0.25rem 0;
     }
 
-    .badge-status-ok {
-        background: linear-gradient(135deg, #d1e7dd, #a3cfbb);
-        color: #0f5132;
-        font-weight: 600;
-        padding: 0.4em 0.85em;
-        border-radius: 999px;
+    /* Mobile: readable size, less cramped */
+    @media (max-width: 767.98px) {
+        .bv {
+            margin-bottom: 1rem;
+            font-size: 0.8125rem;
+        }
+
+        .bv-head {
+            padding: 0.55rem 0.65rem;
+            gap: 0.25rem;
+        }
+
+        .bv-head h1 {
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .bv-head .meta {
+            font-size: 0.75rem;
+        }
+
+        .bv-bar {
+            padding: 0.45rem 0.65rem;
+            gap: 0.4rem;
+        }
+
+        .bv-bar .status {
+            font-size: 0.8rem;
+            line-height: 1.35;
+        }
+
+        .bv-actions {
+            width: 100%;
+        }
+
+        .bv-actions .btn {
+            width: 100%;
+            justify-content: center;
+            font-size: 0.8rem;
+            padding: 0.5rem 0.65rem;
+        }
+
+        .bv-body {
+            padding: 0.55rem 0.65rem 0.75rem;
+        }
+
+        .bv-sec {
+            margin-top: 0.7rem;
+        }
+
+        .bv-sec-title {
+            font-size: 0.7rem;
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.04em;
+        }
+
+        .bv-table th,
+        .bv-table td {
+            display: block;
+            width: 100%;
+            padding: 0.15rem 0;
+            border-bottom: none;
+        }
+
+        .bv-table tr {
+            display: block;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .bv-table th {
+            font-size: 0.7rem;
+            margin-bottom: 0.05rem;
+        }
+
+        .bv-table td {
+            font-size: 0.8125rem;
+            padding-bottom: 0.35rem;
+        }
+
+        .bv-route-head {
+            font-size: 0.72rem;
+            padding: 0.3rem 0.45rem;
+        }
+
+        .bv-leg {
+            padding: 0.4rem 0.45rem;
+        }
+
+        .bv-leg .role {
+            font-size: 0.65rem;
+        }
+
+        .bv-leg .time {
+            font-size: 0.95rem;
+        }
+
+        .bv-leg .name {
+            font-size: 0.8125rem;
+        }
+
+        .bv-leg .sub {
+            font-size: 0.72rem;
+        }
+
+        .bv-pass-head {
+            font-size: 0.8125rem;
+            padding: 0.3rem 0.45rem;
+        }
+
+        .bv-pass-head .idx,
+        .bv-pass-head .type {
+            font-size: 0.7rem;
+        }
+
+        .bv-note {
+            font-size: 0.8125rem;
+            padding: 0.4rem 0.45rem;
+        }
+
+        .bv-empty {
+            font-size: 0.75rem;
+        }
     }
+
 </style>
 @endsection
 
 @section('content')
-<div class="booking-view-wrap">
-    <div class="booking-body">
-        <div class="booking-view-hero">
-            <div class="row align-items-center g-3">
-                <div class="col-md-7">
-                    <p class="small text-white-50 mb-1 text-uppercase fw-semibold letter-spacing-1">Reservation</p>
-                    <h2 class="mb-0 fw-bold">
-                        <i class="bi bi-ticket-detailed me-2"></i>Booking details
-                    </h2>
-                </div>
-                <div class="col-md-5 text-md-end">
-                    <div class="booking-invoice-pill">
-                        <i class="bi bi-receipt"></i>
-                        <span>Invoice {{ $booking['invoiceno'] }}</span>
-                    </div>
-                </div>
-            </div>
+@php
+$tripTypes = \App\Http\Controllers\BookingController::tripTypes();
+$tripType = $booking['trip_type'] ?? '';
+$tripTypeLabel = $tripTypes[$tripType] ?? ($tripType ?: '—');
+$statusCode = $booking['status'] ?? '';
+$statusTitle = $status[$statusCode]['title'] ?? $statusCode;
+$invoiceNo = $booking['invoiceno'] ?? $booking['bookingno'] ?? '—';
+$adults = (int) ($booking['adult_passenger'] ?? 0);
+$children = (int) ($booking['child_passenger'] ?? 0);
+$infants = (int) ($booking['infant_passenger'] ?? 0);
+$routes = $booking['routes'] ?? [];
+$customers = $booking['customers'] ?? [];
+$payments = $booking['payments'] ?? [];
+$note = $booking['note'] ?? null;
+@endphp
+
+<div class="bv">
+    <div class="bv-card">
+        <div class="bv-head">
+            <h2>Booking details</h2>
+            <div class="meta">Invoice {{ $invoiceNo }}</div>
         </div>
 
-        @if($booking['status'] != 'CO')
-        <div class="booking-status-strip">
-            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="badge-status-draft"><i class="bi bi-hourglass-split me-1"></i>Status</span>
-                    <h3 class="text-main">{{ $status[$booking['status']]['title'] }}</h3>
-                </div>
-                @if($booking['status'] == 'DR')
-                <a href="{{ $paymentUrl }}" class="btn btn-lg btn-success text-white px-4 shadow-sm" id="bt-next">
-                    <i class="bi bi-credit-card-2-front me-2"></i>Continue to payment
+        <div class="bv-bar">
+            <div class="status">
+                Status: <span>{{ $statusTitle }}</span>
+                @if (!empty($statusCode))
+                <span>({{ $statusCode }})</span>
+                @endif
+            </div>
+            <div class="bv-actions">
+                @if ($statusCode === 'DR')
+                <a href="{{ $paymentUrl }}" class="btn btn-dark btn-sm" id="bt-next">Continue to payment</a>
+                @elseif ($statusCode === 'CO')
+                <a href="{{ env('TICKET_URL') }}{{ $invoiceNo }}" class="btn bv-btn-orange btn-sm" target="_blank" rel="noopener">
+                    <i class="icon-base ti tabler-file-type-pdf"></i>
+                    Download A4 PDF
+                </a>
+                <a href="{{ env('TICKET_DETAIL_URL') }}{{ $invoiceNo }}" class="btn bv-btn-blue btn-sm" target="_blank" rel="noopener">
+                    <i class="icon-base ti tabler-printer"></i>
+                    Print Ticket
                 </a>
                 @endif
             </div>
         </div>
-        @else
-        <div class="booking-status-strip">
-            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="badge-status-ok"><i class="bi bi-check-circle me-1"></i>Confirmed</span>
-                    <h3 class="text-main mb-0">Your booking is complete</h3>
-                </div>
-                <a href="{{ env('TICKET_URL') }}{{ $booking['invoiceno'] }}" class="btn btn-lg btn-main waves-effect waves-light px-4" target="_blank" rel="noopener">
-                    <i class="bi bi-file-earmark-pdf me-2"></i>Download ticket PDF
-                </a>
-            </div>
-        </div>
-        @endif
 
-        <div class="booking-body-inner">
-            <div class="booking-section-head">
-                <div class="icon-wrap"><i class="bi bi-info-circle"></i></div>
-                <span>Booking information</span>
-            </div>
+        <div class="bv-body">
+            {{-- Booking info --}}
+            <section class="bv-sec">
+                <h3 class="bv-sec-title">Booking information</h3>
+                <div class="bv-grid-2">
+                    <table class="bv-table">
+                        <tbody>
+                            <tr>
+                                <th>Invoice no.</th>
+                                <td>{{ $invoiceNo }}</td>
+                            </tr>
 
-            <div class="booking-dl">
-                <div class="booking-dl-item">
-                    <span class="label">Departure date</span>
-                    <span class="value">
-                        <i class="bi bi-calendar3"></i>{{ date('d/m/Y', strtotime($booking['departdate'])) }}
-                    </span>
+                            <tr>
+                                <th>Status</th>
+                                <td>{{ $statusTitle }}</td>
+                            </tr>
+                            <tr>
+                                <th>Trip type</th>
+                                <td>{{ $tripTypeLabel }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="bv-table">
+                        <tbody>
+                            <tr>
+                                <th>Departure date</th>
+                                <td>
+                                    @if (!empty($booking['departdate']))
+                                    {{ date('d/m/Y', strtotime($booking['departdate'])) }}
+                                    @else
+                                    —
+                                    @endif
+                                </td>
+                            </tr>
+                            @if (!empty($booking['returndate']))
+                            <tr>
+                                <th>Return date</th>
+                                <td>{{ date('d/m/Y', strtotime($booking['returndate'])) }}</td>
+                            </tr>
+                            @endif
+                            <tr>
+                                <th>Passengers</th>
+                                <td>
+                                    Adult {{ $adults }}
+                                    @if ($children > 0), Child {{ $children }}@endif
+                                    @if ($infants > 0), Infant {{ $infants }}@endif
+                                </td>
+                            </tr>
+                            @if (!empty($booking['referenceno']))
+                            <tr>
+                                <th>Reference no.</th>
+                                <td>{{ $booking['referenceno'] }}</td>
+                            </tr>
+                            @endif
+                            @if (!empty($booking['created_at']) || !empty($booking['bookdate']))
+                            <tr>
+                                <th>Booked at</th>
+                                <td>
+                                    @php $bookedAt = $booking['created_at'] ?? $booking['bookdate']; @endphp
+                                    {{ date('d/m/Y H:i', strtotime($bookedAt)) }}
+                                </td>
+                            </tr>
+                            @endif
+                        </tbody>
+                    </table>
                 </div>
-                <div class="booking-dl-item">
-                    <span class="label">Trip type</span>
-                    <span class="value">One way</span>
-                </div>
-                <div class="booking-dl-item">
-                    <span class="label">Total passengers</span>
-                    <span class="value">
-                        <i class="bi bi-people-fill"></i>Adults: {{ $booking['adult_passenger'] }}
-                    </span>
-                </div>
-            </div>
+            </section>
 
-            <div class="booking-section-head">
-                <div class="icon-wrap"><i class="bi bi-signpost-split"></i></div>
-                <span>Route</span>
-            </div>
-
-            @foreach($booking['routes'] as $route)
-            <div class="route-journey">
-                <div class="row align-items-center g-2">
-                    <div class="col-md-5">
-                        <div class="time"><i class="bi bi-clock me-1"></i>{{ $route['departure_time'] }}</div>
-                        <div class="point">{{ $route['departure_station']['name'] }}</div>
+            {{-- Routes --}}
+            <section class="bv-sec">
+                <h3 class="bv-sec-title">Route ({{ count($routes) }})</h3>
+                @forelse ($routes as $i => $route)
+                @php
+                $depart = $route['departure_station'] ?? [];
+                $dest = $route['destination_station'] ?? [];
+                $travelDate = $route['traveldate'] ?? $route['departdate'] ?? ($booking['departdate'] ?? null);
+                $routePrice = $route['price'] ?? $route['totalamt'] ?? null;
+                $routeTicketNo = $route['ticketno'] ?? $route['tickteno'] ?? $route['ticket_no'] ?? null;
+                @endphp
+                <div class="bv-route">
+                    <div class="bv-route-head">
+                        <span>Trip {{ $i + 1 }}@if ($travelDate) · {{ date('d/m/Y', strtotime($travelDate)) }}@endif</span>
+                        <span class="bv-route-head-right">
+                            @if (!empty($routeTicketNo))
+                            <span class="bv-ticketno"><small>Ticket</small>{{ $routeTicketNo }}</span>
+                            @endif
+                            @if ($routePrice !== null && $routePrice !== '')
+                            <span>{{ number_format((float) $routePrice, 2) }} THB</span>
+                            @endif
+                        </span>
                     </div>
-                    <div class="col-md-2">
-                        <div class="route-journey-mid">
-                            <div class="route-line d-none d-md-block"></div>
-                            <div class="route-icon-mid"><i class="bi bi-ship"></i></div>
-                            <div class="route-line d-none d-md-block"></div>
+                    <div class="bv-route-body">
+                        <div class="bv-leg">
+                            <div class="role">Departure</div>
+                            <div class="time">{{ $route['departure_time'] ?? '—' }}</div>
+                            <div class="name">
+                                {{ $depart['name'] ?? '—' }}
+                                @if (!empty($depart['nickname']))
+                                [{{ $depart['nickname'] }}]
+                                @endif
+                            </div>
+                            @if (!empty($depart['piername']))
+                            <div class="sub">{{ $depart['piername'] }}</div>
+                            @endif
                         </div>
-                        <div class="text-center d-md-none py-1">
-                            <i class="bi bi-arrow-down text-main fs-4"></i>
+                        <div class="bv-arrow-mobile">↓</div>
+                        <div class="bv-arrow">→</div>
+                        <div class="bv-leg">
+                            <div class="role">Arrival</div>
+                            <div class="time">{{ $route['arrival_time'] ?? '—' }}</div>
+                            <div class="name">
+                                {{ $dest['name'] ?? '—' }}
+                                @if (!empty($dest['nickname']))
+                                [{{ $dest['nickname'] }}]
+                                @endif
+                            </div>
+                            @if (!empty($dest['piername']))
+                            <div class="sub">{{ $dest['piername'] }}</div>
+                            @endif
                         </div>
                     </div>
-                    <div class="col-md-5 text-md-end">
-                        <div class="time"><i class="bi bi-clock me-1"></i>{{ $route['arrival_time'] }}</div>
-                        <div class="point">{{ $route['destination_station']['name'] }}</div>
-                    </div>
+                    @if (!empty($route['id']) || !empty($route['boat_name']) || !empty($route['vessel_name']))
+                    <table class="bv-table">
+                        <tbody>
+
+                            @if (!empty($route['boat_name']) || !empty($route['vessel_name']))
+                            <tr>
+                                <th>Vessel</th>
+                                <td>{{ $route['boat_name'] ?? $route['vessel_name'] }}</td>
+                            </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                    @endif
                 </div>
-            </div>
-            @endforeach
+                @empty
+                <p class="bv-empty">No route data.</p>
+                @endforelse
+            </section>
 
-            <div class="booking-section-head">
-                <div class="icon-wrap"><i class="bi bi-person-vcard"></i></div>
-                <span>Passengers</span>
-            </div>
-
-            @foreach($booking['customers'] as $index => $customer)
-            <div class="passenger-tile">
-                <div class="passenger-avatar">{{ $index + 1 }}</div>
-                <div class="flex-grow-1 min-w-0">
-                    <div class="passenger-name">{{ $customer['fullname'] }}</div>
-                    <div class="mb-2">
-                        <span class="badge rounded-pill" style="background: rgba(4, 89, 144, 0.12); color: var(--booking-brand); font-weight: 600;">{{ $customer['type'] }}</span>
+            {{-- Passengers --}}
+            <section class="bv-sec">
+                <h3 class="bv-sec-title">Lead passenger</h3>
+                @forelse ($customers as $index => $customer)
+                <div class="bv-pass">
+                    <div class="bv-pass-head">
+                        <span class="idx">#{{ $index + 1 }}</span>
+                        <span>{{ $customer['fullname'] ?? '—' }}</span>
+                        @if (!empty($customer['type']))
+                        <span class="type">{{ $customer['type'] }}</span>
+                        @endif
                     </div>
-                    <div class="passenger-meta"><i class="bi bi-envelope me-1"></i>{{ $customer['email'] }}</div>
-                    <div class="passenger-meta"><i class="bi bi-telephone me-1"></i>{{ $customer['mobile'] }}</div>
+                    <table class="bv-table">
+                        <tbody>
+                            @if (!empty($customer['email']))
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ $customer['email'] }}</td>
+                            </tr>
+                            @endif
+                            <tr>
+                                <th>Telephone</th>
+                                <td>
+                                    @if (!empty($customer['mobile_code']) || !empty($customer['mobile']))
+                                    {{ trim(($customer['mobile_code'] ?? '') . ' ' . ($customer['mobile'] ?? '')) }}
+                                    @else
+                                    —
+                                    @endif
+                                </td>
+                            </tr>
+                            @if (!empty($customer['other_contact']))
+                            <tr>
+                                <th>Other contact</th>
+                                <td>{{ $customer['other_contact'] }}</td>
+                            </tr>
+                            @endif
+                            @if (isset($customer['isdefault']))
+                            <tr>
+                                <th>Lead passenger</th>
+                                <td>{{ ($customer['isdefault'] ?? '') === 'Y' ? 'Yes' : 'No' }}</td>
+                            </tr>
+                            @endif
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            @endforeach
+                @empty
+                <p class="bv-empty">No passenger data.</p>
+                @endforelse
+            </section>
 
-            <div class="booking-section-head">
-                <div class="icon-wrap"><i class="bi bi-wallet2"></i></div>
-                <span>Payment</span>
-            </div>
+            {{-- Note --}}
+            @if (!empty($note))
+            <section class="bv-sec">
+                <h3 class="bv-sec-title">Customer note</h3>
+                <div class="bv-note">{{ $note }}</div>
+            </section>
+            @endif
 
-            @foreach($booking['payments'] as $payment)
-            <div class="payment-card">
-                <div class="row align-items-center">
-                    <div class="col-sm-6 mb-2 mb-sm-0">
-                        <span class="label d-block mb-1">Payment method</span>
-                        <strong class="text-dark">{{ $payment['payment_method'] }}</strong>
-                    </div>
-                    <div class="col-sm-6 text-sm-end">
-                        <span class="label d-block mb-1">Total amount</span>
-                        <div class="amount">฿{{ number_format($payment['totalamt'], 2) }}</div>
-                    </div>
-                </div>
-            </div>
-            @endforeach
+            {{-- Payment --}}
+            <section class="bv-sec" style="display: none;">
+                <h3 class="bv-sec-title">Payment</h3>
+                @forelse ($payments as $pIndex => $payment)
+                <table class="bv-table">
+                    <tbody>
+                        <tr>
+                            <th>Payment #{{ $pIndex + 1 }}</th>
+                            <td>{{ $payment['payment_method'] ?? '—' }}</td>
+                        </tr>
+                        @if (!empty($payment['payment_status']) || !empty($payment['status']))
+                        <tr>
+                            <th>Payment status</th>
+                            <td>{{ $payment['payment_status'] ?? $payment['status'] }}</td>
+                        </tr>
+                        @endif
+                        @if (!empty($payment['payment_date']) || !empty($payment['paid_at']))
+                        <tr>
+                            <th>Paid at</th>
+                            <td>{{ date('d/m/Y H:i', strtotime($payment['payment_date'] ?? $payment['paid_at'])) }}</td>
+                        </tr>
+                        @endif
+                        @if (!empty($payment['transaction_id']) || !empty($payment['refno']))
+                        <tr>
+                            <th>Transaction</th>
+                            <td>{{ $payment['transaction_id'] ?? $payment['refno'] }}</td>
+                        </tr>
+                        @endif
+                        <tr>
+                            <th>Amount</th>
+                            <td>{{ number_format((float) ($payment['totalamt'] ?? $payment['amount'] ?? 0), 2) }} THB</td>
+                        </tr>
+                    </tbody>
+                </table>
+                @empty
+                <p class="bv-empty">No payment data.</p>
+                @endforelse
+            </section>
         </div>
     </div>
 </div>

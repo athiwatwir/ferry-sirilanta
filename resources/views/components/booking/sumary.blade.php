@@ -1,211 +1,215 @@
+@php
+    $adultCount = (int) ($sessionData['adult'] ?? 0);
+    $totalPrice = 0;
+    foreach ($bookingRoutes as $br) {
+        $totalPrice += ((float) ($br['route']['prices']['regular'] ?? 0)) * $adultCount;
+    }
+    $tripType = $sessionData['trip_type'] ?? '';
+    $referral = session('referral', []);
+    $referralName = $referral['name'] ?? null;
+@endphp
+
+<style>
+    .summary-route-card {
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 0.75rem;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .summary-route-date {
+        background: linear-gradient(90deg, rgba(255, 140, 0, 0.12), rgba(255, 140, 0, 0.04));
+        color: #e67e00;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 0.65rem 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .summary-route-row {
+        display: flex;
+        align-items: stretch;
+        gap: 0.75rem;
+        padding: 0.9rem 1rem;
+    }
+
+    .summary-route-row + .summary-route-row {
+        border-top: 1px dashed rgba(0, 0, 0, 0.08);
+    }
+
+    .summary-route-left {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .summary-route-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #6c757d;
+        margin-bottom: 0.2rem;
+    }
+
+    .summary-route-station {
+        font-size: 0.98rem;
+        font-weight: 700;
+        color: #212529;
+        line-height: 1.35;
+        margin-bottom: 0.15rem;
+    }
+
+    .summary-route-pier {
+        font-size: 0.82rem;
+        color: #6c757d;
+        line-height: 1.4;
+        word-break: break-word;
+    }
+
+    .summary-route-right {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: center;
+        min-width: 4.5rem;
+        text-align: right;
+    }
+
+    .summary-route-time {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--bs-primary, #0d6efd);
+        line-height: 1.1;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .summary-route-time-label {
+        font-size: 0.7rem;
+        color: #6c757d;
+        margin-top: 0.15rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+</style>
+
 <div class="row d-none d-md-block">
-    <div class="col-12 text-center mt-3 ">
-        <h4 class="text-main mb-3">Summary {{ $tripTypes[$sessionData['trip_type']] }}</h4>
+    <div class="col-12 text-center mt-3">
+        @if (!empty($referralName))
+            <h3 class="text-main mb-2">{{ $referralName }}</h3>
+        @endif
+        <h4 class="text-main mb-3">Summary {{ $tripTypes[$tripType] ?? '' }}</h4>
     </div>
 
-    @if($sessionData['trip_type'] == 'O')
-    @php
-    $subRoute = $bookingRoutes[0]['route'];
-    $departStation = $subRoute['departure_station'];
-    $destStation = $subRoute['destination_station'];
-    @endphp
-    <div class="col-12 mb-2">
-        <h5 class="text-orange"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-clock">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M10.5 21h-4.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v3" />
-                <path d="M16 3v4" />
-                <path d="M8 3v4" />
-                <path d="M4 11h10" />
-                <path d="M14 18a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-                <path d="M18 16.5v1.5l.5 .5" /></svg>
-            {{ \Carbon\Carbon::parse($bookingRoutes[0]['traveldate'])->format('l d F Y') }}</h5>
+    @if (in_array($tripType, ['O', 'R', 'M'], true) && count($bookingRoutes) > 0)
+        @foreach ($bookingRoutes as $bookingRoute)
+            @php
+                $subRoute = $bookingRoute['route'];
+                $departStation = $subRoute['departure_station'] ?? [];
+                $destStation = $subRoute['destination_station'] ?? [];
+                $legFare = ((float) ($subRoute['prices']['regular'] ?? 0)) * $adultCount;
+                $travelDate = \Carbon\Carbon::parse($bookingRoute['traveldate'])->format('l d F Y');
+            @endphp
 
+            <div class="col-12 mb-3">
+                <div class="summary-route-card">
+                    <div class="summary-route-date">
+                        {{ $travelDate }}
+                    </div>
 
-        <strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alarm">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                <path d="M12 10l0 3l2 0" />
-                <path d="M7 4l-2.75 2" />
-                <path d="M17 4l2.75 2" /></svg> {{ $subRoute['departure_time'] }}</span> </strong><br>
-        <strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73l-1.5 4" />
-                <path d="M6 13l1.5 -5" />
-                <path d="M6 8h8l2 3" /></svg> {{ $departStation['name'] }} [{{ $departStation['nickname'] }}]</strong>
-    </div>
-    <hr>
-    <div class="col-12 mb-2">
-        <strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alarm">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                <path d="M12 10l0 3l2 0" />
-                <path d="M7 4l-2.75 2" />
-                <path d="M17 4l2.75 2" /></svg> {{ $subRoute['arrival_time'] }}</span> </strong><br>
-        <strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73l-1.5 4" />
-                <path d="M6 13l1.5 -5" />
-                <path d="M6 8h8l2 3" /></svg> {{ $destStation['name'] }} [{{ $destStation['nickname'] }}]</strong>
+                    <div class="summary-route-row">
+                        <div class="summary-route-left">
+                            <div class="summary-route-label">Departure from</div>
+                            <div class="summary-route-station">
+                                {{ $departStation['name'] ?? '' }}
+                                @if (!empty($departStation['nickname']))
+                                    <span class="fw-normal text-muted">[{{ $departStation['nickname'] }}]</span>
+                                @endif
+                            </div>
+                            @if (!empty($departStation['piername']))
+                                <div class="summary-route-pier">{{ $departStation['piername'] }}</div>
+                            @endif
+                        </div>
+                        <div class="summary-route-right">
+                            <div class="summary-route-time">{{ $subRoute['departure_time'] ?? '' }}</div>
+                            <div class="summary-route-time-label">Depart</div>
+                        </div>
+                    </div>
 
-    </div>
-    @elseif ($sessionData['trip_type'] == 'R')
-    @foreach ($bookingRoutes as $bookingRoute)
-    @php
-    $subRoute = $bookingRoute['route'];
-    $departStation = $subRoute['departure_station'];
-    $destStation = $subRoute['destination_station'];
-    @endphp
-    <div class="col-12 mb-2">
-        <h5 class="text-orange"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-clock">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M10.5 21h-4.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v3" />
-                <path d="M16 3v4" />
-                <path d="M8 3v4" />
-                <path d="M4 11h10" />
-                <path d="M14 18a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-                <path d="M18 16.5v1.5l.5 .5" /></svg>
-            {{ \Carbon\Carbon::parse($bookingRoute['traveldate'])->format('l d F Y') }}</h5>
-
-
-        <strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alarm">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                <path d="M12 10l0 3l2 0" />
-                <path d="M7 4l-2.75 2" />
-                <path d="M17 4l2.75 2" /></svg> {{ $subRoute['departure_time'] }}</span> </strong><br>
-        <strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73l-1.5 4" />
-                <path d="M6 13l1.5 -5" />
-                <path d="M6 8h8l2 3" /></svg> {{ $departStation['name'] }} [{{ $departStation['nickname'] }}]</strong>
-    </div>
-    <hr>
-    <div class="col-12 mb-2">
-        <strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alarm">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                <path d="M12 10l0 3l2 0" />
-                <path d="M7 4l-2.75 2" />
-                <path d="M17 4l2.75 2" /></svg> {{ $subRoute['arrival_time'] }}</span> </strong><br>
-        <strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73l-1.5 4" />
-                <path d="M6 13l1.5 -5" />
-                <path d="M6 8h8l2 3" /></svg> {{ $destStation['name'] }} [{{ $destStation['nickname'] }}]</strong>
-
-    </div>
-
-    <div class="col-12 mb-3">
-        <div class="mt-5">
-            <div class="d-flex justify-content-between align-items-center text-primary">
-                <p class="mb-0">Fare</p>
-                <h6 class="mb-0"><strong id="label-fare-pice">{{ number_format($subRoute['prices']['regular'],2) }}</strong> THB</h6>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="mb-0">Adult x {{ $sessionData['adult'] }}</p>
-                <h6 class="mb-0">{{ number_format($subRoute['prices']['regular']*$sessionData['adult'],2) }}THB</h6>
+                    <div class="summary-route-row">
+                        <div class="summary-route-left">
+                            <div class="summary-route-label">Destination to</div>
+                            <div class="summary-route-station">
+                                {{ $destStation['name'] ?? '' }}
+                                @if (!empty($destStation['nickname']))
+                                    <span class="fw-normal text-muted">[{{ $destStation['nickname'] }}]</span>
+                                @endif
+                            </div>
+                            @if (!empty($destStation['piername']))
+                                <div class="summary-route-pier">{{ $destStation['piername'] }}</div>
+                            @endif
+                        </div>
+                        <div class="summary-route-right">
+                            <div class="summary-route-time">{{ $subRoute['arrival_time'] ?? '' }}</div>
+                            <div class="summary-route-time-label">Arrive</div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-        </div>
-    </div>
+            @if (in_array($tripType, ['R', 'M'], true))
+                <div class="col-12 mb-3">
+                    <div class="d-flex justify-content-between align-items-center text-primary">
+                        <p class="mb-0">Fare</p>
+                        <h6 class="mb-0"><strong>{{ number_format($subRoute['prices']['regular'] ?? 0, 2) }}</strong> THB</h6>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <p class="mb-0">Adult x {{ $adultCount }}</p>
+                        <h6 class="mb-0">{{ number_format($legFare, 2) }} THB</h6>
+                    </div>
+                </div>
+            @endif
+        @endforeach
 
-    @endforeach
-
-    @elseif ($sessionData['trip_type'] == 'M')
-    @foreach ($bookingRoutes as $bookingRoute)
-    @php
-    $subRoute = $bookingRoute['route'];
-    $departStation = $subRoute['departure_station'];
-    $destStation = $subRoute['destination_station'];
-    @endphp
-    <div class="col-12 mb-2">
-        <h5 class="text-orange"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-clock">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M10.5 21h-4.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v3" />
-                <path d="M16 3v4" />
-                <path d="M8 3v4" />
-                <path d="M4 11h10" />
-                <path d="M14 18a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-                <path d="M18 16.5v1.5l.5 .5" /></svg>
-            {{ \Carbon\Carbon::parse($bookingRoute['traveldate'])->format('l d F Y') }}</h5>
-
-
-        <strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alarm">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                <path d="M12 10l0 3l2 0" />
-                <path d="M7 4l-2.75 2" />
-                <path d="M17 4l2.75 2" /></svg> {{ $subRoute['departure_time'] }}</span> </strong><br>
-        <strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73l-1.5 4" />
-                <path d="M6 13l1.5 -5" />
-                <path d="M6 8h8l2 3" /></svg> {{ $departStation['name'] }} [{{ $departStation['nickname'] }}]</strong>
-    </div>
-    <hr>
-    <div class="col-12 mb-2">
-        <strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alarm">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M5 13a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                <path d="M12 10l0 3l2 0" />
-                <path d="M7 4l-2.75 2" />
-                <path d="M17 4l2.75 2" /></svg> {{ $subRoute['arrival_time'] }}</span> </strong><br>
-        <strong class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-speedboat">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M2 17h14.4a3 3 0 0 0 2.5 -1.34l3.1 -4.66h-6.23a4 4 0 0 0 -1.49 .29l-3.56 1.42a4 4 0 0 1 -1.49 .29h-5.73l-1.5 4" />
-                <path d="M6 13l1.5 -5" />
-                <path d="M6 8h8l2 3" /></svg> {{ $destStation['name'] }} [{{ $destStation['nickname'] }}]</strong>
-
-    </div>
-
-    <div class="col-12 mb-3">
-        <div class="mt-5">
-            <div class="d-flex justify-content-between align-items-center text-primary">
-                <p class="mb-0">Fare</p>
-                <h6 class="mb-0"><strong id="label-fare-pice">{{ number_format($subRoute['prices']['regular'],2) }}</strong> THB</h6>
+        @if ($tripType === 'O')
+            @php
+                $subRoute = $bookingRoutes[0]['route'];
+            @endphp
+            <div class="col-12 mb-3">
+                <div class="mt-2">
+                    <div class="d-flex justify-content-between align-items-center text-primary">
+                        <p class="mb-0">Fare</p>
+                        <h6 class="mb-0"><strong>{{ number_format($subRoute['prices']['regular'] ?? 0, 2) }}</strong> THB</h6>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <p class="mb-0">Adult x {{ $adultCount }}</p>
+                        <h6 class="mb-0">{{ number_format(($subRoute['prices']['regular'] ?? 0) * $adultCount, 2) }} THB</h6>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <h5 class="mb-0">Total</h5>
+                        <h5 class="mb-0">THB <strong>{{ number_format($totalPrice, 2) }}</strong></h5>
+                    </div>
+                </div>
             </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="mb-0">Adult x {{ $sessionData['adult'] }}</p>
-                <h6 class="mb-0">{{ number_format($subRoute['prices']['regular']*$sessionData['adult'],2) }}THB</h6>
+        @else
+            <div class="col-12 mb-3">
+                <hr>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <h5 class="mb-0">Total</h5>
+                    <h5 class="mb-0">THB <strong>{{ number_format($totalPrice, 2) }}</strong></h5>
+                </div>
             </div>
-
-        </div>
-    </div>
-
-    @endforeach
-
-    @else
-    <div class="col-12 mb-2">
-        <span class="badge text-bg-primary mb-0">Departure {{ \Carbon\Carbon::parse($sessionData['depart_date'])->format('l d F Y') }}</span><br>
-        <strong><span class="fs-4">{{ $subRoute['departure_time'] }}</span> {{ $departStation['name'] }} [{{ $departStation['nickname'] }}] @if (!empty($departStation['piername']))
-            <small>({{ $departStation['piername'] }})</small>
-            @endif </strong>
-    </div>
-    <hr>
-    <div class="col-12 mb-2">
-        <span class="badge text-bg-warning mb-0">Arrival {{ \Carbon\Carbon::parse($sessionData['depart_date'])->format('l d F Y') }}</span><br>
-        <strong><span class="fs-4">{{ $subRoute['arrival_time'] }}</span> {{ $destStation['name'] }} [{{ $destStation['nickname'] }}] @if (!empty($destStation['piername']))
-            <small>({{ $destStation['piername'] }})</small>
-            @endif </strong>
-    </div>
-
-
+        @endif
     @endif
-
 </div>
 
 <div class="row d-block d-lg-none">
     <div class="col text-end mb-3">
-        <button type="button" class="btn btn-primary"> Sumary:THB</button>
+        <button type="button" class="btn btn-primary">Summary: {{ number_format($totalPrice, 2) }} THB</button>
     </div>
 </div>
-
-
-
-
 
 <script>
     console.log(@json($sessionData));
     console.log(@json($bookingRoutes));
-
 </script>

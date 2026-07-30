@@ -12,7 +12,7 @@ class ApiService
     public function __construct()
     {
         $this->baseUrl = config('services.app_api.url');
-        $this->apiKey = config('services.app_api.key');
+        $this->apiKey = session('api_key') ?: config('services.app_api.key');
     }
 
     public function get($endpoint, $params = [], $headers = [])
@@ -37,18 +37,28 @@ class ApiService
 
     protected function handleResponse($response)
     {
-        /*
-        if ($response->successful()) {
-            return $response->json();
+        // คืน JSON แม้เป็น error เพื่อให้ service ชั้นบนจัดการเอง
+        // ไม่ throw เพื่อไม่ให้หน้าเว็บล้มทั้งหน้าเมื่อ API ภายนอกล่ม
+        $json = $response->json();
+
+        if (is_array($json)) {
+            return $json;
         }
 
-
-        throw new \Exception('API Error: ' . $response->body(), $response->status());
-        */
         if ($response->serverError()) {
-            throw new \Exception('API Server Error', 500);
+            return [
+                'success' => false,
+                'message' => 'API server error. Please try again later.',
+                'code' => 'API-E-500',
+                'status' => $response->status(),
+            ];
         }
 
-        return $response->json();
+        return [
+            'success' => false,
+            'message' => 'Unable to reach API.',
+            'code' => 'API-E-000',
+            'status' => $response->status(),
+        ];
     }
 }
