@@ -6,6 +6,7 @@
 'departDateText'=> '',
 'depart_date' => '',
 'type' => 'A',
+'seq' => null,
 'sessionTripType' => 'O',
 ])
 
@@ -13,10 +14,12 @@
 
 {{-- ใช้ unique id ต่อ component instance เพื่อกัน id ซ้ำกรณี render หลายครั้ง --}}
 @php
-$componentId = 'flight-' . $type . '-' . uniqid();
+$seq = (int) ($seq ?? $type);
+$type = $seq;
+$componentId = 'flight-' . $seq . '-' . uniqid();
 @endphp
 
-<div class="row" id="{{ $componentId }}">
+<div class="row" id="{{ $componentId }}" data-seq="{{ $seq }}">
 
     {{-- Header: SVG นำหน้า, ข้อความสองบรรทัด (เส้นทาง / วันออกเดินทาง) --}}
     <div class="col-12 mt-3">
@@ -28,9 +31,19 @@ $componentId = 'flight-' . $type . '-' . uniqid();
                 <path d="M6 8h8l2 3" />
             </svg>
             <div class="flex-grow-1 min-w-0">
-                <h3 class="text-primary mb-1 lh-sm fs-4">{{ $departStation['name'] }} to {{ $destStation['name'] }}</h3>
+                <h3 class="text-primary mb-1 lh-sm fs-4">
+                    @if ($sessionTripType === 'M' || $sessionTripType === 'R')
+                        <span class="text-body-secondary fw-semibold me-1">Trip {{ $seq }}:</span>
+                    @endif
+                    {{ $departStation['name'] }} to {{ $destStation['name'] }}
+                </h3>
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 column-gap-3 mb-2">
-                    <p class="mb-0 fw-medium text-body-secondary">Departure Date: {{ $departDateText }}</p>
+                    <div>
+                        <p class="mb-0 fw-medium text-body-secondary">Departure Date: {{ $departDateText }}</p>
+                        @if (in_array($sessionTripType, ['M', 'R'], true))
+                            <small class="text-muted js-date-bound-hint" data-component="{{ $componentId }}"></small>
+                        @endif
+                    </div>
                     <a href="#" role="button" class="d-inline-flex align-items-center text-secondary js-depart-date-trigger flex-shrink-0" data-component="{{ $componentId }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -45,8 +58,8 @@ $componentId = 'flight-' . $type . '-' . uniqid();
                 </div>
             </div>
         </div>
-        {{-- hidden input สำหรับ flatpickr แยกต่อ instance --}}
-        <input type="text" class="flatpickr-hidden js-depart-date-input" data-component="{{ $componentId }}" data-type="{{ $type }}" aria-hidden="true" />
+        {{-- hidden input สำหรับ flatpickr แยกต่อ instance — default เป็น traveldate ของขานี้ --}}
+        <input type="text" class="flatpickr-hidden js-depart-date-input" data-component="{{ $componentId }}" data-type="{{ $seq }}" data-seq="{{ $seq }}" data-travel-date="{{ $depart_date }}" value="{{ $depart_date }}" aria-hidden="true" />
     </div>
 
     {{-- No routes alert --}}
@@ -60,7 +73,7 @@ $componentId = 'flight-' . $type . '-' . uniqid();
 
     {{-- Route cards --}}
     @foreach ($routes as $route)
-    <div class="col-12 card mb-3 p-3 card-{{ $type }}">
+    <div class="col-12 card mb-3 p-3 card-{{ $seq }}">
         <div class="row">
 
             {{-- ข้อมูลเวลาและเส้นทาง --}}
@@ -119,7 +132,7 @@ $componentId = 'flight-' . $type . '-' . uniqid();
                 <h5 class="text-primary">
                     THB {{ number_format($route['prices']['regular']) }}
                 </h5>
-                <button class="btn btn-outline-primary" type="button" data-action="book-select" data-id="{{ $route['id'] }}" data-value="{{ $route['id'] }}" data-price="{{ $route['prices']['regular'] }}" data-type="{{ $type }}" data-group="{{ $componentId }}">
+                <button class="btn btn-outline-primary" type="button" data-action="book-select" data-id="{{ $route['id'] }}" data-value="{{ $route['id'] }}" data-price="{{ $route['prices']['regular'] }}" data-type="{{ $seq }}" data-seq="{{ $seq }}" data-group="{{ $componentId }}">
                     SELECT
                 </button>
             </div>
@@ -152,54 +165,211 @@ $componentId = 'flight-' . $type . '-' . uniqid();
 
             var inputEl = wrapper.querySelector('.js-depart-date-input[data-component="' + componentId + '"]');
             var triggerEl = wrapper.querySelector('.js-depart-date-trigger[data-component="' + componentId + '"]');
+            var hintEl = wrapper.querySelector('.js-date-bound-hint[data-component="' + componentId + '"]');
 
             if (!inputEl || !triggerEl) return;
 
             if (inputEl._flatpickr) return;
 
             var tripCtx = @json($sessionTripType);
+            var legSeq = parseInt(inputEl.dataset.seq || inputEl.dataset.type, 10);
+            var travelDate = (inputEl.dataset.travelDate || inputEl.value || '').trim();
+            if (!travelDate && window.flightLegDates && window.flightLegDates[legSeq]) {
+                travelDate = window.flightLegDates[legSeq];
+            }
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(travelDate)) {
+                travelDate = '';
+            }
 
-            var picker = flatpickr(inputEl, {
+            function todayYmdLocal() {
+                var now = new Date();
+                var y = now.getFullYear();
+                var m = String(now.getMonth() + 1).padStart(2, '0');
+                var d = String(now.getDate()).padStart(2, '0');
+                return y + '-' + m + '-' + d;
+            }
+
+            function getChangeForm() {
+                return document.getElementById('frm');
+            }
+
+            function readFormDate(id) {
+                var frm = getChangeForm();
+                if (!frm) return null;
+                var el = frm.querySelector('#' + id) || document.getElementById(id);
+                return el && el.value ? el.value : null;
+            }
+
+            function setFormField(id, nameSelector, value) {
+                var frm = getChangeForm();
+                if (!frm) return false;
+                var el = frm.querySelector('#' + id) || frm.querySelector(nameSelector);
+                if (!el) return false;
+                el.value = value;
+                return true;
+            }
+
+            function getLegDate(seq) {
+                if (window.flightLegDates && window.flightLegDates[seq]) {
+                    return window.flightLegDates[seq];
+                }
+                if (tripCtx === 'M') {
+                    return readFormDate('frm_multi_segment_date_' + (seq - 1));
+                }
+                if (tripCtx === 'R') {
+                    return seq === 1
+                        ? readFormDate('frm_depart_date')
+                        : readFormDate('frm_return_date');
+                }
+                return readFormDate('frm_depart_date');
+            }
+
+            function getDateBounds(seq) {
+                var minDate = todayYmdLocal();
+                var maxDate = null;
+                var prevSeq = seq - 1;
+                var nextSeq = seq + 1;
+
+                if (tripCtx === 'M' || tripCtx === 'R') {
+                    var prev = getLegDate(prevSeq);
+                    if (prev && prev > minDate) {
+                        minDate = prev;
+                    }
+                    maxDate = getLegDate(nextSeq) || null;
+                }
+
+                return {
+                    minDate: minDate
+                    , maxDate: maxDate
+                };
+            }
+
+            function updateHint(bounds) {
+                if (!hintEl) return;
+                if (tripCtx !== 'M' && tripCtx !== 'R') {
+                    hintEl.textContent = '';
+                    return;
+                }
+                var parts = [];
+                if (bounds.minDate) {
+                    parts.push('on/after ' + bounds.minDate);
+                }
+                if (bounds.maxDate) {
+                    parts.push('on/before ' + bounds.maxDate);
+                }
+                hintEl.textContent = parts.length
+                    ? 'Must be ' + parts.join(', ') + ' to match nearby trips.'
+                    : '';
+            }
+
+            function showLoadingAndSubmit() {
+                if (typeof window.showFlightDateLoading === 'function') {
+                    window.showFlightDateLoading();
+                }
+                var frm = getChangeForm();
+                if (frm) {
+                    setTimeout(function() {
+                        frm.submit();
+                    }, 50);
+                }
+            }
+
+            function applyBounds(instance) {
+                var bounds = getDateBounds(legSeq);
+                instance.set('minDate', bounds.minDate);
+                instance.set('maxDate', bounds.maxDate || null);
+                updateHint(bounds);
+                return bounds;
+            }
+
+            var initBounds = getDateBounds(legSeq);
+            updateHint(initBounds);
+
+            var pickerOpts = {
                 monthSelectorType: 'static'
-                , minDate: 'today'
+                , minDate: initBounds.minDate
                 , clickOpens: false
                 , disableMobile: true
+                , dateFormat: 'Y-m-d'
+                , defaultDate: travelDate || null
                 , positionElement: triggerEl
                 , appendTo: document.body
                 , onOpen: function(selectedDates, dateStr, instance) {
                     if (instance && instance.calendarContainer) {
                         instance.calendarContainer.classList.add('flatpickr-align-right');
                     }
-                }
-                , onChange: function(selectedDates, dateStr) {
-                    if (selectedDates.length > 0) {
-                        var type = inputEl.dataset.type;
-                        if (tripCtx === 'O') {
-                            var d = document.getElementById('frm_depart_date');
-                            if (d) d.value = dateStr;
-                        } else if (tripCtx === 'R') {
-                            if (type === '1' || type === 1) {
-                                var d1 = document.getElementById('frm_depart_date');
-                                if (d1) d1.value = dateStr;
-                            } else {
-                                var d2 = document.getElementById('frm_return_date');
-                                if (d2) d2.value = dateStr;
-                            }
-                        } else if (tripCtx === 'M') {
-                            var idx = parseInt(type, 10) - 1;
-                            if (!isNaN(idx) && idx >= 0) {
-                                var leg = document.getElementById('frm_multi_segment_date_' + idx);
-                                if (leg) leg.value = dateStr;
-                            }
-                        }
-                        var frm = document.getElementById('frm');
-                        if (frm) frm.submit();
+                    applyBounds(instance);
+                    var focusDate = travelDate || (selectedDates[0] ? instance.formatDate(selectedDates[0], 'Y-m-d') : null);
+                    if (focusDate) {
+                        instance.jumpToDate(focusDate, false);
                     }
                 }
-            });
+                , onChange: function(selectedDates, dateStr) {
+                    if (selectedDates.length === 0) return;
+
+                    // ไม่ reload ถ้าเลือกวันเดิมของขานี้
+                    if (travelDate && dateStr === travelDate) {
+                        return;
+                    }
+
+                    var bounds = getDateBounds(legSeq);
+                    if (bounds.minDate && dateStr < bounds.minDate) {
+                        alert('This trip date must be on or after ' + bounds.minDate + ' (previous trip).');
+                        return;
+                    }
+                    if (bounds.maxDate && dateStr > bounds.maxDate) {
+                        alert('This trip date must be on or before ' + bounds.maxDate + ' (next trip).');
+                        return;
+                    }
+
+                    var updated = false;
+                    if (tripCtx === 'O') {
+                        updated = setFormField('frm_depart_date', 'input[name="depart_date"]', dateStr);
+                    } else if (tripCtx === 'R') {
+                        if (legSeq === 1) {
+                            updated = setFormField('frm_depart_date', 'input[name="depart_date"]', dateStr);
+                            var retEl = getChangeForm() && (
+                                getChangeForm().querySelector('#frm_return_date')
+                                || getChangeForm().querySelector('input[name="return_date"]')
+                            );
+                            if (retEl && retEl.value && retEl.value < dateStr) {
+                                retEl.value = dateStr;
+                            }
+                        } else {
+                            updated = setFormField('frm_return_date', 'input[name="return_date"]', dateStr);
+                        }
+                    } else if (tripCtx === 'M') {
+                        var idx = legSeq - 1;
+                        updated = setFormField(
+                            'frm_multi_segment_date_' + idx
+                            , 'input[name="multi_segment_date[' + idx + ']"]'
+                            , dateStr
+                        );
+                    }
+
+                    if (!updated) {
+                        alert('Could not update travel date. Please refresh and try again.');
+                        return;
+                    }
+
+                    if (!window.flightLegDates) {
+                        window.flightLegDates = {};
+                    }
+                    window.flightLegDates[legSeq] = dateStr;
+
+                    showLoadingAndSubmit();
+                }
+            };
+
+            if (initBounds.maxDate) {
+                pickerOpts.maxDate = initBounds.maxDate;
+            }
+
+            var picker = flatpickr(inputEl, pickerOpts);
 
             function openPicker(e) {
                 e.preventDefault();
+                applyBounds(picker);
                 picker.open();
             }
 

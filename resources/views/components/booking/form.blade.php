@@ -19,7 +19,9 @@
     .trip-type-wrapper {
         display: flex;
         flex-wrap: nowrap;
+        align-items: center;
         justify-content: center;
+        gap: 8px;
         margin-bottom: 1rem;
     }
 
@@ -39,9 +41,22 @@
         white-space: nowrap;
     }
 
+    .trip-type-btn-standalone {
+        flex: 0 0 auto;
+        background: transparent;
+        box-shadow: none;
+        color: #666;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
     @media (max-width: 768px) {
         .trip-type-container {
             padding: 4px;
+        }
+
+        .trip-type-wrapper {
+            gap: 6px;
         }
 
         .trip-type-btn {
@@ -53,6 +68,10 @@
     }
 
     @media (max-width: 380px) {
+        .trip-type-wrapper {
+            gap: 4px;
+        }
+
         .trip-type-btn {
             padding: 8px 6px;
             font-size: 0.62rem;
@@ -67,6 +86,17 @@
 
     .trip-type-btn:hover:not(.active) {
         color: #333;
+    }
+
+    .trip-type-btn.trip-type-btn-standalone:hover:not(.active) {
+        color: #f06222;
+        background: transparent;
+    }
+
+    .trip-type-btn.trip-type-btn-standalone.active {
+        background: transparent;
+        color: #f06222;
+        box-shadow: none;
     }
 
     .trip-type-btn .icon {
@@ -89,6 +119,69 @@
         color: #F16424 !important;
     }
 
+    #multi_leg_actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    #multi_leg_actions.d-none {
+        display: none !important;
+    }
+
+    .btn-multi-add,
+    .btn-multi-remove {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        font-weight: 700;
+        font-size: 0.9rem;
+        border-radius: 0.5rem;
+        padding: 0.55rem 1rem;
+        border: 2px solid transparent;
+        transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-multi-add {
+        background: #f16225;
+        border-color: #f16225;
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(241, 98, 37, 0.3);
+    }
+
+    .btn-multi-add:hover {
+        background: #d95218;
+        border-color: #d95218;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(241, 98, 37, 0.4);
+    }
+
+    .btn-multi-remove {
+        background: #fff;
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+
+    .btn-multi-remove:hover {
+        background: #dc3545;
+        color: #fff;
+    }
+
+    .btn-multi-add i,
+    .btn-multi-remove i {
+        font-size: 1.05rem;
+        line-height: 1;
+    }
+
+    @media (max-width: 576px) {
+        .btn-multi-add,
+        .btn-multi-remove {
+            flex: 1 1 calc(50% - 0.25rem);
+            font-size: 0.82rem;
+            padding: 0.6rem 0.75rem;
+        }
+    }
 </style>
 
 <style>
@@ -250,10 +343,10 @@
                     <button type="button" class="trip-type-btn" data-value="R" data-action="trip_type">
                         <span>ROUND-TRIP</span>
                     </button>
-                    <button type="button" class="trip-type-btn" data-value="M" data-action="trip_type">
-                        <span>MULTI-ISLAND</span>
-                    </button>
                 </div>
+                <button type="button" class="trip-type-btn trip-type-btn-standalone" data-value="M" data-action="trip_type">
+                    <span>MULTI-ISLAND</span>
+                </button>
             </div>
         </div>
     </div>
@@ -316,12 +409,20 @@
     </div>
     <div class="row d-none" id="multi_leg_outer">
         <div class="col-12 mb-2">
-            <p class="text-muted small mb-1">Island hops (A → B → C …). Pick each stop in order, then a travel date per leg. At least two stops are required.</p>
+            <p class="text-muted small mb-1">Island hops (A → B → C …). Pick each stop in order, then a travel date per trip. At least two stops are required.</p>
+            <p class="small text-secondary mb-2"><i class="icon-base ti tabler-info-circle me-1"></i>Each trip date must be on or after the previous trip date.</p>
             <div id="multi_leg_container"></div>
+            <div id="multi_leg_date_error" class="alert alert-warning py-2 px-3 small d-none mb-0" role="alert"></div>
         </div>
         <div class="col-12 mb-3 d-none" id="multi_leg_actions">
-            <button type="button" class="btn btn-sm btn-outline-secondary me-2" id="btn_add_multi_leg">+ Add island</button>
-            <button type="button" class="btn btn-sm btn-link text-danger d-none" id="btn_remove_last_multi_leg">Remove last stop</button>
+            <button type="button" class="btn btn-multi-add" id="btn_add_multi_leg">
+                <i class="icon-base ti tabler-plus"></i>
+                Add Route
+            </button>
+            <button type="button" class="btn btn-multi-remove d-none" id="btn_remove_last_multi_leg">
+                <i class="icon-base ti tabler-trash"></i>
+                Remove route
+            </button>
         </div>
     </div>
     <div class="row">
@@ -740,6 +841,159 @@
             if (container) {
                 container.innerHTML = '';
             }
+            setMultiLegDateError('');
+        }
+
+        function setMultiLegDateError(message) {
+            const box = document.getElementById('multi_leg_date_error');
+            if (!box) return;
+            if (message) {
+                box.textContent = message;
+                box.classList.remove('d-none');
+            } else {
+                box.textContent = '';
+                box.classList.add('d-none');
+            }
+        }
+
+        function parseYmd(value) {
+            if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+                return null;
+            }
+            const parts = value.split('-').map(Number);
+            return new Date(parts[0], parts[1] - 1, parts[2]);
+        }
+
+        function formatYmd(dateObj) {
+            const y = dateObj.getFullYear();
+            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const d = String(dateObj.getDate()).padStart(2, '0');
+            return y + '-' + m + '-' + d;
+        }
+
+        function todayYmd() {
+            return formatYmd(new Date());
+        }
+
+        function getMultiLegDateBounds(index) {
+            let minDate = todayYmd();
+            let maxDate = null;
+
+            for (let i = index - 1; i >= 0; i--) {
+                if (state.multiLegDates[i]) {
+                    minDate = state.multiLegDates[i];
+                    break;
+                }
+            }
+
+            for (let i = index + 1; i < state.multiStops.length; i++) {
+                if (state.multiLegDates[i]) {
+                    maxDate = state.multiLegDates[i];
+                    break;
+                }
+            }
+
+            return {
+                minDate: minDate
+                , maxDate: maxDate
+            };
+        }
+
+        function areMultiLegDatesSequential() {
+            let prev = null;
+            for (let i = 0; i < state.multiStops.length; i++) {
+                const raw = state.multiLegDates[i] || '';
+                if (!raw) {
+                    return {
+                        ok: false
+                        , message: 'Please select a travel date for every trip.'
+                    };
+                }
+                const current = parseYmd(raw);
+                if (!current) {
+                    return {
+                        ok: false
+                        , message: 'Invalid travel date on Trip ' + (i + 1) + '.'
+                    };
+                }
+                if (prev && current < prev) {
+                    return {
+                        ok: false
+                        , message: 'Trip ' + (i + 1) + ' date must be on or after Trip ' + i + ' date.'
+                    };
+                }
+                prev = current;
+            }
+            return {
+                ok: true
+                , message: ''
+            };
+        }
+
+        function syncMultiLegDateConstraints() {
+            (state.multiFp || []).forEach(function(fp, index) {
+                if (!fp) return;
+                const bounds = getMultiLegDateBounds(index);
+                fp.set('minDate', bounds.minDate);
+                if (bounds.maxDate) {
+                    fp.set('maxDate', bounds.maxDate);
+                } else {
+                    fp.set('maxDate', null);
+                }
+
+                const current = state.multiLegDates[index];
+                if (!current) return;
+
+                const currentDate = parseYmd(current);
+                const minDate = parseYmd(bounds.minDate);
+                const maxDate = bounds.maxDate ? parseYmd(bounds.maxDate) : null;
+
+                if ((minDate && currentDate < minDate) || (maxDate && currentDate > maxDate)) {
+                    fp.clear();
+                    delete state.multiLegDates[index];
+                    const input = document.getElementById('multi_segment_date_input_' + index);
+                    if (input) input.value = '';
+                }
+            });
+        }
+
+        function onMultiLegDateChange(legIdx, dateStr) {
+            if (!isNaN(legIdx)) {
+                state.multiLegDates[legIdx] = dateStr;
+            }
+
+            const selected = parseYmd(dateStr);
+            if (selected) {
+                for (let j = legIdx + 1; j < state.multiStops.length; j++) {
+                    const later = parseYmd(state.multiLegDates[j] || '');
+                    if (later && later < selected) {
+                        delete state.multiLegDates[j];
+                        if (state.multiFp[j]) {
+                            state.multiFp[j].clear();
+                        }
+                        const laterInput = document.getElementById('multi_segment_date_input_' + j);
+                        if (laterInput) laterInput.value = '';
+                    }
+                }
+
+                for (let j = 0; j < legIdx; j++) {
+                    const earlier = parseYmd(state.multiLegDates[j] || '');
+                    if (earlier && earlier > selected) {
+                        delete state.multiLegDates[j];
+                        if (state.multiFp[j]) {
+                            state.multiFp[j].clear();
+                        }
+                        const earlierInput = document.getElementById('multi_segment_date_input_' + j);
+                        if (earlierInput) earlierInput.value = '';
+                    }
+                }
+            }
+
+            syncMultiLegDateConstraints();
+
+            const check = areMultiLegDatesSequential();
+            setMultiLegDateError(check.ok ? '' : check.message);
+            validateForm();
         }
 
         function updateDestinationRowForTripType() {
@@ -782,6 +1036,7 @@
                 if (actions) {
                     actions.classList.add('d-none');
                 }
+                setMultiLegDateError('');
                 return;
             }
 
@@ -797,29 +1052,43 @@
                 const fromName = i === 0 ? departName : state.multiStops[i - 1].name;
                 const savedDate = state.multiLegDates[i] ? escAttr(state.multiLegDates[i]) : '';
                 html += '<div class="card mb-3 p-3 border">';
-                html += '<div class="fw-bold text-primary mb-2">Leg ' + (i + 1) + ': ' + escHtml(fromName) + ' → ' + escHtml(stop.name) + '</div>';
+                html += '<div class="fw-bold text-primary mb-2">Trip ' + (i + 1) + ': ' + escHtml(fromName) + ' → ' + escHtml(stop.name) + '</div>';
                 html += '<input type="hidden" name="multi_segment_dest[' + i + ']" value="' + escAttr(stop.id) + '">';
-                html += '<label class="form-label small mb-1">Travel date for this leg</label>';
+                html += '<label class="form-label small mb-1">Travel date for this trip</label>';
                 html += '<input type="text" class="form-control form-control-lg js-multi-leg-date" name="multi_segment_date[' + i + ']" id="multi_segment_date_input_' + i + '" data-leg-index="' + i + '" placeholder="Date *" autocomplete="off" value="' + savedDate + '" required>';
+                html += '<small class="text-muted multi-leg-date-hint" data-leg-index="' + i + '"></small>';
                 html += '</div>';
             });
             container.innerHTML = html;
 
+            state.multiFp = [];
             document.querySelectorAll('.js-multi-leg-date').forEach(function(el) {
                 const legIdx = el.dataset.legIndex != null ? parseInt(el.dataset.legIndex, 10) : NaN;
-                const fp = flatpickr(el, {
+                const bounds = getMultiLegDateBounds(legIdx);
+                const fpOpts = {
                     monthSelectorType: 'static'
                     , static: true
-                    , minDate: 'today'
+                    , minDate: bounds.minDate
                     , disableMobile: true
+                    , dateFormat: 'Y-m-d'
                     , onChange: function(selectedDates, dateStr) {
-                        if (!isNaN(legIdx)) {
-                            state.multiLegDates[legIdx] = dateStr;
-                        }
-                        validateForm();
+                        onMultiLegDateChange(legIdx, dateStr);
                     }
-                });
-                state.multiFp.push(fp);
+                };
+                if (bounds.maxDate) {
+                    fpOpts.maxDate = bounds.maxDate;
+                }
+                const fp = flatpickr(el, fpOpts);
+                state.multiFp[legIdx] = fp;
+
+                const hint = document.querySelector('.multi-leg-date-hint[data-leg-index="' + legIdx + '"]');
+                if (hint) {
+                    if (legIdx === 0) {
+                        hint.textContent = 'Must be today or later.';
+                    } else {
+                        hint.textContent = 'Must be on or after Trip ' + legIdx + ' date.';
+                    }
+                }
             });
 
             if (btnAdd) {
@@ -841,6 +1110,14 @@
                 }
             }
             state.multiLegDates = prunedDates;
+
+            syncMultiLegDateConstraints();
+            const check = areMultiLegDatesSequential();
+            if (!check.ok && Object.keys(state.multiLegDates).length === state.multiStops.length) {
+                setMultiLegDateError(check.message);
+            } else {
+                setMultiLegDateError('');
+            }
 
             updateDestinationRowForTripType();
         }
@@ -1038,12 +1315,23 @@ ${section.badge_text ? `<span class="position-absolute top-0 start-100 translate
                 let allDates = true;
                 for (let i = 0; i < state.multiStops.length; i++) {
                     const el = document.getElementById('multi_segment_date_input_' + i);
-                    if (!el || !el.value) {
+                    const val = el && el.value ? el.value : (state.multiLegDates[i] || '');
+                    if (!val) {
                         allDates = false;
                         break;
                     }
+                    state.multiLegDates[i] = val;
                 }
-                isValid = hasDepart && enoughStops && allDates;
+                const sequential = allDates ? areMultiLegDatesSequential() : {
+                    ok: false
+                    , message: ''
+                };
+                if (allDates && !sequential.ok) {
+                    setMultiLegDateError(sequential.message);
+                } else if (sequential.ok) {
+                    setMultiLegDateError('');
+                }
+                isValid = hasDepart && enoughStops && allDates && sequential.ok;
             } else {
                 const hasDepart = !!state.departStationId;
                 const hasDest = !!state.destStationId;

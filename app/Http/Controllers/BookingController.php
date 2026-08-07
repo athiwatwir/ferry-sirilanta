@@ -95,6 +95,7 @@ class BookingController extends Controller
                 'price' => $totalamt
             ];
         } elseif (in_array($bookData['trip_type'], ['R', 'M'], true)) {
+            $bookingRoutes = $this->sortBookingRoutesBySeq($bookingRoutes);
             foreach ($bookingRoutes as $bookingRoute) {
                 $subRoute = app(RouteService::class)->getRoute($bookingRoute['selected_route_id']);
 
@@ -201,6 +202,25 @@ class BookingController extends Controller
                 return redirect('/')->with('booking_error', 'Multi-island trips need at least two stops, each with a travel date.');
             }
 
+            $prevDate = null;
+            foreach ($segmentDates as $i => $date) {
+                if (!$date) {
+                    return redirect('/')->with('booking_error', 'Each island hop needs a destination and date.');
+                }
+                try {
+                    $currentDate = Carbon::parse($date)->startOfDay();
+                } catch (\Throwable $e) {
+                    return redirect('/')->with('booking_error', 'Invalid travel date on trip ' . ($i + 1) . '.');
+                }
+                if ($currentDate->lt(Carbon::today()->startOfDay())) {
+                    return redirect('/')->with('booking_error', 'Travel dates cannot be in the past.');
+                }
+                if ($prevDate && $currentDate->lt($prevDate)) {
+                    return redirect('/')->with('booking_error', 'Travel dates must be in order: each trip must be on or after the previous trip.');
+                }
+                $prevDate = $currentDate;
+            }
+
             $fromId = $depart_station;
             foreach ($segmentDestIds as $i => $toId) {
                 $date = $segmentDates[$i] ?? null;
@@ -215,6 +235,7 @@ class BookingController extends Controller
                 $dtText = Carbon::parse($date)->format('D d M Y');
 
                 $bookingRoutes[] = [
+                    'seq' => $i + 1,
                     'traveldate' => $_dt,
                     'traveldateText' => $dtText,
                     'departStation' => $fromStation,
@@ -223,6 +244,8 @@ class BookingController extends Controller
                 ];
                 $fromId = $toId;
             }
+
+            $bookingRoutes = $this->sortBookingRoutesBySeq($bookingRoutes);
 
             $_departDate = $bookingRoutes[0]['traveldate'];
             $departDateText = $bookingRoutes[0]['traveldateText'];
@@ -242,6 +265,7 @@ class BookingController extends Controller
             $departDateText = Carbon::parse($depart_date)->format('D d M Y');
 
             $bookingRoutes[] = [
+                'seq' => 1,
                 'traveldate' => $_departDate,
                 'traveldateText' => $departDateText,
                 'departStation' => $departStation,
@@ -256,12 +280,26 @@ class BookingController extends Controller
             $departStation = app(StationService::class)->getStation($depart_station);
             $destStation = app(StationService::class)->getStation($dest_station);
 
+            try {
+                $departCarbon = Carbon::parse($depart_date)->startOfDay();
+                $returnCarbon = Carbon::parse($return_date)->startOfDay();
+            } catch (\Throwable $e) {
+                return redirect('/')->with('booking_error', 'Invalid travel date.');
+            }
+
+            if ($returnCarbon->lt($departCarbon)) {
+                return redirect()
+                    ->back()
+                    ->with('booking_error', 'Return date must be on or after the outbound date.');
+            }
+
             $routes = app(RouteService::class)->getRoutes($depart_station, $dest_station, $depart_date);
 
             $_departDate = Carbon::parse($depart_date)->format('Y-m-d');
             $departDateText = Carbon::parse($depart_date)->format('D d M Y');
 
             $bookingRoutes[] = [
+                'seq' => 1,
                 'traveldate' => $_departDate,
                 'traveldateText' => $departDateText,
                 'departStation' => $departStation,
@@ -274,12 +312,15 @@ class BookingController extends Controller
             $departDateText = Carbon::parse($return_date)->format('D d M Y');
 
             $bookingRoutes[] = [
+                'seq' => 2,
                 'traveldate' => $_departDate,
                 'traveldateText' => $departDateText,
                 'departStation' => $destStation,
                 'destStation' => $departStation,
                 'routes' => $routes,
             ];
+
+            $bookingRoutes = $this->sortBookingRoutesBySeq($bookingRoutes);
 
             $_departDate = $bookingRoutes[0]['traveldate'];
             $departDateText = $bookingRoutes[0]['traveldateText'];
@@ -289,6 +330,15 @@ class BookingController extends Controller
         if ($trip_type === 'M' && count($bookingRoutes) > 0 && count($segmentDestIds) > 0) {
             $sessionQuery['depart_date'] = $bookingRoutes[0]['traveldate'];
             $sessionQuery['dest_station_id'] = (string) $segmentDestIds[count($segmentDestIds) - 1];
+            $sessionQuery['multi_segment_date'] = array_values(array_map(
+                static fn ($route) => $route['traveldate'],
+                $bookingRoutes
+            ));
+        } elseif ($trip_type === 'O' && count($bookingRoutes) > 0) {
+            $sessionQuery['depart_date'] = $bookingRoutes[0]['traveldate'];
+        } elseif ($trip_type === 'R' && count($bookingRoutes) >= 2) {
+            $sessionQuery['depart_date'] = $bookingRoutes[0]['traveldate'];
+            $sessionQuery['return_date'] = $bookingRoutes[1]['traveldate'];
         }
         request()->session()->put('booking', $sessionQuery);
 
@@ -345,6 +395,36 @@ class BookingController extends Controller
         }
 
         session(['booking' => $booking]);
+
+        // Multi-island: sync traveldate รายขาจาก multi_segment_date ให้ตรงกับแต่ละ trip
+        if (($booking['trip_type'] ?? '') === 'M') {
+            $segmentDates = array_values((array) ($booking['multi_segment_date'] ?? []));
+            foreach ($booking_routes as $i => $row) {
+                $seq = (int) ($row['seq'] ?? ($i + 1));
+                $booking_routes[$i]['seq'] = $seq;
+                $dateIndex = $seq - 1;
+                if (! empty($segmentDates[$dateIndex])) {
+                    try {
+                        $booking_routes[$i]['traveldate'] = Carbon::parse($segmentDates[$dateIndex])->format('Y-m-d');
+                    } catch (\Throwable $e) {
+                        // keep existing traveldate
+                    }
+                } elseif (! empty($row['traveldate'])) {
+                    try {
+                        $booking_routes[$i]['traveldate'] = Carbon::parse($row['traveldate'])->format('Y-m-d');
+                    } catch (\Throwable $e) {
+                        // keep as-is
+                    }
+                }
+            }
+        } else {
+            foreach ($booking_routes as $i => $row) {
+                $booking_routes[$i]['seq'] = (int) ($row['seq'] ?? ($i + 1));
+            }
+        }
+
+        $booking_routes = $this->sortBookingRoutesBySeq($booking_routes);
+
         session(['booking_routes' => $booking_routes]);
 
         return view('pages.booking.passenger', [
@@ -400,5 +480,17 @@ class BookingController extends Controller
         $paymentUrl = env("PAYMENT_URL") . '/payment/' . $bookingno;
 
         return view('pages.booking.view', compact('booking', 'status', 'paymentUrl'));
+    }
+
+    /**
+     * Keep booking legs in fixed trip order. seq must not change once assigned.
+     */
+    private function sortBookingRoutesBySeq(array $bookingRoutes): array
+    {
+        usort($bookingRoutes, function ($a, $b) {
+            return ((int) ($a['seq'] ?? 0)) <=> ((int) ($b['seq'] ?? 0));
+        });
+
+        return array_values($bookingRoutes);
     }
 }

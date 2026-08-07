@@ -2,12 +2,61 @@
 
 @section('content')
 @php
+    $bookingRoutes = collect($bookingRoutes)
+        ->map(function ($route, $index) {
+            $route['seq'] = (int) ($route['seq'] ?? ($index + 1));
+            return $route;
+        })
+        ->sortBy('seq')
+        ->values()
+        ->all();
     $flightLegCount = count($bookingRoutes);
-    $flightLegIndices = $flightLegCount > 0 ? range(1, $flightLegCount) : [];
+    $flightLegIndices = collect($bookingRoutes)->pluck('seq')->map(fn ($s) => (int) $s)->values()->all();
+    $flightLegDates = collect($bookingRoutes)
+        ->mapWithKeys(function ($route) {
+            return [(int) $route['seq'] => $route['traveldate']];
+        })
+        ->all();
 @endphp
 <link href="{{ asset('css/pages/page-flight.css') }}" rel="stylesheet" />
+<style>
+    #flight-date-loading {
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(2px);
+    }
+
+    #flight-date-loading.is-active {
+        display: flex;
+    }
+
+    #flight-date-loading .flight-loading-box {
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 1.25rem 1.5rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        text-align: center;
+        min-width: 220px;
+    }
+</style>
 {{-- layout booking ไม่มี flatpickr.js — ต้องโหลดก่อนสคริปต์ใน x-booking.flight ถึงจะผูกปุ่ม Change ได้ --}}
 <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+<script>
+    window.flightLegDates = @json($flightLegDates);
+    window.showFlightDateLoading = function() {
+        var el = document.getElementById('flight-date-loading');
+        if (el) {
+            el.classList.add('is-active');
+            el.setAttribute('aria-hidden', 'false');
+        }
+    };
+</script>
 
 @if (session('booking_error'))
     <div class="alert alert-warning alert-dismissible fade show mb-3" role="alert">
@@ -16,11 +65,28 @@
     </div>
 @endif
 
+<div id="flight-date-loading" aria-hidden="true" role="status" aria-live="polite">
+    <div class="flight-loading-box">
+        <div class="spinner-border text-primary mb-2" role="status" aria-hidden="true"></div>
+        <div class="fw-semibold">Updating sailings…</div>
+        <div class="small text-muted">Please wait</div>
+    </div>
+</div>
 <div class="row">
 
     @foreach($bookingRoutes as $bookingRoute)
-    <div class="col-12">
-        <x-booking.flight :routes="$bookingRoute['routes']" :departStation="$bookingRoute['departStation']" :destStation="$bookingRoute['destStation']" :type="$loop->iteration" :departDateText="$bookingRoute['traveldateText']" :depart_date="$bookingRoute['traveldate']" :sessionTripType="$tripType" />
+    @php $seq = (int) $bookingRoute['seq']; @endphp
+    <div class="col-12" data-seq="{{ $seq }}">
+        <x-booking.flight
+            :routes="$bookingRoute['routes']"
+            :departStation="$bookingRoute['departStation']"
+            :destStation="$bookingRoute['destStation']"
+            :type="$seq"
+            :seq="$seq"
+            :departDateText="$bookingRoute['traveldateText']"
+            :depart_date="$bookingRoute['traveldate']"
+            :sessionTripType="$tripType"
+        />
     </div>
     @endforeach
 
@@ -47,10 +113,12 @@
                     @csrf
                     @method('post')
 
-                    @include('components.booking.session-query-hidden', ['data' => $sessionData])
+                    @include('components.booking.session-query-hidden', ['data' => $sessionData, 'withIds' => false])
 
                     @foreach($bookingRoutes as $bookingRoute)
-                    <input type="hidden" name="booking_routes[{{ $loop->index }}][selected_route_id]" id="selected_route_{{ $loop->iteration }}">
+                    @php $seq = (int) $bookingRoute['seq']; @endphp
+                    <input type="hidden" name="booking_routes[{{ $loop->index }}][seq]" value="{{ $seq }}">
+                    <input type="hidden" name="booking_routes[{{ $loop->index }}][selected_route_id]" id="selected_route_{{ $seq }}">
                     <input type="hidden" name="booking_routes[{{ $loop->index }}][traveldate]" value="{{ $bookingRoute['traveldate'] }}">
                     @endforeach
 
@@ -74,10 +142,9 @@
     </div>
 </div>
 
-{{-- Form สำหรับเปลี่ยนวันที่ --}}
+{{-- Form สำหรับเปลี่ยนวันที่ — เก็บ id ของ date fields ไว้ที่นี่ที่เดียว เพื่อไม่ชนกับ frm-next --}}
 <form method="GET" action="{{ route('booking.flight') }}" id="frm">
-    @csrf
-    @include('components.booking.session-query-hidden', ['data' => $sessionData])
+    @include('components.booking.session-query-hidden', ['data' => $sessionData, 'withIds' => true, 'idPrefix' => 'frm_'])
 </form>
 
 @stop
@@ -88,8 +155,7 @@
     $(document).ready(function() {
 
         // -------------------------------------------------------
-        // ทุกขาต้องมีการเลือก route — ใช้จำนวนขาจากเซิร์ฟเวอร์ ไม่ใช่แค่ปุ่ม SELECT ในหน้า
-        // (ถ้าขาใดไม่มีเที่ยว จะไม่มีปุ่ม แต่ยังต้องบล็อก Next จนกว่าจะเปลี่ยนวัน/เส้นทาง)
+        // ทุกขาต้องมีการเลือก route — ใช้ seq จากเซิร์ฟเวอร์ (ลำดับคงที่)
         // -------------------------------------------------------
         const requiredTypes = @json($flightLegIndices);
 
@@ -103,19 +169,26 @@
 
 
         // -------------------------------------------------------
-        // คำนวณและแสดงผลราคารวมทุก type
+        // คำนวณและแสดงผลราคารวมทุก type × จำนวนผู้โดยสาร
         // -------------------------------------------------------
+        const passengerCount = {{ (int) $adult }};
+
         function updatePriceDisplay() {
-            const totalFare = Object.values(selected)
+            const farePerPassenger = Object.values(selected)
                 .reduce(function(sum, s) {
                     return sum + s.price;
                 }, 0);
-            const formatted = totalFare.toLocaleString('en-US', {
-                minimumFractionDigits: 2
-                , maximumFractionDigits: 2
-            });
-            $('#label-fare-price').text(formatted);
-            $('#label-total-price').text(formatted);
+            const totalFare = farePerPassenger * passengerCount;
+
+            const formatPrice = function(value) {
+                return value.toLocaleString('en-US', {
+                    minimumFractionDigits: 2
+                    , maximumFractionDigits: 2
+                });
+            };
+
+            $('#label-fare-price').text(formatPrice(farePerPassenger));
+            $('#label-total-price').text(formatPrice(totalFare));
         }
 
         // -------------------------------------------------------
@@ -143,15 +216,7 @@
         }
 
         // -------------------------------------------------------
-        // Handler: กดปุ่ม SELECT
-        //
-        // Bug เดิม:
-        //   reset ด้วย [data-type='X'] จะ reset ปุ่มทุกตัวที่มี type เดียวกัน
-        //   ข้าม bookingRoute → ทำให้ปุ่มใน card อื่นถูก reset ไปด้วย
-        //
-        // Fix:
-        //   ใช้ data-group (unique ต่อ component instance) เป็น scope
-        //   reset เฉพาะปุ่มใน card เดียวกันเท่านั้น
+        // Handler: กดปุ่ม SELECT — ใช้ data-type = seq
         // -------------------------------------------------------
         $("[data-action='book-select']").on("click", function() {
             const $btn = $(this);

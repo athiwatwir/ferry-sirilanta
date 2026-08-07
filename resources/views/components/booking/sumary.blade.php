@@ -107,13 +107,20 @@
                 $departStation = $subRoute['departure_station'] ?? [];
                 $destStation = $subRoute['destination_station'] ?? [];
                 $legFare = ((float) ($subRoute['prices']['regular'] ?? 0)) * $adultCount;
-                $travelDate = \Carbon\Carbon::parse($bookingRoute['traveldate'])->format('l d F Y');
+                $travelDate = ! empty($bookingRoute['traveldate'])
+                    ? \Carbon\Carbon::createFromFormat('Y-m-d', substr($bookingRoute['traveldate'], 0, 10))->format('l d F Y')
+                    : '';
+                $tripSeq = (int) ($bookingRoute['seq'] ?? $loop->iteration);
+                $tripTotal = count($bookingRoutes);
+                $dateHeading = $tripTotal > 1
+                    ? 'Trip ' . $tripSeq . '/' . $tripTotal . ' ' . $travelDate
+                    : $travelDate;
             @endphp
 
             <div class="col-12 mb-3">
                 <div class="summary-route-card">
                     <div class="summary-route-date">
-                        {{ $travelDate }}
+                        {{ $dateHeading }}
                     </div>
 
                     <div class="summary-route-row">

@@ -64,6 +64,10 @@ $isLead = (int) $count === 0;
         min-height: calc(3.5rem + 2px);
     }
 
+    .js-name-en-upper {
+        text-transform: uppercase;
+    }
+
 </style>
 
 <div class="passenger-block">
@@ -87,10 +91,28 @@ $isLead = (int) $count === 0;
                 ]" />
         </div>
         <div class="col-8 col-md-5">
-            <x-form.float-input name="customers[{{ $count }}][firstname]" label="First name" />
+            <x-form.float-input
+                name="customers[{{ $count }}][firstname]"
+                label="First name"
+                class="js-name-en-upper"
+                pattern="[A-Za-z]+"
+                title="English letters only"
+                autocomplete="given-name"
+                inputmode="text"
+                lang="en"
+            />
         </div>
         <div class="col-12 col-md-5">
-            <x-form.float-input name="customers[{{ $count }}][lastname]" label="Last name" />
+            <x-form.float-input
+                name="customers[{{ $count }}][lastname]"
+                label="Last name"
+                class="js-name-en-upper"
+                pattern="[A-Za-z]+"
+                title="English letters only"
+                autocomplete="family-name"
+                inputmode="text"
+                lang="en"
+            />
         </div>
     </div>
 
@@ -117,3 +139,35 @@ $isLead = (int) $count === 0;
     </div>
     @endif
 </div>
+
+@once
+<script>
+    (function() {
+        function sanitizeNameEnUpper(el) {
+            if (!el) return;
+            var start = el.selectionStart;
+            var end = el.selectionEnd;
+            var before = el.value;
+            var after = before.replace(/[^A-Za-z]/g, '').toUpperCase();
+            if (before === after) return;
+            el.value = after;
+            if (typeof start === 'number' && typeof end === 'number') {
+                var diff = before.length - after.length;
+                el.setSelectionRange(Math.max(0, start - diff), Math.max(0, end - diff));
+            }
+        }
+
+        document.addEventListener('input', function(e) {
+            if (e.target && e.target.classList && e.target.classList.contains('js-name-en-upper')) {
+                sanitizeNameEnUpper(e.target);
+            }
+        });
+
+        document.addEventListener('blur', function(e) {
+            if (e.target && e.target.classList && e.target.classList.contains('js-name-en-upper')) {
+                sanitizeNameEnUpper(e.target);
+            }
+        }, true);
+    })();
+</script>
+@endonce
